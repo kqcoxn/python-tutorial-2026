@@ -1,0 +1,13 @@
+/* === SECTION: 第 2 章专属补充样式 === */
+/* C 风格 · V1 故障链修复揭示条（对应 B 的 b-revealbar，像素轨道配色 + 硬阴影） */
+.c-revealbar {
+  position: relative;
+  border: 2px dashed rgba(255, 210, 63, .45);
+  background: rgba(7, 10, 26, .6);
+  box-shadow: 6px 6px 0 rgba(255, 46, 136, .35);
+  padding: clamp(12px, 2.2vh, 18px) clamp(16px, 1.8vw, 26px);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+.c-revealbar b { color: var(--c-yellow); }
+.c-revealbar .cy { color: var(--c-cyan); }

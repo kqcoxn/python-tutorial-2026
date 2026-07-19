@@ -246,6 +246,7 @@ print("Keep calm and code Python)
 | 执行下一行 | Step Over |
 | 继续到下个断点 | Resume |
 
+- 本章配套幻灯片：`lessons/02-output-comments-debug/slides.html`（22 页，第 5、20 页含点击揭示互动，第 9–13 页含分步揭示；内容定稿见 `slides-content.md`）
 - 上一版本：`project/chapter-versions/v0_first_program.py`
 - 本章答案：`project/chapter-versions/v1_output_comments_debug.py`
 - 下一版本：`project/chapter-versions/v2_variables_types.py`
