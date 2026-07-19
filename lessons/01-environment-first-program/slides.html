@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-deck-id="py01-env-first-program" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
+<html lang="zh-CN" data-deck-id="py01-env-first-program-v5" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -276,7 +276,7 @@ img, .image-container {
   --c-text: #eef1ff;
   --c-muted: #9aa3c7;
 
-  /* 运行时引用的底色的深度值（Done 按钮文字色等） */
+  /* 运行时引用的底色深度值（Done 按钮文字色等） */
   --slide-bg-deep: #070a1a;
 
   /* Deck chrome —— 深色方案，在纸白与深空底上都清晰 */
@@ -287,6 +287,19 @@ img, .image-container {
   --deck-chrome-accent: #FF6B35;
   --deck-chrome-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   --deck-chrome-surface: rgba(22, 27, 34, 0.92);
+
+  /* 投影可读字号档位（设计系统 §9 硬指标：1280×720 基准）
+     主标题 min 40px / 正文要点 min 24px / 代码 min 26px / 小字 min 18px */
+  --fs-title: clamp(40px, 4.4vw, 72px);
+  --fs-hero: clamp(44px, 5.4vw, 88px);
+  --fs-body: clamp(24px, 2.2vw, 34px);
+  --fs-code: clamp(26px, 2vw, 34px);
+  --fs-small: clamp(18px, 1.6vw, 24px);
+
+  /* 节奏化间距档位（内容元素间固定节奏，不均分撑满） */
+  --gap-1: clamp(14px, 2.4vh, 22px);
+  --gap-2: clamp(20px, 3.4vh, 30px);
+  --gap-3: clamp(28px, 4.6vh, 42px);
 }
 
 /* === SECTION: BASE === */
@@ -298,143 +311,166 @@ body {
   color: #e6edf3;
 }
 
-/* === SECTION: 入场动效（staggered reveal，进入页面即播，可跳过） === */
-.slide .rv,
-.slide .rv-pop { opacity: 0; }
-.slide.visible .rv {
-  animation: rvUp .7s cubic-bezier(.2,.7,.2,1) var(--d, 0s) both;
+/* === SECTION: 聚拢布局（主内容容器 ≤76vw，水平垂直居中） === */
+/* 每页一个可拖动对象，定位在幻灯片正中；留白集中在容器外围 */
+.obj-center {
+  width: 76%;
 }
-.slide.visible .rv-pop {
-  animation: rvPop .55s cubic-bezier(.2,1.4,.4,1) var(--d, 0s) both;
+.deck-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
 }
-@keyframes rvUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-@keyframes rvPop { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: scale(1); } }
-/* 编辑模式下全部内容强制可见，便于选中与改字 */
-body.deck-edit-mode .slide .rv,
-body.deck-edit-mode .slide .rv-pop {
+.deck-col > .grow { flex: 1 1 auto; }
+
+/* === SECTION: 入场动效 + 分步揭示（data-step opt-in） === */
+.slide .rvi,
+.slide .rvi-pop { opacity: 0; }
+/* 非 data-step：翻页到位后按 --d 延迟自动播放（默认行为） */
+.slide.visible .rvi:not([data-step]) {
+  animation: rvUp .6s cubic-bezier(.2,.7,.2,1) var(--d, 0s) both;
+}
+.slide.visible .rvi-pop:not([data-step]) {
+  animation: rvPop .5s cubic-bezier(.2,1.4,.4,1) var(--d, 0s) both;
+}
+/* data-step：进入页面保持隐藏，由 StepManager 按 →/Space/点击/滚轮揭示 */
+.rvi[data-step].step-shown {
+  animation: rvUp .6s cubic-bezier(.2,.7,.2,1) both;
+}
+.rvi-pop[data-step].step-shown {
+  animation: rvPop .5s cubic-bezier(.2,1.4,.4,1) both;
+}
+/* 跳转 / 回退 / 退出编辑模式直达终态：不播动画 */
+.slide.steps-instant .rvi[data-step].step-shown,
+.slide.steps-instant .rvi-pop[data-step].step-shown {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+@keyframes rvUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes rvPop { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+/* 编辑模式下全部内容强制可见，便于选中与改字（分步系统停用） */
+body.deck-edit-mode .slide .rvi,
+body.deck-edit-mode .slide .rvi-pop {
   animation: none !important;
   opacity: 1 !important;
   transform: none !important;
 }
+body.deck-edit-mode .b-typed { width: auto !important; animation: none !important; }
+body.deck-edit-mode .b-pop { opacity: 1 !important; animation: none !important; }
+body.deck-edit-mode .seg,
+body.deck-edit-mode .b-shake { animation: none !important; }
 
 /* === SECTION: 风格 S · 瑞士纸白 === */
 .st-s { background: var(--s-bg); color: var(--s-ink); font-family: var(--font-s-body); }
-/* 细网格（装饰，层外） */
+/* 细网格：全幅低对比陪衬（装饰，层外） */
 .s-grid {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background-image:
-    linear-gradient(rgba(10,10,10,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10,10,10,.045) 1px, transparent 1px);
+    linear-gradient(rgba(10,10,10,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.035) 1px, transparent 1px);
   background-size: 8.333vw 8.333vh;
 }
-/* 十字对位标记（装饰，层外） */
+/* 十字对位标记：仅四角（装饰，层外） */
 .s-cross { position: absolute; width: 14px; height: 14px; z-index: 1; pointer-events: none; }
-.s-cross::before, .s-cross::after { content: ""; position: absolute; background: rgba(10,10,10,.38); }
+.s-cross::before, .s-cross::after { content: ""; position: absolute; background: rgba(10,10,10,.35); }
 .s-cross::before { left: 50%; top: 0; width: 1px; height: 100%; }
 .s-cross::after { top: 50%; left: 0; height: 1px; width: 100%; }
-/* 超大描边幽灵数字（装饰，层外） */
+/* 超大描边幽灵数字：贴右缘低对比（装饰，层外，仅封面） */
 .s-ghost {
-  position: absolute; right: 2vw; top: 3vh; z-index: 0; pointer-events: none; user-select: none;
+  position: absolute; right: -1vw; top: 2vh; z-index: 0; pointer-events: none; user-select: none;
   font-family: "Archivo", "Arial Black", sans-serif; font-weight: 800;
-  font-size: clamp(9rem, 24vw, 22rem); line-height: 1;
-  color: rgba(10,10,10,.045);
-  -webkit-text-stroke: 2px rgba(10,10,10,.13);
+  font-size: clamp(180px, 22vw, 400px); line-height: 1;
+  color: rgba(10,10,10,.04);
+  -webkit-text-stroke: 2px rgba(10,10,10,.12);
 }
 /* S 文本元件 */
 .s-eyebrow {
   font-family: "Archivo", "Helvetica Neue", sans-serif; font-weight: 800;
-  font-size: clamp(.62rem, .95vw, .85rem); letter-spacing: .32em; text-transform: uppercase;
+  font-size: var(--fs-small); letter-spacing: .3em; text-transform: uppercase;
   display: flex; align-items: center; gap: .8em; color: var(--s-ink);
 }
 .s-eyebrow::before { content: ""; width: .9em; height: .9em; background: var(--s-accent); flex: none; }
 .s-title {
   font-family: var(--font-s-disp); font-weight: 700;
-  font-size: clamp(1.6rem, 3.8vw, 3.1rem); line-height: 1.16; letter-spacing: .01em;
+  font-size: var(--fs-title); line-height: 1.18; letter-spacing: .01em;
 }
 .s-title .o { color: var(--s-accent); }
-.s-sub { color: var(--s-muted); font-size: clamp(.8rem, 1.4vw, 1.1rem); line-height: 1.65; }
-.s-bar { width: clamp(64px, 7vw, 110px); height: clamp(8px, 1.4vh, 12px); background: var(--s-accent); }
+.s-hero {
+  font-family: var(--font-s-disp); font-weight: 700;
+  font-size: var(--fs-hero); line-height: 1.16;
+}
+.s-body { font-size: var(--fs-body); line-height: 1.55; }
+.s-body.dim { color: var(--s-muted); }
+.s-bar { width: clamp(72px, 7vw, 120px); height: clamp(9px, 1.3vh, 13px); background: var(--s-accent); }
 .s-hairline { height: 1px; background: var(--s-hairline); }
-.s-meta { font-size: clamp(.66rem, .95vw, .85rem); color: var(--s-muted); letter-spacing: .1em; line-height: 1.7; }
-.s-kw { font-family: var(--font-s-disp); font-weight: 700; }
-/* S 闭环链路图 */
-.s-loop { display: flex; align-items: center; flex-wrap: nowrap; gap: .55em; }
-.s-lnode {
-  border: 1.5px solid var(--s-ink); background: #fff;
-  padding: .5em .75em; font-size: clamp(.66rem, 1.02vw, .9rem);
-  white-space: nowrap; position: relative;
+.s-code {
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: .86em; background: #F1F0EC; border: 1px solid var(--s-hairline);
+  padding: .02em .35em; border-radius: 4px; white-space: nowrap;
 }
-.s-lnode .s-lchk {
-  position: absolute; top: -.85em; left: -.45em;
-  color: var(--s-accent); font-weight: 800; font-size: 1.15em;
-}
-.s-larr { color: var(--s-accent); font-weight: 800; font-size: clamp(.8rem, 1.3vw, 1.15rem); flex: none; }
-/* S 编号步骤 */
-.s-step { display: flex; align-items: baseline; gap: .9em; }
-.s-step-n {
+/* S 编号/列表行（发丝线分隔） */
+.s-row { display: flex; align-items: baseline; gap: clamp(14px, 1.6vw, 24px); padding: clamp(10px, 1.9vh, 16px) 0; }
+.s-row + .s-row { border-top: 1px solid var(--s-hairline); }
+.s-num {
   font-family: "Archivo", sans-serif; font-weight: 800; color: var(--s-accent);
-  font-size: clamp(1rem, 1.9vw, 1.6rem); flex: none; min-width: 1.6em;
+  font-size: clamp(26px, 2.6vw, 42px); min-width: 1.7em; flex: none; line-height: 1.1;
 }
-.s-step-t { font-size: clamp(.78rem, 1.3vw, 1.05rem); line-height: 1.45; }
-.s-step-t b { font-weight: 700; }
-.s-step-t i { color: var(--s-muted); font-style: normal; margin-left: .6em; font-size: .85em; }
-.s-step-sep { color: var(--s-muted); font-size: clamp(.64rem, .95vw, .82rem); padding-left: 2.6em; letter-spacing: .06em; }
-/* S 六步网格 */
-.s-grid6 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.6rem, 2.2vh, 1.4rem) clamp(1rem, 2.5vw, 2.5rem); }
-/* S 侧栏卡 / 口令条 */
-.s-card { border: 2px solid var(--s-ink); padding: clamp(.8rem, 2vh, 1.4rem) clamp(.9rem, 1.6vw, 1.5rem); background: #fff; }
-.s-card-label {
-  font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(.6rem, .85vw, .75rem);
-  letter-spacing: .22em; text-transform: uppercase; color: var(--s-accent); margin-bottom: .6em;
+.s-sq { width: .5em; height: .5em; background: var(--s-accent); flex: none; transform: translateY(-.15em); }
+.s-txt { font-size: var(--fs-body); line-height: 1.5; }
+.s-txt b { font-weight: 700; }
+/* S 运行链路流程盒 */
+.s-flow { display: flex; align-items: stretch; gap: clamp(12px, 1.4vw, 20px); }
+.s-fbox {
+  flex: 1; border: 2px solid var(--s-ink); background: #fff;
+  padding: clamp(14px, 2.6vh, 24px) clamp(10px, 1.2vw, 18px);
+  font-size: clamp(24px, 2vw, 30px); font-weight: 700; line-height: 1.35;
+  display: flex; align-items: center; justify-content: center; text-align: center;
 }
-.s-codechip {
-  display: inline-block; border: 1px solid var(--s-hairline); background: #F1F0EC;
-  padding: .3em .6em; font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: .92em;
-}
-.s-shout { background: var(--s-accent); color: var(--s-ink); font-weight: 700;
-  padding: .8em 1.1em; font-size: clamp(.9rem, 1.6vw, 1.3rem); letter-spacing: .02em; }
-/* S 检查点清单 */
-.s-check-i { display: flex; align-items: baseline; gap: .75em; padding: .32em 0; }
-.s-box { width: .82em; height: .82em; border: 1.5px solid var(--s-ink); flex: none; transform: translateY(.08em); }
-.s-check-t { font-size: clamp(.76rem, 1.28vw, 1.02rem); line-height: 1.45; }
-/* S 切换宣言 */
-.s-stmt { font-family: var(--font-s-disp); font-weight: 700; font-size: clamp(1.9rem, 4.9vw, 4.1rem); line-height: 1.18; }
-.s-stmt.dim { color: rgba(10,10,10,.42); }
-.s-stmt .o { color: var(--s-accent); }
+.s-fbox.hot { border: 3px solid var(--s-accent); background: rgba(255,107,53,.08); }
+.s-farr { align-self: center; color: var(--s-accent); font-weight: 800; font-size: clamp(26px, 2.4vw, 38px); flex: none; }
+/* S 三问卡（点击揭示） */
+.s-qa-grid { display: flex; gap: clamp(16px, 1.8vw, 28px); }
+.s-qa { flex: 1; border: 2px solid var(--s-ink); background: #fff; padding: clamp(16px, 2.8vh, 26px) clamp(14px, 1.4vw, 22px); }
+.s-qa-q { font-size: clamp(24px, 1.9vw, 28px); font-weight: 700; line-height: 1.45; }
+.s-qa-q .qn { font-family: "Archivo", sans-serif; font-weight: 800; color: var(--s-accent); margin-right: .4em; }
+.s-qa-abox { position: relative; margin-top: clamp(12px, 2vh, 18px); min-height: 5.2em; }
+.s-qa-a { font-size: clamp(24px, 1.85vw, 27px); line-height: 1.5; }
+.s-qa-a b { color: var(--s-accent); }
+/* S 闭环链（总结页，单行） */
+.s-chain { display: flex; align-items: center; flex-wrap: nowrap; gap: .5em; font-size: var(--fs-body); font-weight: 700; }
+.s-chain .arr { color: var(--s-accent); font-weight: 800; }
+.s-chain .ok { color: var(--s-accent); font-weight: 800; }
 
 /* === SECTION: 风格 B · 终端绿 === */
 .st-b { background: var(--b-bg); color: var(--b-text); font-family: var(--font-b); }
-/* CRT 扫描线 + 暗角（装饰，层外） */
+/* CRT 扫描线（全幅低对比陪衬）+ 暗角把视线压向中央（装饰，层外） */
 .b-scan {
   position: absolute; inset: 0; z-index: 9; pointer-events: none;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
-  opacity: .5;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px);
+  opacity: .4;
 }
 .b-vignette {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(90vw 90vh at 50% 50%, transparent 55%, rgba(0,0,0,.55));
+  background: radial-gradient(90vw 90vh at 50% 50%, transparent 52%, rgba(0,0,0,.6));
 }
-.b-path { color: var(--b-muted); font-size: clamp(.66rem, .98vw, .88rem); }
-.b-path b { color: var(--b-green); font-weight: 400; }
-.b-h1 { font-family: var(--font-b); font-weight: 700; color: #f0f6fc; font-size: clamp(1.4rem, 3.1vw, 2.5rem); line-height: 1.2; }
+.b-h1 { font-family: var(--font-b); font-weight: 700; color: #f0f6fc; font-size: clamp(40px, 4.2vw, 68px); line-height: 1.22; }
 .b-h1 .g { color: var(--b-green); text-shadow: 0 0 16px rgba(57,211,83,.55); }
-.b-note { color: var(--b-muted); font-size: clamp(.7rem, 1.08vw, .92rem); line-height: 1.7; }
-.b-note .g { color: var(--b-green); }
-.b-note .r { color: var(--b-red); }
+.b-body { font-size: var(--fs-body); line-height: 1.6; }
+.b-body b { color: #f0f6fc; }
+.b-body .g { color: var(--b-green); }
 /* 终端窗口卡 */
 .b-term {
   background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(57,211,83,.06), 0 0 32px rgba(57,211,83,.08);
-  height: 100%; display: flex; flex-direction: column;
 }
-.b-termbar { display: flex; align-items: center; gap: 8px; padding: .55em 14px; background: #0d1117; border-bottom: 1px solid var(--b-border); flex: none; }
+.b-termbar { display: flex; align-items: center; gap: 8px; padding: .5em 14px; background: #0d1117; border-bottom: 1px solid var(--b-border); }
 .b-termbar i { width: 11px; height: 11px; border-radius: 50%; flex: none; }
 .b-termbar i:nth-child(1) { background: #ff5f56; }
 .b-termbar i:nth-child(2) { background: #ffbd2e; }
 .b-termbar i:nth-child(3) { background: #27c93f; }
-.b-termbar span { margin-left: auto; color: var(--b-muted); font-size: clamp(.58rem, .85vw, .78rem); }
-.b-termbody { padding: .9em 18px 1.1em; font-size: clamp(.78rem, 1.32vw, 1.18rem); line-height: 1.85; flex: 1; }
+.b-termbar span { margin-left: auto; color: var(--b-muted); font-size: var(--fs-small); }
+.b-termbody { padding: clamp(14px, 2.4vh, 22px) clamp(20px, 2.2vw, 32px); font-size: var(--fs-code); line-height: 1.7; }
 .b-ln { white-space: pre; }
 .b-prompt { color: var(--b-green); }
 .b-cmd { color: #f0f6fc; }
@@ -443,7 +479,7 @@ body.deck-edit-mode .slide .rv-pop {
 .tk-f { color: #d2a8ff; }
 .tk-s { color: #a5d6ff; }
 .tk-c { color: var(--b-muted); }
-/* 打字机：仅当页面可见时播放 */
+/* 打字机：终端窗进入页面后自动播放（23 字符） */
 .b-typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; width: 0; }
 .slide.visible .b-typed { animation: bTyping 1.5s steps(23) .5s forwards; }
 @keyframes bTyping { to { width: 23ch; } }
@@ -453,60 +489,53 @@ body.deck-edit-mode .slide .rv-pop {
   animation: bBlink 1.05s steps(1) infinite;
 }
 @keyframes bBlink { 50% { opacity: 0; } }
-/* 延时出现（运行命令 / 输出 / 报错） */
+/* 延时出现档位：d0/d1 自动（运行命令行）；data-step 行由 StepManager 揭示 */
 .b-pop { opacity: 0; }
+.slide.visible .b-pop.d0 { animation: bPop .01s .7s forwards; }
 .slide.visible .b-pop.d1 { animation: bPop .01s 2.3s forwards; }
-.slide.visible .b-pop.d2 { animation: bPop .01s 2.9s forwards; }
-.slide.visible .b-pop.d3 { animation: bPop .01s 1.3s forwards; }
 @keyframes bPop { to { opacity: 1; } }
-/* 错误块：进入时轻微震动一次后静止 */
-.slide.visible .b-shake { animation: bShake .45s 1.35s ease both; }
+/* data-step 的 pop / 震动（报错块）：揭示时播放 */
+.b-pop[data-step].step-shown { animation: bPop .01s .15s forwards; }
+.b-shake[data-step].step-shown { animation: bPop .01s .15s forwards, bShake .45s .2s ease both; }
+.slide.steps-instant .b-pop[data-step].step-shown { animation: none; opacity: 1; }
 @keyframes bShake {
   0%, 100% { transform: translateX(0); }
   20% { transform: translateX(-7px); } 40% { transform: translateX(6px); }
   60% { transform: translateX(-4px); } 80% { transform: translateX(3px); }
 }
-/* 要点 chips */
-.b-chips { display: flex; flex-wrap: wrap; gap: .55em; }
-.b-chip {
-  border: 1px solid var(--b-border); background: var(--b-panel); color: var(--b-text);
-  border-radius: 999px; padding: .42em .95em; font-size: clamp(.66rem, 1.02vw, .88rem); line-height: 1.4;
-}
-.b-chip b { color: var(--b-green); font-weight: 700; }
-/* B 流程图 */
-.b-flow { display: flex; align-items: stretch; gap: clamp(.5rem, 1.4vw, 1.4rem); height: 100%; }
-.b-fbox {
-  flex: 1; background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
-  padding: clamp(.6rem, 2vh, 1.2rem) clamp(.7rem, 1.4vw, 1.3rem);
-  display: flex; flex-direction: column; justify-content: center; gap: .35em;
-  box-shadow: 0 12px 32px rgba(0,0,0,.35);
-}
-.b-fbox-l { color: #f0f6fc; font-weight: 700; font-size: clamp(.95rem, 1.7vw, 1.45rem); }
-.b-fbox-l .g { color: var(--b-green); }
-.b-fbox-s { color: var(--b-muted); font-size: clamp(.66rem, 1vw, .88rem); }
-.b-farr { align-self: center; color: var(--b-green); font-size: clamp(1.2rem, 2.4vw, 2rem); text-shadow: 0 0 14px rgba(57,211,83,.6); flex: none; }
-/* B 问答卡（点击揭示） */
-.b-qa {
-  position: relative; background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
-  padding: clamp(.7rem, 2vh, 1.2rem) clamp(.8rem, 1.4vw, 1.3rem); height: 100%;
-  box-shadow: 0 12px 32px rgba(0,0,0,.35);
-}
-.b-qa-q { color: #f0f6fc; font-weight: 700; font-size: clamp(.8rem, 1.3vw, 1.05rem); line-height: 1.55; }
-.b-qa-q .qn { color: var(--b-green); margin-right: .4em; }
-.b-qa-abox { position: relative; margin-top: .8em; min-height: 7.5em; }
-.b-qa-a { color: var(--b-text); font-size: clamp(.7rem, 1.08vw, .9rem); line-height: 1.7; }
-.b-qa-a b { color: var(--b-green); }
-/* B 故障速查卡 */
-.b-card {
+/* 代码卡（非终端窗的知识页代码块） */
+.b-codecard {
   background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
-  padding: clamp(.65rem, 1.8vh, 1.05rem) clamp(.8rem, 1.4vw, 1.25rem);
-  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+  padding: clamp(16px, 2.6vh, 26px) clamp(20px, 2.2vw, 32px);
+  box-shadow: 0 18px 44px rgba(0,0,0,.45), 0 0 24px rgba(57,211,83,.06);
 }
-.b-card .sym { color: #f0f6fc; font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; }
-.b-card .sym .tag { color: var(--b-red); margin-right: .5em; }
-.b-card .fix { color: var(--b-green); font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; margin-top: .4em; }
-.b-card .fix .tag { color: var(--b-muted); margin-right: .5em; }
-.b-card code { color: #a5d6ff; font-family: inherit; }
+.b-cl { white-space: pre; font-size: var(--fs-code); line-height: 1.65; color: #f0f6fc; }
+.b-card-label { font-size: clamp(24px, 1.9vw, 28px); font-weight: 700; color: var(--b-green); margin-bottom: .5em; }
+/* 代码段高亮（看懂这一行）：由 StepManager 按 data-flash-with 同步所属步 */
+.seg { border-radius: 6px; padding: 0 .12em; }
+.seg.seg-now { animation: segFlash 1s both; }
+.slide.steps-instant .seg.seg-now { animation: none; }
+@keyframes segFlash {
+  0% { background: rgba(57,211,83,0); box-shadow: 0 0 0 rgba(57,211,83,0); }
+  35% { background: rgba(57,211,83,.3); box-shadow: 0 0 22px rgba(57,211,83,.35); }
+  100% { background: rgba(57,211,83,0); box-shadow: 0 0 0 rgba(57,211,83,0); }
+}
+/* B 列表行 */
+.b-row { display: flex; align-items: baseline; gap: .8em; padding: clamp(10px, 1.9vh, 16px) 0; font-size: var(--fs-body); line-height: 1.55; }
+.b-row + .b-row { border-top: 1px solid var(--b-border); }
+.b-num { color: var(--b-green); font-weight: 700; flex: none; }
+.b-row .arrow { color: var(--b-muted); flex: none; }
+.b-code {
+  color: #a5d6ff; background: rgba(165,214,255,.08); border: 1px solid var(--b-border);
+  padding: .02em .35em; border-radius: 4px; font-size: .88em; white-space: nowrap;
+}
+/* B 揭示条（先猜再运行） */
+.b-revealbar {
+  position: relative; border: 1px dashed var(--b-border); border-radius: 10px;
+  padding: clamp(12px, 2.2vh, 18px) clamp(16px, 1.8vw, 26px);
+  font-size: var(--fs-body); line-height: 1.5;
+}
+.b-revealbar b { color: var(--b-green); }
 
 /* === SECTION: 风格 C · 像素轨道 === */
 .st-c {
@@ -533,47 +562,46 @@ body.deck-edit-mode .slide .rv-pop {
 /* CRT 扫描线（装饰，层外） */
 .c-crt {
   position: absolute; inset: 0; z-index: 9; pointer-events: none;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 5px);
-  opacity: .45;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 5px);
+  opacity: .4;
 }
-/* 虚线轨道环 + 卫星方块（装饰，层外） */
+/* 虚线轨道环 + 卫星方块（贴右上缘，装饰，层外） */
 .c-orbit {
-  position: absolute; right: 7vw; top: 9vh; width: 20vmin; height: 20vmin; z-index: 1; pointer-events: none;
-  border: 3px dashed rgba(62,230,255,.35); border-radius: 50%;
+  position: absolute; right: 5vw; top: 7vh; width: 16vmin; height: 16vmin; z-index: 1; pointer-events: none;
+  border: 3px dashed rgba(62,230,255,.3); border-radius: 50%;
   animation: cSpin 14s linear infinite;
 }
 .c-orbit i { position: absolute; top: -8px; left: calc(50% - 8px); width: 16px; height: 16px; background: var(--c-yellow); box-shadow: 0 0 12px var(--c-yellow); }
 @keyframes cSpin { to { transform: rotate(360deg); } }
-/* 像素火星（装饰，层外） */
+/* 像素火星（仅案例页，装饰，层外） */
 .c-mars {
-  position: absolute; right: 11.6vw; top: calc(9vh + 6vmin); width: 8vmin; height: 8vmin; z-index: 1; pointer-events: none;
+  position: absolute; right: 9.2vw; top: calc(7vh + 4.4vmin); width: 7vmin; height: 7vmin; z-index: 1; pointer-events: none;
   background: var(--c-pink); border-radius: 14%;
-  box-shadow: 0 0 0 1.2vmin rgba(255,46,136,.25), 0 0 34px rgba(255,46,136,.65);
+  box-shadow: 0 0 0 1.1vmin rgba(255,46,136,.22), 0 0 30px rgba(255,46,136,.6);
 }
 /* C 文本元件 */
-.c-eyebrow {
-  font-family: var(--font-c-disp); font-weight: 600; color: var(--c-yellow);
-  letter-spacing: .3em; font-size: clamp(.66rem, 1.02vw, .9rem); text-transform: uppercase;
-}
 .c-h1 {
   font-family: var(--font-c-disp); font-weight: 800;
-  font-size: clamp(1.5rem, 3.3vw, 2.7rem); line-height: 1.12;
+  font-size: var(--fs-title); line-height: 1.14;
   text-shadow: 4px 4px 0 rgba(255,46,136,.85);
 }
 .c-h1 .cy { color: var(--c-cyan); }
-.c-note { color: var(--c-muted); font-size: clamp(.7rem, 1.05vw, .9rem); line-height: 1.7; }
+.c-stmt { font-family: var(--font-c-disp); font-weight: 800; font-size: clamp(44px, 6vw, 100px); line-height: 1.15; text-shadow: 5px 5px 0 rgba(255,46,136,.85); }
+.c-stmt.dim { color: var(--c-muted); font-size: clamp(32px, 4vw, 64px); text-shadow: 3px 3px 0 rgba(62,230,255,.5); }
+.c-body { font-size: var(--fs-body); line-height: 1.55; }
+.c-body .cy { color: var(--c-cyan); }
 /* 版本徽章 */
 .c-badge {
   display: inline-block; font-family: var(--font-c-disp); font-weight: 800;
-  color: var(--c-void); background: var(--c-pink); padding: .12em .55em;
-  box-shadow: 5px 5px 0 var(--c-cyan); font-size: clamp(.95rem, 1.9vw, 1.5rem); letter-spacing: .05em;
+  color: var(--c-void); background: var(--c-pink); padding: .1em .55em;
+  box-shadow: 5px 5px 0 var(--c-cyan); font-size: clamp(30px, 3.2vw, 52px); letter-spacing: .05em;
 }
 /* 像素角括号面板 */
 .c-panel {
   position: relative; background: rgba(7,10,26,.78);
   border: 2px solid rgba(62,230,255,.35);
   box-shadow: 6px 6px 0 rgba(255,46,136,.55);
-  padding: clamp(.8rem, 2.2vh, 1.4rem) clamp(.9rem, 1.7vw, 1.5rem);
+  padding: clamp(14px, 2.4vh, 24px) clamp(18px, 2vw, 30px);
 }
 .c-panel::before, .c-panel::after, .c-corners::before, .c-corners::after {
   content: ""; position: absolute; width: 20px; height: 20px;
@@ -584,49 +612,49 @@ body.deck-edit-mode .slide .rv-pop {
 .c-corners::after { bottom: -2px; right: -2px; border-bottom: 5px solid var(--c-cyan); border-right: 5px solid var(--c-cyan); }
 .c-corners { position: absolute; inset: 0; pointer-events: none; }
 .c-panel-label {
-  font-family: var(--font-c-disp); font-weight: 600; font-size: clamp(.58rem, .85vw, .76rem);
-  letter-spacing: .22em; color: var(--c-muted); text-transform: uppercase; margin-bottom: .7em;
+  font-size: clamp(24px, 1.9vw, 28px); font-weight: 700; color: var(--c-cyan);
+  letter-spacing: .06em; margin-bottom: .4em; font-family: var(--font-c-disp);
 }
 /* C 代码与输出 */
-.c-code { font-family: var(--font-c-body); font-size: clamp(.74rem, 1.24vw, 1.02rem); line-height: 1.85; white-space: nowrap; }
+.c-code { font-family: var(--font-c-body); font-size: var(--fs-code); line-height: 1.55; white-space: pre; }
 .c-code .tk-f { color: var(--c-cyan); }
 .c-code .tk-s { color: var(--c-yellow); }
-.c-code .tk-p { color: var(--c-muted); }
-.c-out { font-family: var(--font-c-body); font-size: clamp(.74rem, 1.24vw, 1.02rem); line-height: 1.85; color: #fff; white-space: nowrap; }
+.c-out { font-family: var(--font-c-body); font-size: var(--fs-code); line-height: 1.55; color: #fff; white-space: pre; }
 .c-out .cy { color: var(--c-cyan); }
 /* 像素任务芯片（黄色按钮 + 硬阴影） */
 .c-chip {
-  display: inline-block; padding: .75em 1.15em; font-family: var(--font-c-body); font-weight: 600;
+  display: inline-block; padding: .6em 1em; font-family: var(--font-c-body); font-weight: 600;
   color: var(--c-void); background: var(--c-yellow); box-shadow: 6px 6px 0 var(--c-pink);
-  font-size: clamp(.7rem, 1.12vw, .95rem); line-height: 1.5;
+  font-size: var(--fs-body); line-height: 1.45;
 }
-.c-chip.alt { background: var(--c-cyan); box-shadow: 6px 6px 0 var(--c-pink); }
-/* C 验收清单 */
-.c-check-i { display: flex; align-items: baseline; gap: .7em; padding: .3em 0; }
-.c-check-i .ok { color: var(--c-yellow); font-weight: 700; flex: none; }
-.c-check-i .t { font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; }
+/* 宣言面板（整页一句话的锣声） */
+.c-decl { text-align: center; }
 
 /* === SECTION: Pages 侧栏缩略图修正（克隆页内动画元素直接呈现终态） === */
-.filmstrip-thumb-host .rv,
-.filmstrip-thumb-host .rv-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
+.filmstrip-thumb-host .rvi,
+.filmstrip-thumb-host .rvi-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
 .filmstrip-thumb-host .b-pop { opacity: 1 !important; animation: none !important; }
 .filmstrip-thumb-host .b-typed { width: auto !important; animation: none !important; }
+.filmstrip-thumb-host .seg { animation: none !important; }
 
 /* === SECTION: 点击揭示交互（演示模式专属，编辑模式禁用并全显） === */
 [data-reveal] { cursor: pointer; }
 .rv-a { opacity: 0; transform: translateY(6px); transition: opacity .45s ease, transform .45s ease; }
+.rv-wrap { position: relative; }
 .rv-mask {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   transition: opacity .3s ease; z-index: 2;
 }
 .rv-mask span {
-  font-size: clamp(.64rem, .95vw, .82rem); padding: .35em 1em; border-radius: 999px;
-  animation: rvPulse 1.6s ease-in-out infinite;
+  font-size: var(--fs-small); padding: .4em 1.1em; border-radius: 999px;
+  animation: rvPulse 1.6s ease-in-out infinite; white-space: nowrap;
 }
 @keyframes rvPulse { 50% { opacity: .55; } }
-.st-b .rv-mask { background: rgba(22,27,34,.72); border: 1px dashed var(--b-border); border-radius: 8px; }
+.st-s .rv-mask { background: rgba(250,250,248,.85); border: 1.5px dashed var(--s-hairline); }
+.st-s .rv-mask span { color: var(--s-accent); border: 1.5px solid var(--s-accent); font-family: "Archivo", sans-serif; font-weight: 800; letter-spacing: .14em; }
+.st-b .rv-mask { background: rgba(22,27,34,.8); border: 1px dashed var(--b-border); border-radius: 8px; }
 .st-b .rv-mask span { color: var(--b-green); border: 1px solid var(--b-green); font-family: var(--font-b); }
-.st-c .rv-mask { background: rgba(7,10,26,.8); border: 2px dashed rgba(62,230,255,.5); }
+.st-c .rv-mask { background: rgba(7,10,26,.85); border: 2px dashed rgba(62,230,255,.5); }
 .st-c .rv-mask span { color: var(--c-cyan); border: 2px solid var(--c-cyan); font-family: var(--font-c-disp); letter-spacing: .12em; }
 [data-reveal].revealed { cursor: default; }
 [data-reveal].revealed .rv-a { opacity: 1; transform: none; }
@@ -637,10 +665,11 @@ body.deck-edit-mode .rv-mask { display: none !important; }
 
 /* === SECTION: REDUCED MOTION 补充（动画终态直接呈现） === */
 @media (prefers-reduced-motion: reduce) {
-  .slide .rv, .slide .rv-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .slide .rvi, .slide .rvi-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
   .b-typed { width: auto !important; animation: none !important; }
   .b-pop { opacity: 1 !important; animation: none !important; }
   .b-shake { animation: none !important; }
+  .seg { animation: none !important; }
   .c-stars, .c-stars2, .c-orbit { animation: none !important; }
   .rv-mask span { animation: none !important; }
 }
@@ -1263,7 +1292,7 @@ body.deck-edit-mode .rv-mask { display: none !important; }
 </div>
 
 <div class="slides-offset">
-<!-- ================= SLIDE 0 · S 封面 ================= -->
+<!-- ================= SLIDE 0 · P1 · S 封面 ================= -->
 <section class="slide st-s visible" id="slide-0">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
@@ -1272,765 +1301,479 @@ body.deck-edit-mode .rv-mask { display: none !important; }
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-ghost" aria-hidden="true">01</div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:8%;top:10%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">PYTHON 基础 · 第一讲</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s0-o1" data-object-type="text" style="left:8%;top:22%;width:68%;--d:.2s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-bar" style="margin-bottom:1.4em;"></div>
-        <div class="s-title" style="font-size:clamp(2rem,5vw,4.2rem);">环境、Python<br>与第一个程序</div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s0-o2" data-object-type="text" style="left:8%;top:62%;width:62%;--d:.4s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-sub" contenteditable="false" style="font-size:clamp(.95rem,1.7vw,1.35rem);color:var(--s-ink);">火星基地资源调度模拟器 · <b style="color:var(--s-accent);">V0 首次点火</b></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s0-o3" data-object-type="text" style="left:8%;top:82%;width:70%;--d:.55s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-hairline" style="margin-bottom:.9em;"></div>
-        <div class="s-meta">任务控制员手册 · 第 001 期&nbsp;&nbsp;|&nbsp;&nbsp;高一零基础&nbsp;&nbsp;|&nbsp;&nbsp;45–75 分钟</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础 · 第 1 章</div>
+        <div class="s-bar rvi" style="--d:.15s;"></div>
+        <div class="s-hero rvi" style="--d:.25s;">环境、Python<br>与第一个程序</div>
+        <div class="s-body rvi" style="--d:.45s;">年轻人的第一行 Python 代码</div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 1 · S 背景导入 ================= -->
+<!-- ================= SLIDE 1 · P2 · S Python 的诞生 ================= -->
 <section class="slide st-s" id="slide-1">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:8%;top:9%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">WHY · 背景导入</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s1-o1" data-object-type="text" style="left:8%;top:16%;width:70%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">今天，你是<span class="o">任务控制员</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s1-o2" data-object-type="text" style="left:8%;top:33%;width:58%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-sub" contenteditable="false">火星基地进入第一个任务日。电力、氧气、水，全部靠程序调度。你写下的每一行代码，都是发给基地的一条指令——今天先学会最基本的一条：让基地「说」出第一句话。</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s1-o3" data-object-type="text" style="left:8%;top:60%;width:86%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-meta" style="margin-bottom:.8em;letter-spacing:.22em;">本课闭环 · THE LOOP</div>
-        <div class="s-loop">
-          <span class="s-lnode">找到代码文件</span><span class="s-larr">→</span>
-          <span class="s-lnode">输入代码</span><span class="s-larr">→</span>
-          <span class="s-lnode">运行</span><span class="s-larr">→</span>
-          <span class="s-lnode">找到输出</span><span class="s-larr">→</span>
-          <span class="s-lnode">修改</span><span class="s-larr">→</span>
-          <span class="s-lnode">再次运行</span>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">STORY · PYTHON 的诞生</div>
+        <div class="s-title rvi" style="--d:.15s;">Python 从哪来？</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">1989 年圣诞节，程序员<b>龟叔</b>（Guido van Rossum）为了打发假期，写出了 Python 的雏形</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">1991 年，第一个 Python 解释器诞生</span></div>
+          <div class="s-row"><span class="s-num">03</span><span class="s-txt">名字来自他喜爱的喜剧剧集 <i>Monty Python's Flying Circus</i>——<b>不是蟒蛇</b></span></div>
         </div>
       </div>
     </div>
-    <div class="slide-object rv" data-slide-object data-oid="s1-o4" data-object-type="text" style="left:8%;top:87%;width:70%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-meta" contenteditable="false">下课前，你要不借助同桌，亲手走完这条链路。</div>
-    </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 2 · S 本章地图 ================= -->
+<!-- ================= SLIDE 2 · P3 · S 为什么学 Python ================= -->
 <section class="slide st-s" id="slide-2">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:7%;top:8%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">MAP · 本章地图</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s2-o1" data-object-type="text" style="left:7%;top:14.5%;width:56%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">七个模块，一条主线</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s2-o2" data-object-type="text" style="left:7%;top:30%;width:57%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">A</span><div class="s-step-t"><b>认识运行链路</b><i>代码是怎么变成输出的</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">B</span><div class="s-step-t"><b>环境分流</b><i>10 分钟内进入可用环境</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">C</span><div class="s-step-t"><b>创建项目文件</b><i>新建 main.py</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">D</span><div class="s-step-t"><b>第一个程序</b><i>运行 Hello, Python!</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">E</span><div class="s-step-t"><b>预测 · 修改 · 排错</b><i>输出会变吗？红字是什么</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">F</span><div class="s-step-t"><b>项目 V0</b><i>火星基地首次点火</i></div></div>
-        <div class="s-hairline"></div>
-        <div class="s-step" style="padding:.34em 0;"><span class="s-step-n">G</span><div class="s-step-t"><b>独立任务与总结</b><i>mission_card.py</i></div></div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s2-o3" data-object-type="text" style="left:68%;top:32%;width:25%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-card">
-          <div class="s-card-label">最低通过标准</div>
-          <div class="s-codechip">print("Hello, Python!")</div>
-          <div class="s-sub" style="margin-top:.9em;font-size:clamp(.72rem,1.05vw,.9rem);">独立创建并运行——<br>不是观看教师演示。</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">WHY · 为什么学 PYTHON</div>
+        <div class="s-title rvi" style="--d:.15s;">为什么第一门语言学 Python？</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>简单易学</b>——语法接近日常英语</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>全球最流行的语言之一</b></span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>用武之地广</b>：AI 人工智能 · 数据分析 · 后端开发 · 运维自动化 · 科学研究</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 3 · B 运行链路 ================= -->
-<section class="slide st-b" id="slide-3">
-  <div class="b-vignette" aria-hidden="true"></div>
-  <div class="b-scan" aria-hidden="true"></div>
+<!-- ================= SLIDE 3 · P4 · S 今天你将做到 ================= -->
+<section class="slide st-s" id="slide-3">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:8%;top:9%;width:70%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-path" contenteditable="false"><b>~/mars-base</b> $ cat pipeline.txt</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s3-o1" data-object-type="text" style="left:8%;top:15%;width:80%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-h1" contenteditable="false">代码是怎么变成<span class="g">输出</span>的？</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s3-o2" data-object-type="text" style="left:8%;top:35%;width:84%;height:27%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-flow">
-          <div class="b-fbox"><div class="b-fbox-l">main.py</div><div class="b-fbox-s">你写的文本（纯文字）</div></div>
-          <div class="b-farr">→</div>
-          <div class="b-fbox"><div class="b-fbox-l">Python <span class="g">解释器</span></div><div class="b-fbox-s">真正读取并执行代码</div></div>
-          <div class="b-farr">→</div>
-          <div class="b-fbox"><div class="b-fbox-l">运行窗口</div><div class="b-fbox-s">显示结果</div></div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">GOALS · 今天的目标</div>
+        <div class="s-title rvi" style="--d:.15s;">今天下课前，你将亲手做到</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">让电脑运行你的第一行代码</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">修改它，再运行一次</span></div>
+          <div class="s-row"><span class="s-num">03</span><span class="s-txt">把它弄坏，再修好它</span></div>
         </div>
       </div>
     </div>
-    <div class="slide-object rv" data-slide-object data-oid="s3-o3" data-object-type="text" style="left:8%;top:74%;width:84%;--d:.5s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-note" contenteditable="false"><span class="g">#</span> PyCharm = 帮你<span class="g">创建 / 编辑 / 运行 / 调试</span>代码的工具——它不是 Python 本身。</div>
-    </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 4 · B 三问互动（点击揭示） ================= -->
-<section class="slide st-b" id="slide-4">
-  <div class="b-vignette" aria-hidden="true"></div>
-  <div class="b-scan" aria-hidden="true"></div>
+<!-- ================= SLIDE 4 · P7 · S 就绪自检 ================= -->
+<section class="slide st-s" id="slide-4">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s4-o0" data-object-type="text" style="left:7%;top:8%;width:70%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s6-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-path" contenteditable="false"><b>~/mars-base</b> $ cat three_questions.md</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s4-o1" data-object-type="text" style="left:7%;top:14%;width:80%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-h1" contenteditable="false">三个问题 <span class="g"># 先举手表态，再点击揭示</span></div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s4-o2" data-object-type="text" style="left:7%;top:30%;width:27.5%;height:44%;--d:.25s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-qa" data-reveal>
-          <div class="b-qa-q"><span class="qn">Q1</span>没有 PyCharm，Python 程序还能运行吗？</div>
-          <div class="b-qa-abox">
-            <div class="b-qa-a rv-a"><b>能。</b>真正执行代码的是 Python 解释器。没有 PyCharm，命令行 python main.py 照样运行。</div>
-            <div class="rv-mask"><span>点击揭示</span></div>
-          </div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">CHECK · 就绪自检</div>
+        <div class="s-title rvi" style="--d:.15s;">动手之前，10 秒自检</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">打开 PyCharm</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">能在编辑区点出闪烁的光标</span></div>
         </div>
+        <div class="s-body rvi" style="--d:.45s;">打不开？<b style="color:var(--s-accent);">举手</b>——备用方案马上到位。</div>
       </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s4-o3" data-object-type="text" style="left:36.25%;top:30%;width:27.5%;height:44%;--d:.4s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-qa" data-reveal>
-          <div class="b-qa-q"><span class="qn">Q2</span>只有 PyCharm、没有解释器呢？</div>
-          <div class="b-qa-abox">
-            <div class="b-qa-a rv-a"><b>不能。</b>PyCharm 只负责「写」，执行靠解释器。没装解释器，PyCharm 会提示 No interpreter。</div>
-            <div class="rv-mask"><span>点击揭示</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s4-o4" data-object-type="text" style="left:65.5%;top:30%;width:27.5%;height:44%;--d:.55s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-qa" data-reveal>
-          <div class="b-qa-q"><span class="qn">Q3</span>.py 文件和 Word 文档有什么不同？</div>
-          <div class="b-qa-abox">
-            <div class="b-qa-a rv-a">.py 是<b>纯文本</b>，交给解释器逐行执行；Word 文档是排版格式，要靠 Word 才能正确显示。</div>
-            <div class="rv-mask"><span>点击揭示</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s4-o5" data-object-type="text" style="left:7%;top:87%;width:70%;--d:.7s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-note" contenteditable="false"><span class="g">教师提示：</span>每题先让学生举手表态（能 / 不能 / 不确定），再点击卡片揭示。</div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 5 · S 环境分流 ================= -->
+<!-- ================= SLIDE 5 · P8 · S 创建项目 ================= -->
 <section class="slide st-s" id="slide-5">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s5-o0" data-object-type="text" style="left:8%;top:8.5%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s7-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">SETUP · 环境分流</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s5-o1" data-object-type="text" style="left:8%;top:15%;width:76%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">10 分钟内，每人进入<span class="o">可用环境</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s5-o2" data-object-type="text" style="left:8%;top:31%;width:52%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-step"><span class="s-step-n">01</span><div class="s-step-t"><b>本地 Python + PyCharm</b><i>主路径</i></div></div>
-        <div class="s-step-sep">↓ 不可用</div>
-        <div class="s-step"><span class="s-step-n">02</span><div class="s-step-t"><b>本地 Python + IDLE</b><i>Python 自带</i></div></div>
-        <div class="s-step-sep">↓ 不可用，但能联网</div>
-        <div class="s-step"><span class="s-step-n">03</span><div class="s-step-t"><b>Online Python</b><i>临时路径，不替代本地环境</i></div></div>
-        <div class="s-step-sep">↓ 无法联网</div>
-        <div class="s-step"><span class="s-step-n">04</span><div class="s-step-t"><b>备用电脑 / 同伴结对</b><i>助教登记设备问题</i></div></div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s5-o3" data-object-type="text" style="left:66%;top:33%;width:26%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-hairline" style="margin-bottom:.9em;"></div>
-        <div class="s-sub" style="font-size:clamp(.74rem,1.1vw,.92rem);">主讲只问一句：<b style="color:var(--s-ink);">能否进入编辑器并运行代码？</b><br><br>单机故障超过 3 分钟 → 直接交助教，不让全班等待。</div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s5-o4" data-object-type="text" style="left:8%;top:82%;width:56%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-shout">口令：能在自己的窗口里点击光标 → 亮绿卡</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">SETUP · 创建项目</div>
+        <div class="s-title rvi" style="--d:.15s;">创建你的项目</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">New Project → 普通 Python 项目</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">位置用英文目录，如 <span class="s-code">python-course</span></span></div>
+          <div class="s-row"><span class="s-num">03</span><span class="s-txt">解释器一栏确认显示 Python 3.x</span></div>
+          <div class="s-row"><span class="s-num">04</span><span class="s-txt">新建文件 <span class="s-code">main.py</span></span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 6 · S 创建项目六步 ================= -->
+<!-- ================= SLIDE 6 · P9 · S 认识工作台 ================= -->
 <section class="slide st-s" id="slide-6">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s6-o0" data-object-type="text" style="left:7%;top:8.5%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s8-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">PYCHARM · 创建项目</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s6-o1" data-object-type="text" style="left:7%;top:15%;width:60%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">六步，建好你的项目</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s6-o2" data-object-type="text" style="left:7%;top:31%;width:63%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-grid6">
-          <div class="s-step"><span class="s-step-n">01</span><div class="s-step-t"><b>New Project</b>，新建项目</div></div>
-          <div class="s-step"><span class="s-step-n">02</span><div class="s-step-t">项目类型选<b>普通 Python 项目</b></div></div>
-          <div class="s-step"><span class="s-step-n">03</span><div class="s-step-t">位置用<b>英文目录</b>，例如 <span class="s-codechip">python-course</span></div></div>
-          <div class="s-step"><span class="s-step-n">04</span><div class="s-step-t">确认解释器显示 <b>Python 3.x</b></div></div>
-          <div class="s-step"><span class="s-step-n">05</span><div class="s-step-t">新建文件 <span class="s-codechip">main.py</span></div></div>
-          <div class="s-step"><span class="s-step-n">06</span><div class="s-step-t">指出<b>项目区 / 编辑区 / 运行按钮 / 输出区</b></div></div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">MAP · 认识工作台</div>
+        <div class="s-title rvi" style="--d:.15s;">找到这四个地方</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>项目区</b> —— 你的文件都在这</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>编辑区</b> —— 写代码的地方</span></div>
+          <div class="s-row"><span class="s-num">03</span><span class="s-txt"><b>运行按钮</b> —— 绿色三角</span></div>
+          <div class="s-row"><span class="s-num">04</span><span class="s-txt"><b>输出区</b> —— 看结果的地方</span></div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s6-o3" data-object-type="text" style="left:74%;top:32%;width:19%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-hairline" style="margin-bottom:.9em;"></div>
-        <div class="s-sub" style="font-size:clamp(.74rem,1.1vw,.92rem);">此时<b style="color:var(--s-ink);">不讲</b>：插件、主题、Git、代码检查。<br><br>验证：能在项目区指出 <b style="color:var(--s-ink);">main.py</b>，并在编辑区点击光标。</div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 7 · B 第一个程序 ================= -->
+<!-- ================= SLIDE 7 · P10 · B 第一个程序 ================= -->
 <section class="slide st-b" id="slide-7">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s7-o0" data-object-type="text" style="left:10%;top:8%;width:70%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s9-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-path" contenteditable="false"><b>~/python-course</b> $ python main.py</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s7-o1" data-object-type="text" style="left:10%;top:14%;width:84%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-h1" contenteditable="false">第一个程序 <span class="g"># 逐字符输入，不要复制</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s7-o2" data-object-type="text" style="left:10%;top:30%;width:80%;height:33%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-term">
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">第一个程序：<span class="g">逐字符输入</span></div>
+        <div class="b-term rvi" style="--d:.25s;">
           <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
           <div class="b-termbody">
             <div class="b-ln"><span class="b-typed"><span class="tk-f">print</span>(<span class="tk-s">"Hello, Python!"</span>)</span><span class="b-cursor"></span></div>
             <div class="b-ln b-pop d1"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
-            <div class="b-ln b-pop d2 b-out">Hello, Python!</div>
+            <div class="b-ln b-pop b-out" data-step>Hello, Python!</div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s7-o3" data-object-type="text" style="left:10%;top:70%;width:82%;--d:.5s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-chips">
-          <span class="b-chip"><b>print</b> = 把内容显示到运行窗口</span>
-          <span class="b-chip">引号之间 = 要输出的文字</span>
-          <span class="b-chip">英文括号和引号必须<b>成对</b></span>
-          <span class="b-chip">这一行由<b>解释器</b>读取执行</span>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 8 · C 预测互动（点击揭示） ================= -->
-<section class="slide st-c" id="slide-8">
-  <div class="c-stars" aria-hidden="true"></div>
-  <div class="c-stars2" aria-hidden="true"></div>
-  <div class="c-orbit" style="right:6vw;top:7vh;width:16vmin;height:16vmin;" aria-hidden="true"><i></i></div>
-  <div class="c-crt" aria-hidden="true"></div>
+<!-- ================= SLIDE 8 · P11 · B 看懂这一行 ================= -->
+<section class="slide st-b" id="slide-8">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s8-o0" data-object-type="text" style="left:8%;top:9%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s10-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text c-eyebrow" contenteditable="false">PREDICT · 先预测 再运行</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s8-o1" data-object-type="text" style="left:8%;top:16%;width:66%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text c-h1" contenteditable="false">交换两行，<span class="cy">输出怎么变？</span></div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s8-o2" data-object-type="text" style="left:8%;top:35%;width:42%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
-          <div class="c-corners"></div>
-          <div class="c-panel-label">main.py · 当前代码</div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"Hello, Python!"</span>)</div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"人生苦短，我用 Python。"</span>)</div>
-          <div class="c-note" style="margin-top:.7em;"># 交换这两行的位置 ↓</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.1s;">看懂这一行</div>
+        <div class="b-codecard rvi" style="--d:.1s;">
+          <div class="b-cl"><span class="seg tk-f" data-flash-with="1">print</span><span class="seg" data-flash-with="3">(</span><span class="seg tk-s" data-flash-with="2">"Hello, Python!"</span><span class="seg" data-flash-with="3">)</span></div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s8-o3" data-object-type="text" style="left:54%;top:35%;width:38%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel" data-reveal>
-          <div class="c-corners"></div>
-          <div class="c-panel-label">运行输出 · 交换后</div>
-          <div class="rv-a">
-            <div class="c-out">人生苦短，我用 Python。</div>
-            <div class="c-out">Hello, Python!</div>
-            <div class="c-note" style="margin-top:.7em;"><span style="color:var(--c-yellow);">输出顺序 = 代码顺序</span>，从上到下逐行执行。</div>
-          </div>
-          <div class="rv-mask"><span>先举手预测 · 点击揭示</span></div>
+        <div>
+          <div class="b-row rvi" data-step="1"><span class="b-num">›</span><span><span class="tk-f">print</span> —— 把内容显示到屏幕</span></div>
+          <div class="b-row rvi" data-step="2"><span class="b-num">›</span><span>引号之间 —— 要显示的文字</span></div>
+          <div class="b-row rvi" data-step="3"><span class="b-num">›</span><span>括号和引号 —— 必须成对出现</span></div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s8-o4" data-object-type="text" style="left:8%;top:82%;width:70%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <span class="c-chip">任务：把第二行换成你自己的句子 —— 示例：我写的不是 Bug，是隐藏功能。</span>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 9 · B 制造错误 ================= -->
+<!-- ================= SLIDE 9 · P12 · B 字面量 ================= -->
 <section class="slide st-b" id="slide-9">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s9-o0" data-object-type="text" style="left:10%;top:8%;width:70%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s11-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-path" contenteditable="false"><b>~/python-course</b> $ python main.py</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">字面量：代码里"写死"的值</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-s">"abcd"</span></div>
+          <div class="b-cl">1</div>
+          <div class="b-cl">3.6</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;">在代码中被<b>直接写下来的固定的值</b>，叫做字面量。</div>
+        <div class="b-body rvi" style="--d:.6s;">上面三个：一个文本、一个整数、一个小数——<span class="g">类型不同</span>。</div>
+      </div>
     </div>
-    <div class="slide-object rv" data-slide-object data-oid="s9-o1" data-object-type="text" style="left:10%;top:14%;width:84%;--d:.15s;">
+  </div>
+</section>
+<!-- ================= SLIDE 10 · P13 · B 字符串与引号（点击揭示输出） ================= -->
+<section class="slide st-b" id="slide-10">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s12-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-h1" contenteditable="false">现在，故意制造一个错误 <span class="g"># 删掉一个右括号</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s9-o2" data-object-type="text" style="left:10%;top:28%;width:80%;height:44%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false" style="height:100%;">
-        <div class="b-term">
-          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
-          <div class="b-termbody" style="line-height:1.7;">
-            <div class="b-ln"><span class="tk-f">print</span>(<span class="tk-s">"Hello, Python!"</span> <span class="tk-c"># ← 右括号被删掉了</span></div>
-            <div class="b-ln b-pop d0"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
-            <div class="b-pop d3 b-shake">
-              <div class="b-ln b-err">Traceback (most recent call last):</div>
-              <div class="b-ln b-err">  File "main.py", line 1</div>
-              <div class="b-ln b-err">    print("Hello, Python!"</div>
-              <div class="b-ln b-err">         ^</div>
-              <div class="b-ln b-err">SyntaxError: '(' was never closed</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">字符串：文本必须穿"引号外套"</div>
+        <div class="rvi" style="--d:.25s;display:flex;gap:clamp(16px,1.8vw,28px);align-items:stretch;">
+          <div class="b-codecard" style="flex:1.7;">
+            <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"abc"</span>)      <span class="tk-c"># 字符串：用引号包围</span></div>
+            <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">'组一辈子的乐队'</span>)  <span class="tk-c"># 单引号也可以</span></div>
+            <div class="b-cl"><span class="tk-f">print</span>(123)        <span class="tk-c"># 数字不用引号</span></div>
+            <div class="b-cl"><span class="tk-f">print</span>(3.6)</div>
+          </div>
+          <div class="b-codecard" data-reveal style="flex:1;">
+            <div class="b-card-label">运行结果</div>
+            <div class="rv-wrap">
+              <div class="rv-a">
+                <div class="b-cl b-out">abc</div>
+                <div class="b-cl b-out">组一辈子的乐队</div>
+                <div class="b-cl b-out">123</div>
+                <div class="b-cl b-out">3.6</div>
+              </div>
+              <div class="rv-mask"><span>点击揭示输出</span></div>
             </div>
           </div>
         </div>
+        <div class="b-body rvi" style="--d:.45s;"><b>字符串</b>（string）：任意数量字符组成的文本。引号 = 告诉解释器"这是文字，不是指令"。</div>
       </div>
     </div>
-    <div class="slide-object rv" data-slide-object data-oid="s9-o3" data-object-type="text" style="left:10%;top:78%;width:82%;--d:.5s;">
+  </div>
+</section>
+<!-- ================= SLIDE 11 · P14 · B 先猜，再运行（点击揭示） ================= -->
+<section class="slide st-b" id="slide-11">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s13-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-chips">
-          <span class="b-chip">红色信息<b>不是失败</b>，是 Python 给你的线索</span>
-          <span class="b-chip">恢复右括号 → <b>重新运行</b></span>
-          <span class="b-chip">下一章：系统学习「读错误」</span>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.1s;">先猜，<span class="g">再运行</span></div>
+        <div class="b-codecard rvi" style="--d:.2s;">
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"Hello, Python!"</span>)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"人生苦短，我用 Python。"</span>)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.3s;">交换这两行，输出会怎么变？</div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.4s;">
+          <div class="rv-wrap">
+            <div class="rv-a"><b>揭示：输出顺序永远跟着代码顺序走。</b></div>
+            <div class="rv-mask"><span>点击揭示</span></div>
+          </div>
+        </div>
+        <div class="b-body rvi" style="--d:.4s;">接下来：把第二句换成你自己的话。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 12 · P15 · B 故意弄坏它 ================= -->
+<section class="slide st-b" id="slide-12">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s14-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">现在，<span class="g">故意弄坏它</span></div>
+        <div class="b-term rvi" style="--d:.25s;">
+          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
+          <div class="b-termbody">
+            <div class="b-ln"><span class="tk-f">print</span>(<span class="tk-s">"Hello, Python!"</span></div>
+            <div class="b-ln b-pop d0"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
+            <div class="b-ln b-pop b-err b-shake" data-step>SyntaxError: '(' was never closed</div>
+          </div>
+        </div>
+        <div class="b-body rvi" style="--d:.5s;">红色不是失败，是 Python 在指路。<b>修好它，再跑一次。</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 13 · P16 · B 出问题先看这里 ================= -->
+<section class="slide st-b" id="slide-13">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s15-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">出问题？<span class="g">先看这里</span></div>
+        <div class="rvi" style="--d:.25s;">
+          <div class="b-row"><span class="b-num">1.</span><span>红色报错 <span class="arrow">→</span> 先数括号、引号是否成对</span></div>
+          <div class="b-row"><span class="b-num">2.</span><span>看到弯引号 <span class="b-code">“”</span> <span class="arrow">→</span> 换成英文直引号 <span class="b-code">"</span></span></div>
+          <div class="b-row"><span class="b-num">3.</span><span>文件变成 <span class="b-code">main.py.txt</span> <span class="arrow">→</span> 重命名，删掉 <span class="b-code">.txt</span></span></div>
+          <div class="b-row"><span class="b-num">4.</span><span>提示 No interpreter <span class="arrow">→</span> 设置里选上 Python 3.x</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 10 · S 切换宣言 ================= -->
-<section class="slide st-s" id="slide-10">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="s-ghost" aria-hidden="true">V0</div>
+<!-- ================= SLIDE 14 · P17 · C 切换宣言 ================= -->
+<section class="slide st-c" id="slide-14">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-orbit" aria-hidden="true"><i></i></div>
+  <div class="c-crt" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s10-o0" data-object-type="text" style="left:8%;top:24%;width:80%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s16-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-stmt dim" contenteditable="false">语法演示结束。</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s10-o1" data-object-type="text" style="left:8%;top:42%;width:84%;--d:.25s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-bar" style="margin-bottom:1.2em;"></div>
-        <div class="s-stmt">下面，开始编写<br>火星项目 <span class="o">V0</span>。</div>
+      <div class="slide-object-text deck-col c-decl" contenteditable="false">
+        <div class="c-stmt dim rvi" style="--d:.1s;">小试结束。</div>
+        <div class="c-stmt rvi" style="--d:.4s;">下面，做一个真东西。</div>
       </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s10-o2" data-object-type="text" style="left:8%;top:80%;width:60%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-sub" contenteditable="false">新建文件：<span class="s-codechip">v0_first_program.py</span></div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 11 · C 项目 V0 ================= -->
-<section class="slide st-c" id="slide-11">
+<!-- ================= SLIDE 15 · P18 · C 案例 V0 ================= -->
+<section class="slide st-c" id="slide-15">
   <div class="c-stars" aria-hidden="true"></div>
   <div class="c-stars2" aria-hidden="true"></div>
   <div class="c-orbit" aria-hidden="true"><i></i></div>
   <div class="c-mars" aria-hidden="true"></div>
   <div class="c-crt" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv-pop" data-slide-object data-oid="s11-o0" data-object-type="text" style="left:8%;top:8.5%;width:20%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s17-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false"><span class="c-badge">V0</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s11-o1" data-object-type="text" style="left:8%;top:17%;width:58%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text c-h1" contenteditable="false">火星基地 · <span class="cy">首次点火</span></div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s11-o2" data-object-type="text" style="left:8%;top:35%;width:46%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
+      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(12px,2vh,18px);">
+        <div class="rvi" style="--d:.1s;display:flex;align-items:center;gap:clamp(16px,1.8vw,28px);">
+          <span class="c-badge">V0</span>
+          <span class="c-h1">案例时间 · <span class="cy">火星基地</span></span>
+        </div>
+        <div class="c-body rvi" style="--d:.1s;">你是基地控制员。第一步：让系统"开机"。</div>
+        <div class="c-panel rvi-pop" style="--d:.35s;">
           <div class="c-corners"></div>
-          <div class="c-panel-label">v0_first_program.py</div>
           <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"=================================="</span>)</div>
           <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"火星基地资源调度系统启动"</span>)</div>
           <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"任务目标：让基地稳定运行 7 天"</span>)</div>
           <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"=================================="</span>)</div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s11-o3" data-object-type="text" style="left:58%;top:35%;width:34%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
+        <div class="c-panel rvi-pop" data-step style="border-color:rgba(255,46,136,.5);box-shadow:6px 6px 0 rgba(62,230,255,.5);">
           <div class="c-corners"></div>
-          <div class="c-panel-label">运行输出</div>
-          <div class="c-out">==================================</div>
-          <div class="c-out"><span class="cy">火星基地资源调度系统启动</span></div>
-          <div class="c-out"><span class="cy">任务目标：让基地稳定运行 7 天</span></div>
-          <div class="c-out">==================================</div>
+          <div class="c-out"><span class="cy">==================================</span></div>
+          <div class="c-out">火星基地资源调度系统启动</div>
+          <div class="c-out">任务目标：让基地稳定运行 7 天</div>
+          <div class="c-out"><span class="cy">==================================</span></div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s11-o4" data-object-type="text" style="left:8%;top:83%;width:74%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <span class="c-chip">任务：把系统名称改成你的基地名 —— 先预测输出，再运行验证</span>
+        <div class="rvi" style="--d:.65s;"><span class="c-chip">做完试试：把系统名称改成你的基地名——先预测，再运行。</span></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 12 · C 独立任务 ================= -->
-<section class="slide st-c" id="slide-12">
+<!-- ================= SLIDE 16 · P19 · C 独立任务 ================= -->
+<section class="slide st-c" id="slide-16">
   <div class="c-stars" aria-hidden="true"></div>
   <div class="c-stars2" aria-hidden="true"></div>
   <div class="c-crt" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s12-o0" data-object-type="text" style="left:8%;top:9%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s18-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text c-eyebrow" contenteditable="false">SOLO MISSION · 独立完成</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s12-o1" data-object-type="text" style="left:8%;top:16%;width:80%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text c-h1" contenteditable="false">独立任务 · <span class="cy">mission_card.py</span></div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s12-o2" data-object-type="text" style="left:8%;top:34%;width:44%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">独立任务 · <span class="cy">mission_card.py</span></div>
+        <div class="c-body rvi" style="--d:.2s;">让程序输出这三行：</div>
+        <div class="c-panel rvi-pop" style="--d:.35s;">
           <div class="c-corners"></div>
-          <div class="c-panel-label">要求 · 输出三行</div>
-          <div class="c-out">基地名称：________（自定）</div>
+          <div class="c-out">基地名称：你自取的名字</div>
           <div class="c-out">任务周期：7 天</div>
           <div class="c-out">首要目标：保持资源稳定</div>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s12-o3" data-object-type="text" style="left:56%;top:34%;width:36%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
-          <div class="c-corners"></div>
-          <div class="c-panel-label">限制</div>
-          <div><span class="c-chip alt" style="font-size:clamp(.66rem,1vw,.85rem);">至少使用 3 次 print()</span></div>
-          <div style="margin-top:1em;"><span class="c-chip alt" style="font-size:clamp(.66rem,1vw,.85rem);">不得修改已完成的 V0 文件</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s12-o4" data-object-type="text" style="left:56%;top:62%;width:36%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="c-panel">
-          <div class="c-corners"></div>
-          <div class="c-panel-label">验收三条</div>
-          <div class="c-check-i"><span class="ok">✓</span><span class="t">文件名正确（mission_card.py）</span></div>
-          <div class="c-check-i"><span class="ok">✓</span><span class="t">能独立运行</span></div>
-          <div class="c-check-i"><span class="ok">✓</span><span class="t">三行顺序正确</span></div>
-        </div>
+        <div class="rvi" style="--d:.5s;"><span class="c-chip">规则：至少用 3 个 print()；不许改动 V0 文件。</span></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 13 · B 故障速查 ================= -->
-<section class="slide st-b" id="slide-13">
-  <div class="b-vignette" aria-hidden="true"></div>
-  <div class="b-scan" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s13-o0" data-object-type="text" style="left:8%;top:8%;width:70%;--d:.05s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-path" contenteditable="false"><b>~/mars-base</b> $ cat first_aid.md</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s13-o1" data-object-type="text" style="left:8%;top:14%;width:84%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-h1" contenteditable="false">出问题先看这里 <span class="g"># 自救 30 秒，再求助</span></div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s13-o2" data-object-type="text" style="left:8%;top:30%;width:40%;--d:.25s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-card">
-          <div class="sym"><span class="tag">症状</span>报错指向中文弯引号 <code>“</code> <code>”</code></div>
-          <div class="fix"><span class="tag">→</span>切英文输入法，换成英文半角 <code>"</code></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s13-o3" data-object-type="text" style="left:52%;top:30%;width:40%;--d:.35s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-card">
-          <div class="sym"><span class="tag">症状</span>文件变成 <code>main.py.txt</code></div>
-          <div class="fix"><span class="tag">→</span>显示文件扩展名，改回 <code>.py</code></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s13-o4" data-object-type="text" style="left:8%;top:54%;width:40%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-card">
-          <div class="sym"><span class="tag">症状</span>PyCharm 显示 <code>No interpreter</code></div>
-          <div class="fix"><span class="tag">→</span>解释器设置里选择 Python 3.x</div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv-pop" data-slide-object data-oid="s13-o5" data-object-type="text" style="left:52%;top:54%;width:40%;--d:.55s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="b-card">
-          <div class="sym"><span class="tag">症状</span>Windows 找不到 <code>python</code></div>
-          <div class="fix"><span class="tag">→</span>试 <code>py --version</code>；macOS 用 <code>python3</code></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s13-o6" data-object-type="text" style="left:8%;top:80%;width:70%;--d:.65s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text b-note" contenteditable="false"><span class="g">#</span> 都试过还不行？亮红卡，交助教。</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SLIDE 14 · S 章节检查点 ================= -->
-<section class="slide st-s" id="slide-14">
+<!-- ================= SLIDE 17 · P5 · S 运行链路 ================= -->
+<section class="slide st-s" id="slide-17">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s14-o0" data-object-type="text" style="left:8%;top:8.5%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s4-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">CHECKPOINT · 章节检查点</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s14-o1" data-object-type="text" style="left:8%;top:15%;width:60%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">进入下一章之前</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s14-o2" data-object-type="text" style="left:8%;top:30%;width:58%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">能指出自己正在运行的 <b>.py 文件</b></span></div>
-        <div class="s-hairline"></div>
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">能独立运行 <b>Hello, Python!</b></span></div>
-        <div class="s-hairline"></div>
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">能独立输入并运行<b>至少 3 行 print()</b></span></div>
-        <div class="s-hairline"></div>
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">修改一行文字后，输出<b>同步变化</b></span></div>
-        <div class="s-hairline"></div>
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">能说出<b>解释器</b>与 <b>PyCharm</b> 的区别</span></div>
-        <div class="s-hairline"></div>
-        <div class="s-check-i"><span class="s-box"></span><span class="s-check-t">完成<b>项目 V0</b> 或<b>火星任务卡</b></span></div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.1s;">PIPELINE · 运行链路</div>
+        <div class="s-title rvi" style="--d:.1s;">代码是怎么变成输出的？</div>
+        <div class="s-flow">
+          <div class="s-fbox rvi" data-step="1">你写的 <span class="s-code">main.py</span></div>
+          <div class="s-farr rvi" data-step="1">→</div>
+          <div class="s-fbox hot rvi" data-step="2">Python 解释器</div>
+          <div class="s-farr rvi" data-step="2">→</div>
+          <div class="s-fbox rvi" data-step="3">屏幕上的输出</div>
+        </div>
+        <div class="s-body rvi" style="--d:.4s;">真正干活的是<b>解释器</b>。PyCharm 只是写代码的工作台。</div>
       </div>
     </div>
-    <div class="slide-object rv" data-slide-object data-oid="s14-o3" data-object-type="text" style="left:70%;top:31%;width:23%;--d:.45s;">
+  </div>
+</section>
+<!-- ================= SLIDE 18 · P6 · S 三问互动（点击揭示） ================= -->
+<section class="slide st-s" id="slide-18">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s5-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-card">
-          <div class="s-card-label">通过标准</div>
-          <div class="s-sub" style="font-size:clamp(.72rem,1.05vw,.9rem);">六项全部打勾<br>→ 进入第 2 章。</div>
-          <div class="s-hairline" style="margin:.9em 0;"></div>
-          <div class="s-sub" style="font-size:clamp(.72rem,1.05vw,.9rem);">未通过：助教用 <b style="color:var(--s-ink);">mission_card.py</b> 逐项复查，不让同桌代操作。</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.1s;">QUIZ · 三问互动</div>
+        <div class="s-title rvi" style="--d:.1s;">考考你的直觉</div>
+        <div class="s-qa-grid">
+          <div class="s-qa rvi-pop" data-reveal style="--d:.2s;">
+            <div class="s-qa-q"><span class="qn">Q1</span>不装 PyCharm，程序还能运行吗？</div>
+            <div class="s-qa-abox">
+              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <b>能。</b>执行代码的是解释器，换 IDLE、在线环境也行。</div>
+              <div class="rv-mask"><span>点击揭示</span></div>
+            </div>
+          </div>
+          <div class="s-qa rvi-pop" data-reveal style="--d:.3s;">
+            <div class="s-qa-q"><span class="qn">Q2</span>只有 PyCharm、没有 Python 呢？</div>
+            <div class="s-qa-abox">
+              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <b>不能。</b>工作台里没有发动机。</div>
+              <div class="rv-mask"><span>点击揭示</span></div>
+            </div>
+          </div>
+          <div class="s-qa rvi-pop" data-reveal style="--d:.4s;">
+            <div class="s-qa-q"><span class="qn">Q3</span><span class="s-code">.py</span> 文件和 Word 文档有什么区别？</div>
+            <div class="s-qa-abox">
+              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <span class="s-code">.py</span> 是<b>纯文本</b>，解释器逐行照做；Word 是排版文档。</div>
+              <div class="rv-mask"><span>点击揭示</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= SLIDE 15 · S 总结 + 预告 ================= -->
-<section class="slide st-s" id="slide-15">
+<!-- ================= SLIDE 19 · P20 · S 总结与预告 ================= -->
+<section class="slide st-s" id="slide-19">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object rv" data-slide-object data-oid="s15-o0" data-object-type="text" style="left:8%;top:8%;width:60%;--d:.05s;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s19-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-eyebrow" contenteditable="false">DONE · 总结与预告</div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s15-o1" data-object-type="text" style="left:8%;top:14.5%;width:76%;--d:.15s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text s-title" contenteditable="false">你已完成<span class="o">第一个编程闭环</span></div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s15-o2" data-object-type="text" style="left:8%;top:33%;width:88%;--d:.3s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-loop">
-          <span class="s-lnode"><span class="s-lchk">✓</span>找到代码文件</span><span class="s-larr">→</span>
-          <span class="s-lnode"><span class="s-lchk">✓</span>输入代码</span><span class="s-larr">→</span>
-          <span class="s-lnode"><span class="s-lchk">✓</span>运行</span><span class="s-larr">→</span>
-          <span class="s-lnode"><span class="s-lchk">✓</span>找到输出</span><span class="s-larr">→</span>
-          <span class="s-lnode"><span class="s-lchk">✓</span>修改</span><span class="s-larr">→</span>
-          <span class="s-lnode"><span class="s-lchk">✓</span>再次运行</span>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.1s;">DONE · 总结与预告</div>
+        <div class="s-title rvi" style="--d:.1s;">今天，你完成了一个完整闭环</div>
+        <div class="s-chain rvi" style="--d:.2s;">
+          <span>写代码</span><span class="arr">→</span>
+          <span>运行</span><span class="arr">→</span>
+          <span>看输出</span><span class="arr">→</span>
+          <span>修改</span><span class="arr">→</span>
+          <span>再运行</span><span class="ok">✓</span>
         </div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s15-o3" data-object-type="text" style="left:8%;top:58%;width:50%;--d:.45s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-hairline" style="margin-bottom:1em;"></div>
-        <div class="s-card-label">下一章</div>
-        <div class="s-title" style="font-size:clamp(1.2rem,2.4vw,1.9rem);">第 2 章 · 输出、注释与 Debug</div>
-        <div class="s-sub" style="margin-top:.5em;">学会读懂 Python 的「红字」。</div>
-      </div>
-    </div>
-    <div class="slide-object rv" data-slide-object data-oid="s15-o4" data-object-type="text" style="left:64%;top:58%;width:28%;--d:.6s;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text" contenteditable="false">
-        <div class="s-card">
-          <div class="s-card-label">版本进度</div>
-          <div class="s-title" style="font-size:clamp(1.3rem,2.6vw,2.1rem);">V0 <span class="o">✓</span> → V1</div>
-          <div class="s-sub" style="margin-top:.5em;font-size:clamp(.72rem,1.05vw,.9rem);">本章成果：火星基地首次点火</div>
+        <div class="s-body rvi" style="--d:.3s;">今天认识的词：解释器 · <span class="s-code">.py</span> 文件 · 字面量 · 字符串 · <span class="s-code">print()</span></div>
+        <div class="rvi" style="--d:.4s;">
+          <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
+          <div class="s-body">下一章：输出、注释，和读懂 Python 的"红字"。</div>
         </div>
       </div>
     </div>
@@ -2275,10 +2018,14 @@ body.deck-edit-mode .rv-mask { display: none !important; }
           e.preventDefault(); this.goTo(this.current - 1);
         }
       } else {
-        if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-          e.preventDefault(); this.goTo(this.current + 1);
-        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-          e.preventDefault(); this.goTo(this.current - 1);
+        if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          if (window.__deckStepNav && window.__deckStepNav('next')) return;
+          this.goTo(this.current + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (window.__deckStepNav && window.__deckStepNav('prev')) return;
+          this.goTo(this.current - 1);
         }
       }
     }
@@ -2286,8 +2033,13 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       if (document.body.classList.contains('deck-edit-mode')) return;
       if (Math.abs(e.deltaY) < 8) return;
       e.preventDefault();
-      if (e.deltaY > 0) this.goTo(this.current + 1);
-      else this.goTo(this.current - 1);
+      if (e.deltaY > 0) {
+        if (window.__deckStepNav && window.__deckStepNav('next')) return;
+        this.goTo(this.current + 1);
+      } else {
+        if (window.__deckStepNav && window.__deckStepNav('prev')) return;
+        this.goTo(this.current - 1);
+      }
     }
   }
 
@@ -3610,6 +3362,9 @@ body.deck-edit-mode .rv-mask { display: none !important; }
     });
     root.querySelectorAll('.snap-line-v, .snap-line-h').forEach((el) => el.remove());
     root.querySelectorAll('[data-reveal].revealed').forEach((el) => el.classList.remove('revealed')); /* 课件：Reveal 状态不持久化 */
+    root.querySelectorAll('.step-shown').forEach((el) => el.classList.remove('step-shown')); /* 课件：分步揭示状态不持久化 */
+    root.querySelectorAll('.seg-now').forEach((el) => el.classList.remove('seg-now')); /* 课件：代码段高亮状态不持久化 */
+    root.querySelectorAll('.steps-instant').forEach((el) => el.classList.remove('steps-instant')); /* 课件：直达终态标记不持久化 */
   }
 
   function serializeSlidesRoot(root) {
@@ -4824,12 +4579,19 @@ body.deck-edit-mode .rv-mask { display: none !important; }
 </script>
 
 <script>
-/* === SECTION: 课件专属交互（点击揭示 + 入场动画重播） ===
-   独立于可编辑运行时；Reveal 状态不进历史栈、不进导出（导出前由运行时统一剥离 .revealed）。 */
+/* === SECTION: 课件专属交互（data-reveal 点击揭示 + data-step 分步揭示 StepManager） ===
+   模型：非 data-step 元素翻页到位后按 --d 自动播放入场动画（.slide.visible 驱动）；
+   仅带 data-step 的元素保持隐藏，由 StepManager 按 →/Space/点击/滚轮揭示。
+   步状态为瞬态：不进历史栈、不进 localStorage、不进导出（运行时 sanitize 已剥离）。
+   slide 列表查询一律限定在 .slides-offset 内，防止选中 Pages 侧栏的克隆节点。 */
 (function () {
   'use strict';
 
-  /* 1. 点击揭示：仅演示模式生效，编辑模式禁用 */
+  function reducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /* ---- 1. data-reveal 点击揭示：演示模式专属，编辑模式禁用；与分步互不干扰 ---- */
   document.addEventListener('click', function (e) {
     if (document.body.classList.contains('deck-edit-mode')) return;
     var t = e.target && e.target.closest ? e.target.closest('[data-reveal]') : null;
@@ -4837,28 +4599,139 @@ body.deck-edit-mode .rv-mask { display: none !important; }
     t.classList.toggle('revealed');
   });
 
-  /* 2. 每次进入页面重播入场动画（翻页即时，不强制看完；再进入时重新播一遍）。
-        注意：slide 列表查询必须限定在 .slides-offset 内，防止选中 Pages 侧栏里的克隆节点。 */
-  var current = null;
+  /* ---- 2. StepManager（opt-in）：扫描 [data-step]，同属性值为一组，DOM 顺序成步 ---- */
+  var StepManager = {
+    current: null,   /* 当前页 section.slide */
+    steps: [],       /* [[key, [els...]], ...] 按 DOM 顺序 */
+    shown: 0,        /* 已揭示步数 */
+    intent: 'next',  /* 下一次页面激活的初态：'next' = 0 步；其余 = 全部步 */
+    _intentT: null,
+
+    activate: function (slide, showAll) {
+      this.current = slide;
+      this.steps = this.scan(slide);
+      this.shown = showAll ? this.steps.length : 0;
+      slide.classList.toggle('steps-instant', !!showAll);
+      this.apply();
+    },
+    scan: function (slide) {
+      var map = new Map();
+      var seq = 0;
+      var els = slide.querySelectorAll('[data-step]');
+      for (var i = 0; i < els.length; i++) {
+        var k = els[i].getAttribute('data-step');
+        if (!k) k = '__bare' + seq++; /* 裸 data-step：每个元素独立成步 */
+        if (!map.has(k)) map.set(k, []);
+        map.get(k).push(els[i]);
+      }
+      return Array.from(map.entries());
+    },
+    apply: function () {
+      var shownKeys = {};
+      for (var i = 0; i < this.steps.length; i++) {
+        var on = i < this.shown;
+        shownKeys[this.steps[i][0]] = on;
+        for (var j = 0; j < this.steps[i][1].length; j++) {
+          this.steps[i][1][j].classList.toggle('step-shown', on);
+        }
+      }
+      /* data-flash-with 元素（代码段高亮）跟随同名步的可见性 */
+      if (this.current) {
+        var flash = this.current.querySelectorAll('[data-flash-with]');
+        for (var f = 0; f < flash.length; f++) {
+          flash[f].classList.toggle('seg-now', !!shownKeys[flash[f].getAttribute('data-flash-with')]);
+        }
+      }
+    },
+    _expireIntent: function () {
+      var self = this;
+      clearTimeout(this._intentT);
+      this._intentT = setTimeout(function () { self.intent = 'jump'; }, 900);
+    },
+    next: function () {
+      if (!this.current) return false;
+      if (this.shown < this.steps.length) {
+        this.shown += 1;
+        this.apply();
+        return true;
+      }
+      this.intent = 'next'; /* 即将前进翻页：下一页 data-step 从 0 步开始 */
+      this._expireIntent();
+      return false;
+    },
+    prev: function () {
+      if (!this.current) return false;
+      if (this.shown > 0) {
+        this.shown -= 1;
+        this.apply();
+        return true;
+      }
+      this.intent = 'prev'; /* 即将后退翻页：上一页直接显示全部步 */
+      this._expireIntent();
+      return false;
+    }
+  };
+
+  /* 运行时统一 next/prev 入口（键盘 ←/→/Space/PgUp/PgDn 与滚轮）在翻页前先询问这里。
+     仅当前页还有未揭示的 data-step 步时才拦截。编辑模式 / 减弱动效下停用。 */
+  window.__deckStepNav = function (dir) {
+    if (document.body.classList.contains('deck-edit-mode')) return false;
+    if (reducedMotion()) return false;
+    return dir === 'prev' ? StepManager.prev() : StepManager.next();
+  };
+
+  /* ---- 3. 页面激活：非 data-step 动画重播（.visible 驱动）+ data-step 初态 ----
+     前进进入 → 0 步；后退 / 圆点 / 缩略图跳转 → 全部步终态。 */
+  var activeSlide = null;
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
       if (!en.isIntersecting || en.intersectionRatio < 0.55) return;
       var slide = en.target;
-      if (slide === current) return;
-      current = slide;
+      if (slide === activeSlide) return;
+      activeSlide = slide;
       var root = slide.closest('.slides-offset');
-      if (!root) return;
-      root.querySelectorAll(':scope > section.slide').forEach(function (s) {
-        if (s !== slide) s.classList.remove('visible');
-      });
-      slide.classList.remove('visible');
-      void slide.offsetWidth; /* 强制回流，重启 CSS 动画 */
-      slide.classList.add('visible');
+      if (root) {
+        root.querySelectorAll(':scope > section.slide').forEach(function (s) {
+          if (s !== slide) s.classList.remove('visible');
+        });
+        slide.classList.remove('visible');
+        void slide.offsetWidth; /* 强制回流，重播自动入场动画 */
+        slide.classList.add('visible');
+      }
+      if (reducedMotion()) return;
+      if (document.body.classList.contains('deck-edit-mode')) return;
+      var showAll = StepManager.intent !== 'next';
+      StepManager.intent = 'jump';
+      StepManager.activate(slide, showAll);
     });
   }, { threshold: [0.55] });
-  document.querySelectorAll('.slides-offset > section.slide').forEach(function (s) {
-    obs.observe(s);
+  document.querySelectorAll('.slides-offset > section.slide').forEach(function (s) { obs.observe(s); });
+
+  /* ---- 4. 演示模式点击页面任意处也尝试前进一步（无步可揭示时不翻页、不动作；
+        reveal 卡与运行时 chrome 除外） ---- */
+  document.addEventListener('click', function (e) {
+    if (document.body.classList.contains('deck-edit-mode')) return;
+    if (reducedMotion()) return;
+    var t = e.target;
+    if (!t || !t.closest) return;
+    if (t.closest('[data-reveal]')) return;
+    if (t.closest('#deckLeftHover, #navDots, .slide-sidebar, #rteToolbar, #deckAddElementMenu, .progress-bar, .deck-edit-chrome')) return;
+    if (!t.closest('.slides-offset > section.slide')) return;
+    window.__deckStepNav('next');
   });
+
+  /* ---- 5. 编辑模式进出：退出后当前页按"跳转"语义恢复（全部步终态可见） ---- */
+  var wasEditing = false;
+  new MutationObserver(function () {
+    var editing = document.body.classList.contains('deck-edit-mode');
+    if (editing) { wasEditing = true; return; }
+    if (!wasEditing) return;
+    wasEditing = false;
+    if (activeSlide && !reducedMotion()) {
+      StepManager.intent = 'jump';
+      StepManager.activate(activeSlide, true);
+    }
+  }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>
 

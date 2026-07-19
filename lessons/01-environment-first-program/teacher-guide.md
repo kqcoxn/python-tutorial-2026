@@ -53,7 +53,7 @@ print("Hello, Python!")
 - [ ] 准备一台备用电脑，或明确同伴结对方案。
 - [ ] 投影前关闭个人通知，放大 PyCharm 编辑器和运行区字体。
 - [ ] 将本章 V0、V1 文件放在容易打开的位置。
-- [ ] 投影调试本章配套幻灯片 `slides.html`：确认键盘翻页、第 5/9 页点击揭示互动和激光笔可用。
+- [ ] 投影调试本章配套幻灯片 `slides.html`：确认键盘翻页、第 11/12/19 页点击揭示互动和激光笔可用。
 
 正式上课前 3 到 7 天，要求学生提交以下任一结果：
 
@@ -357,7 +357,7 @@ print(“我写的不是 Bug，是隐藏功能。”)
 
 ## 14. 参考材料
 
-- 本章配套幻灯片：`lessons/01-environment-first-program/slides.html`（16 页，第 5、9 页含点击揭示互动）
+- 本章配套幻灯片：`lessons/01-environment-first-program/slides.html`（20 页，第 11、12、19 页含点击揭示互动；内容定稿见 `slides-content.md`）
 - [Python 官方下载](https://www.python.org/downloads/)
 - [PyCharm 官方下载](https://www.jetbrains.com/pycharm/download/)
 - [Online Python](https://www.online-python.com/)
