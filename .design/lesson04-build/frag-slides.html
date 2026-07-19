@@ -1,0 +1,488 @@
+<!-- ================= SLIDE 0 · P1 · S 封面 ================= -->
+<section class="slide st-s visible" id="slide-0">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="s-ghost" aria-hidden="true">04</div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础 · 第 4 章</div>
+        <div class="s-bar rvi" style="--d:.15s;"></div>
+        <div class="s-hero rvi" style="--d:.25s;">字符串、格式化输出<br>与转义字符</div>
+        <div class="s-body rvi" style="--d:.45s;">把变量，排成一眼能读懂的信息</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 1 · P2 · S 从数据到表达 ================= -->
+<section class="slide st-s" id="slide-1">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">GOALS · 从数据到表达</div>
+        <div class="s-title rvi" style="--d:.15s;">变量已经有了，输出还很零散</div>
+        <div class="s-body dim rvi" style="--d:.3s;">今天解决三个问题：</div>
+        <div class="rvi" style="--d:.4s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">文字里的引号怎么写</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">变量怎样放进一句话</span></div>
+          <div class="s-row"><span class="s-num">03</span><span class="s-txt">一次输出怎样换行和对齐</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 2 · P3 · B 两种外层引号 ================= -->
+<section class="slide st-b" id="slide-2">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">单引号和双引号，<span class="g">都能创建字符串</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">line_a = <span class="tk-s">"Python says: 'Hello!'"</span></div>
+          <div class="b-cl">line_b = <span class="tk-s">'老师说："先预测，再运行。"'</span></div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(line_a)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(line_b)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;">外层用一种，内容里可以直接出现<b>另一种</b>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 3 · P4 · B 引号边界 ================= -->
+<section class="slide st-b" id="slide-3">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">字符串从哪开始、<span class="g">到哪结束？</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">message = <span class="tk-s">"Hello"</span></div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;">英文直引号<b>成对</b>出现：<span class="b-code">"..."</span> 或 <span class="b-code">'...'</span></div>
+        <div class="b-body rvi" style="--d:.6s;">中文弯引号 “...” <b>不能</b>代替代码引号。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 4 · P5 · B 字符串拼接 ================= -->
+<section class="slide st-b" id="slide-4">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s4-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;"><span class="g">+</span> 可以连接两个字符串</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">first_name = <span class="tk-s">"Lin"</span></div>
+          <div class="b-cl">last_name = <span class="tk-s">"Mu"</span></div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(first_name + <span class="tk-s">" "</span> + last_name)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;">中间的空格来自字符串 <span class="b-code">" "</span>，<b>不是自动生成</b>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 5 · P6 · B 拼接预测（点击揭示；先让学生判断哪一行带空格，再点击） ================= -->
+<section class="slide st-b" id="slide-5">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s5-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">先猜：<span class="g">哪一个输出有空格？</span></div>
+        <div class="b-codecard rvi" style="--d:.2s;">
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"Hello"</span> + <span class="tk-s">"Python"</span>)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"Hello "</span> + <span class="tk-s">"Python"</span>)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>HelloPython</b> / <b>Hello Python</b></div>
+            <div class="rv-mask"><span>点击揭示</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 6 · P7 · B 不同类型不能直接拼接（点击揭示；先让学生根据两侧类型判断，再揭示原因） ================= -->
+<section class="slide st-b" id="slide-6">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s6-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">这里为什么<span class="g">报错？</span></div>
+        <div class="b-codecard rvi" style="--d:.2s;">
+          <div class="b-cl">score = 96</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"得分："</span> + score)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：字符串与整数不能直接用 <b>+</b> 连接。<br>更清楚的写法：<b>f-string</b>。</div>
+            <div class="rv-mask"><span>点击揭示 · 原因</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 7 · P8 · B 第一个 f-string ================= -->
+<section class="slide st-b" id="slide-7">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s7-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">把变量直接<span class="g">放进一句话</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">name = <span class="tk-s">"小林"</span></div>
+          <div class="b-cl">score = 96</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">f"{name} 本次得分：{score}"</span>)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;"><span class="b-code">f</span> 开启格式化；<span class="b-code">{}</span> 中的值会被计算并显示。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 8 · P9 · B f-string 拆解（分步揭示：三段结构逐段点亮） ================= -->
+<section class="slide st-b" id="slide-8">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s8-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">三个部分，<span class="g">一个都不能少</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s"><span class="seg" data-flash-with="1">f</span><span class="seg" data-flash-with="2">"</span>姓名：<span class="seg" data-flash-with="3">{name}</span><span class="seg" data-flash-with="2">"</span></span>)</div>
+        </div>
+        <div>
+          <div class="b-row rvi" data-step="1"><span class="b-num">①</span><span>前缀 <span class="b-code">f</span></span></div>
+          <div class="b-row rvi" data-step="2"><span class="b-num">②</span><span>成对的字符串引号</span></div>
+          <div class="b-row rvi" data-step="3"><span class="b-num">③</span><span>成对的 <span class="b-code">{}</span> 占位表达式</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 9 · P10 · B 少了 f 会怎样（点击揭示） ================= -->
+<section class="slide st-b" id="slide-9">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s9-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">先预测：<span class="g">输出是什么？</span></div>
+        <div class="b-codecard rvi" style="--d:.2s;">
+          <div class="b-cl">name = <span class="tk-s">"小林"</span></div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"欢迎，{name}"</span>)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：输出 <b>欢迎，{name}</b>。花括号只是普通文字。</div>
+            <div class="rv-mask"><span>点击揭示</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 10 · P11 · B 一次插入多个变量 ================= -->
+<section class="slide st-b" id="slide-10">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s10-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">一句话，可以有<span class="g">多个占位表达式</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">name = <span class="tk-s">"小林"</span></div>
+          <div class="b-cl">score = 96</div>
+          <div class="b-cl">rank = 2</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">f"{name}：{score} 分，第 {rank} 名"</span>)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 11 · P12 · S 转义字符 ================= -->
+<section class="slide st-s" id="slide-11">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s11-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.05s;">ESCAPE · 转义字符</div>
+        <div class="s-title rvi" style="--d:.15s;">有些字符，键盘上看得见却不好直接写</div>
+        <div class="s-body dim rvi" style="--d:.3s;">反斜杠 <span class="s-code">\</span> 发出一个特殊信号：</div>
+        <div class="rvi" style="--d:.4s;">
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">\n</span>：换行</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">\t</span>：制表间隔</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">\\</span>：一个反斜杠</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 12 · P13 · B \n 换行 ================= -->
+<section class="slide st-b" id="slide-12">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s12-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">一次 <span class="g">print()</span>，输出三行</div>
+        <div class="b-term rvi" style="--d:.2s;">
+          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
+          <div class="b-termbody">
+            <div class="b-ln rvi" style="--d:.35s;"><span class="tk-f">print</span>(<span class="tk-s">"第一行\n第二行\n第三行"</span>)</div>
+            <div class="b-ln rvi" style="--d:.55s;"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
+            <div class="b-ln b-out rvi" style="--d:.75s;">第一行</div>
+            <div class="b-ln b-out rvi" style="--d:.9s;">第二行</div>
+            <div class="b-ln b-out rvi" style="--d:1.05s;">第三行</div>
+          </div>
+        </div>
+        <div class="b-body rvi" style="--d:1.25s;"><span class="b-code">\n</span> 不会原样显示；它让后面的文字<b>另起一行</b>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 13 · P14 · B \t 与 \\ ================= -->
+<section class="slide st-b" id="slide-13">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s13-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;"><span class="g">间隔</span>与<span class="g">反斜杠</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"姓名\t分数"</span>)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"C:\\Users\\student"</span>)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;"><span class="b-code">\t</span> 只提供制表间隔，不保证复杂表格<b>严格对齐</b>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 14 · P15 · B 输出引号字符 ================= -->
+<section class="slide st-b" id="slide-14">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s14-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">外层引号冲突时，可以<span class="g">转义</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"他说：\"Hello!\""</span>)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">'It\'s Python.'</span>)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.45s;"><span class="b-code">\"</span> 输出双引号；<span class="b-code">\'</span> 输出单引号。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 15 · P16 · B 组合输出 ================= -->
+<section class="slide st-b" id="slide-15">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s15-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">f-string 与换行<span class="g">一起用</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">name = <span class="tk-s">"小林"</span></div>
+          <div class="b-cl">score = 96</div>
+          <div class="b-cl">rank = 2</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">f"姓名：{name}\n分数：{score}\n名次：{rank}"</span>)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 16 · P17 · B 快速排错 ================= -->
+<section class="slide st-b" id="slide-16">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s16-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">字符串出错，<span class="g">按边界检查</span></div>
+        <div class="rvi" style="--d:.25s;">
+          <div class="b-row"><span class="b-num">1.</span><span>引号是否<b>英文、成对</b></span></div>
+          <div class="b-row"><span class="b-num">2.</span><span>f-string 前是否有 <span class="b-code">f</span></span></div>
+          <div class="b-row"><span class="b-num">3.</span><span>花括号是否<b>成对</b></span></div>
+          <div class="b-row"><span class="b-num">4.</span><span><span class="b-code">+</span> 两侧是否都是<b>字符串</b></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 17 · P18 · C 项目切换宣言 ================= -->
+<section class="slide st-c" id="slide-17">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-orbit" aria-hidden="true"><i></i></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s17-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col c-decl" contenteditable="false">
+        <div class="c-stmt dim rvi" style="--d:.1s;">数据已经齐了。</div>
+        <div class="c-stmt rvi" style="--d:.4s;">现在，把它变成<span class="cy">控制台面板</span>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 18 · P19 · C 火星基地 V3 ================= -->
+<section class="slide st-c" id="slide-18">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-orbit" aria-hidden="true"><i></i></div>
+  <div class="c-mars" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s18-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(12px,2vh,18px);">
+        <div class="rvi" style="--d:.1s;display:flex;align-items:center;gap:clamp(16px,1.8vw,28px);">
+          <span class="c-badge">V3</span>
+          <span class="c-h1">状态<span class="cy">面板</span></span>
+        </div>
+        <div class="c-panel rvi-pop" style="--d:.35s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">f"{base_name}资源状态面板"</span>)</div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">f"任务日：{mission_day}/{max_days}"</span>)</div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">f"能源：{energy} | 氧气：{oxygen}"</span>)</div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">f"饮用水：{water} | 科研：{research_points}"</span>)</div>
+        </div>
+        <div class="c-body rvi" style="--d:.55s;">变量变，面板会跟着变。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 19 · P20 · C V3 任务菜单（点击揭示） ================= -->
+<section class="slide st-c" id="slide-19">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s19-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">用 <span class="cy">\n</span> 把任务纵向排列</div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"今日可选任务："</span>)</div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"1. 维护供能系统\n2. 维护生命保障系统"</span>)</div>
+          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"3. 开展科研探索"</span>)</div>
+        </div>
+        <div class="c-revealbar rvi" data-reveal style="--d:.4s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>标题 + 三行任务</b>，按编号纵向排列。</div>
+            <div class="rv-mask"><span>点击揭示 · 输出效果</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 20 · P21 · C 独立设计 ================= -->
+<section class="slide st-c" id="slide-20">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s20-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">设计一个三行<span class="cy">“游戏结算面板”</span></div>
+        <div class="c-body rvi" style="--d:.25s;">必须包含：</div>
+        <div class="rvi" style="--d:.4s;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(12px,2vh,18px);">
+          <span class="c-chip">3 个变量</span>
+          <span class="c-chip">1 个 f-string</span>
+          <span class="c-chip">至少 2 个 \n</span>
+        </div>
+        <div class="c-body rvi" style="--d:.55s;">先画<b>预期输出</b>，再写代码。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 21 · P22 · S 总结与预告 ================= -->
+<section class="slide st-s" id="slide-21">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s21-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="s-eyebrow rvi" style="--d:.1s;">DONE · 总结与预告</div>
+        <div class="s-title rvi" style="--d:.1s;">输出还要让人看得懂</div>
+        <div class="rvi" style="--d:.25s;">
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>字符串</b>：引号成对</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>f-string</b>：<span class="s-code">f"...{变量}..."</span></span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>转义</b>：<span class="s-code">\n</span> · <span class="s-code">\t</span> · <span class="s-code">\\</span> · <span class="s-code">\"</span> · <span class="s-code">\'</span></span></div>
+        </div>
+        <div class="rvi" style="--d:.4s;">
+          <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
+          <div class="s-body">下一章：接收输入并计算。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
