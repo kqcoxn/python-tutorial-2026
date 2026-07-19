@@ -2,6 +2,7 @@
 
 ## 课程设计
 
+- [课程总课纲（30 章）：Python 基础与 AI 编程实践](docs/course-outline.md)
 - [Python 基础课程设计与备课指导](docs/python-foundations-course-design.md)
 
 ## 章节材料
