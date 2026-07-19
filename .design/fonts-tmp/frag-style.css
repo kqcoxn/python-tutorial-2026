@@ -1,0 +1,409 @@
+/* === SECTION: THEME TOKENS（三风格色板 + 字体 + 可编辑运行时 chrome） === */
+:root {
+  /* CJK 原生栈（不引网络字体） */
+  --cjk-serif: "Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  --cjk-sans: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+
+  /* 三风格字体栈：拉丁内联 @font-face + 强分层系统回退 */
+  --font-s-disp: "Archivo","Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  --font-s-body: "Archivo","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  --font-b: "JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",monospace;
+  --font-c-disp: "Tektur","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  --font-c-body: "Chakra Petch","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+
+  /* RTE 工具栏 Display/Body 预设 */
+  --font-display: "Archivo","Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  --font-body: "Archivo","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+
+  /* 风格 S · 瑞士纸白 */
+  --s-bg: #FAFAF8;
+  --s-ink: #0A0A0A;
+  --s-accent: #FF6B35;
+  --s-muted: #6B6B66;
+  --s-hairline: rgba(10,10,10,.14);
+
+  /* 风格 B · 终端绿 */
+  --b-bg: #0d1117;
+  --b-panel: #161b22;
+  --b-border: #30363d;
+  --b-green: #39d353;
+  --b-text: #c9d1d9;
+  --b-muted: #8b949e;
+  --b-red: #ff7b72;
+
+  /* 风格 C · 像素轨道 */
+  --c-void: #070a1a;
+  --c-pink: #ff2e88;
+  --c-cyan: #3ee6ff;
+  --c-yellow: #ffd23f;
+  --c-text: #eef1ff;
+  --c-muted: #9aa3c7;
+
+  /* 运行时引用的底色的深度值（Done 按钮文字色等） */
+  --slide-bg-deep: #070a1a;
+
+  /* Deck chrome —— 深色方案，在纸白与深空底上都清晰 */
+  --deck-chrome-bg: rgba(13, 17, 23, 0.94);
+  --deck-chrome-border: rgba(255, 255, 255, 0.16);
+  --deck-chrome-text: #e6edf3;
+  --deck-chrome-muted: #8b949e;
+  --deck-chrome-accent: #FF6B35;
+  --deck-chrome-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --deck-chrome-surface: rgba(22, 27, 34, 0.92);
+}
+
+/* === SECTION: BASE === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: #070a1a;
+  color: #e6edf3;
+}
+
+/* === SECTION: 入场动效（staggered reveal，进入页面即播，可跳过） === */
+.slide .rv,
+.slide .rv-pop { opacity: 0; }
+.slide.visible .rv {
+  animation: rvUp .7s cubic-bezier(.2,.7,.2,1) var(--d, 0s) both;
+}
+.slide.visible .rv-pop {
+  animation: rvPop .55s cubic-bezier(.2,1.4,.4,1) var(--d, 0s) both;
+}
+@keyframes rvUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes rvPop { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: scale(1); } }
+/* 编辑模式下全部内容强制可见，便于选中与改字 */
+body.deck-edit-mode .slide .rv,
+body.deck-edit-mode .slide .rv-pop {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* === SECTION: 风格 S · 瑞士纸白 === */
+.st-s { background: var(--s-bg); color: var(--s-ink); font-family: var(--font-s-body); }
+/* 细网格（装饰，层外） */
+.s-grid {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(10,10,10,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.045) 1px, transparent 1px);
+  background-size: 8.333vw 8.333vh;
+}
+/* 十字对位标记（装饰，层外） */
+.s-cross { position: absolute; width: 14px; height: 14px; z-index: 1; pointer-events: none; }
+.s-cross::before, .s-cross::after { content: ""; position: absolute; background: rgba(10,10,10,.38); }
+.s-cross::before { left: 50%; top: 0; width: 1px; height: 100%; }
+.s-cross::after { top: 50%; left: 0; height: 1px; width: 100%; }
+/* 超大描边幽灵数字（装饰，层外） */
+.s-ghost {
+  position: absolute; right: 2vw; top: 3vh; z-index: 0; pointer-events: none; user-select: none;
+  font-family: "Archivo", "Arial Black", sans-serif; font-weight: 800;
+  font-size: clamp(9rem, 24vw, 22rem); line-height: 1;
+  color: rgba(10,10,10,.045);
+  -webkit-text-stroke: 2px rgba(10,10,10,.13);
+}
+/* S 文本元件 */
+.s-eyebrow {
+  font-family: "Archivo", "Helvetica Neue", sans-serif; font-weight: 800;
+  font-size: clamp(.62rem, .95vw, .85rem); letter-spacing: .32em; text-transform: uppercase;
+  display: flex; align-items: center; gap: .8em; color: var(--s-ink);
+}
+.s-eyebrow::before { content: ""; width: .9em; height: .9em; background: var(--s-accent); flex: none; }
+.s-title {
+  font-family: var(--font-s-disp); font-weight: 700;
+  font-size: clamp(1.6rem, 3.8vw, 3.1rem); line-height: 1.16; letter-spacing: .01em;
+}
+.s-title .o { color: var(--s-accent); }
+.s-sub { color: var(--s-muted); font-size: clamp(.8rem, 1.4vw, 1.1rem); line-height: 1.65; }
+.s-bar { width: clamp(64px, 7vw, 110px); height: clamp(8px, 1.4vh, 12px); background: var(--s-accent); }
+.s-hairline { height: 1px; background: var(--s-hairline); }
+.s-meta { font-size: clamp(.66rem, .95vw, .85rem); color: var(--s-muted); letter-spacing: .1em; line-height: 1.7; }
+.s-kw { font-family: var(--font-s-disp); font-weight: 700; }
+/* S 闭环链路图 */
+.s-loop { display: flex; align-items: center; flex-wrap: nowrap; gap: .55em; }
+.s-lnode {
+  border: 1.5px solid var(--s-ink); background: #fff;
+  padding: .5em .75em; font-size: clamp(.66rem, 1.02vw, .9rem);
+  white-space: nowrap; position: relative;
+}
+.s-lnode .s-lchk {
+  position: absolute; top: -.85em; left: -.45em;
+  color: var(--s-accent); font-weight: 800; font-size: 1.15em;
+}
+.s-larr { color: var(--s-accent); font-weight: 800; font-size: clamp(.8rem, 1.3vw, 1.15rem); flex: none; }
+/* S 编号步骤 */
+.s-step { display: flex; align-items: baseline; gap: .9em; }
+.s-step-n {
+  font-family: "Archivo", sans-serif; font-weight: 800; color: var(--s-accent);
+  font-size: clamp(1rem, 1.9vw, 1.6rem); flex: none; min-width: 1.6em;
+}
+.s-step-t { font-size: clamp(.78rem, 1.3vw, 1.05rem); line-height: 1.45; }
+.s-step-t b { font-weight: 700; }
+.s-step-t i { color: var(--s-muted); font-style: normal; margin-left: .6em; font-size: .85em; }
+.s-step-sep { color: var(--s-muted); font-size: clamp(.64rem, .95vw, .82rem); padding-left: 2.6em; letter-spacing: .06em; }
+/* S 六步网格 */
+.s-grid6 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.6rem, 2.2vh, 1.4rem) clamp(1rem, 2.5vw, 2.5rem); }
+/* S 侧栏卡 / 口令条 */
+.s-card { border: 2px solid var(--s-ink); padding: clamp(.8rem, 2vh, 1.4rem) clamp(.9rem, 1.6vw, 1.5rem); background: #fff; }
+.s-card-label {
+  font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(.6rem, .85vw, .75rem);
+  letter-spacing: .22em; text-transform: uppercase; color: var(--s-accent); margin-bottom: .6em;
+}
+.s-codechip {
+  display: inline-block; border: 1px solid var(--s-hairline); background: #F1F0EC;
+  padding: .3em .6em; font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: .92em;
+}
+.s-shout { background: var(--s-accent); color: var(--s-ink); font-weight: 700;
+  padding: .8em 1.1em; font-size: clamp(.9rem, 1.6vw, 1.3rem); letter-spacing: .02em; }
+/* S 检查点清单 */
+.s-check-i { display: flex; align-items: baseline; gap: .75em; padding: .32em 0; }
+.s-box { width: .82em; height: .82em; border: 1.5px solid var(--s-ink); flex: none; transform: translateY(.08em); }
+.s-check-t { font-size: clamp(.76rem, 1.28vw, 1.02rem); line-height: 1.45; }
+/* S 切换宣言 */
+.s-stmt { font-family: var(--font-s-disp); font-weight: 700; font-size: clamp(1.9rem, 4.9vw, 4.1rem); line-height: 1.18; }
+.s-stmt.dim { color: rgba(10,10,10,.42); }
+.s-stmt .o { color: var(--s-accent); }
+
+/* === SECTION: 风格 B · 终端绿 === */
+.st-b { background: var(--b-bg); color: var(--b-text); font-family: var(--font-b); }
+/* CRT 扫描线 + 暗角（装饰，层外） */
+.b-scan {
+  position: absolute; inset: 0; z-index: 9; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
+  opacity: .5;
+}
+.b-vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(90vw 90vh at 50% 50%, transparent 55%, rgba(0,0,0,.55));
+}
+.b-path { color: var(--b-muted); font-size: clamp(.66rem, .98vw, .88rem); }
+.b-path b { color: var(--b-green); font-weight: 400; }
+.b-h1 { font-family: var(--font-b); font-weight: 700; color: #f0f6fc; font-size: clamp(1.4rem, 3.1vw, 2.5rem); line-height: 1.2; }
+.b-h1 .g { color: var(--b-green); text-shadow: 0 0 16px rgba(57,211,83,.55); }
+.b-note { color: var(--b-muted); font-size: clamp(.7rem, 1.08vw, .92rem); line-height: 1.7; }
+.b-note .g { color: var(--b-green); }
+.b-note .r { color: var(--b-red); }
+/* 终端窗口卡 */
+.b-term {
+  background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(57,211,83,.06), 0 0 32px rgba(57,211,83,.08);
+  height: 100%; display: flex; flex-direction: column;
+}
+.b-termbar { display: flex; align-items: center; gap: 8px; padding: .55em 14px; background: #0d1117; border-bottom: 1px solid var(--b-border); flex: none; }
+.b-termbar i { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.b-termbar i:nth-child(1) { background: #ff5f56; }
+.b-termbar i:nth-child(2) { background: #ffbd2e; }
+.b-termbar i:nth-child(3) { background: #27c93f; }
+.b-termbar span { margin-left: auto; color: var(--b-muted); font-size: clamp(.58rem, .85vw, .78rem); }
+.b-termbody { padding: .9em 18px 1.1em; font-size: clamp(.78rem, 1.32vw, 1.18rem); line-height: 1.85; flex: 1; }
+.b-ln { white-space: pre; }
+.b-prompt { color: var(--b-green); }
+.b-cmd { color: #f0f6fc; }
+.b-out { color: var(--b-green); }
+.b-err { color: var(--b-red); }
+.tk-f { color: #d2a8ff; }
+.tk-s { color: #a5d6ff; }
+.tk-c { color: var(--b-muted); }
+/* 打字机：仅当页面可见时播放 */
+.b-typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; width: 0; }
+.slide.visible .b-typed { animation: bTyping 1.5s steps(23) .5s forwards; }
+@keyframes bTyping { to { width: 23ch; } }
+.b-cursor {
+  display: inline-block; width: .62em; height: 1.15em; background: var(--b-green);
+  vertical-align: text-bottom; margin-left: 2px; box-shadow: 0 0 10px rgba(57,211,83,.8);
+  animation: bBlink 1.05s steps(1) infinite;
+}
+@keyframes bBlink { 50% { opacity: 0; } }
+/* 延时出现（运行命令 / 输出 / 报错） */
+.b-pop { opacity: 0; }
+.slide.visible .b-pop.d1 { animation: bPop .01s 2.3s forwards; }
+.slide.visible .b-pop.d2 { animation: bPop .01s 2.9s forwards; }
+.slide.visible .b-pop.d3 { animation: bPop .01s 1.3s forwards; }
+@keyframes bPop { to { opacity: 1; } }
+/* 错误块：进入时轻微震动一次后静止 */
+.slide.visible .b-shake { animation: bShake .45s 1.35s ease both; }
+@keyframes bShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); } 40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); } 80% { transform: translateX(3px); }
+}
+/* 要点 chips */
+.b-chips { display: flex; flex-wrap: wrap; gap: .55em; }
+.b-chip {
+  border: 1px solid var(--b-border); background: var(--b-panel); color: var(--b-text);
+  border-radius: 999px; padding: .42em .95em; font-size: clamp(.66rem, 1.02vw, .88rem); line-height: 1.4;
+}
+.b-chip b { color: var(--b-green); font-weight: 700; }
+/* B 流程图 */
+.b-flow { display: flex; align-items: stretch; gap: clamp(.5rem, 1.4vw, 1.4rem); height: 100%; }
+.b-fbox {
+  flex: 1; background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
+  padding: clamp(.6rem, 2vh, 1.2rem) clamp(.7rem, 1.4vw, 1.3rem);
+  display: flex; flex-direction: column; justify-content: center; gap: .35em;
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+}
+.b-fbox-l { color: #f0f6fc; font-weight: 700; font-size: clamp(.95rem, 1.7vw, 1.45rem); }
+.b-fbox-l .g { color: var(--b-green); }
+.b-fbox-s { color: var(--b-muted); font-size: clamp(.66rem, 1vw, .88rem); }
+.b-farr { align-self: center; color: var(--b-green); font-size: clamp(1.2rem, 2.4vw, 2rem); text-shadow: 0 0 14px rgba(57,211,83,.6); flex: none; }
+/* B 问答卡（点击揭示） */
+.b-qa {
+  position: relative; background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
+  padding: clamp(.7rem, 2vh, 1.2rem) clamp(.8rem, 1.4vw, 1.3rem); height: 100%;
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+}
+.b-qa-q { color: #f0f6fc; font-weight: 700; font-size: clamp(.8rem, 1.3vw, 1.05rem); line-height: 1.55; }
+.b-qa-q .qn { color: var(--b-green); margin-right: .4em; }
+.b-qa-abox { position: relative; margin-top: .8em; min-height: 7.5em; }
+.b-qa-a { color: var(--b-text); font-size: clamp(.7rem, 1.08vw, .9rem); line-height: 1.7; }
+.b-qa-a b { color: var(--b-green); }
+/* B 故障速查卡 */
+.b-card {
+  background: var(--b-panel); border: 1px solid var(--b-border); border-radius: 10px;
+  padding: clamp(.65rem, 1.8vh, 1.05rem) clamp(.8rem, 1.4vw, 1.25rem);
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+}
+.b-card .sym { color: #f0f6fc; font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; }
+.b-card .sym .tag { color: var(--b-red); margin-right: .5em; }
+.b-card .fix { color: var(--b-green); font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; margin-top: .4em; }
+.b-card .fix .tag { color: var(--b-muted); margin-right: .5em; }
+.b-card code { color: #a5d6ff; font-family: inherit; }
+
+/* === SECTION: 风格 C · 像素轨道 === */
+.st-c {
+  background: radial-gradient(70vw 70vh at 78% 30%, #12173a 0%, var(--c-void) 65%);
+  color: var(--c-text); font-family: var(--font-c-body);
+}
+/* 像素星野（box-shadow 撒星，装饰，层外） */
+.c-stars, .c-stars2 { position: absolute; width: 3px; height: 3px; background: var(--c-cyan); top: 0; left: 0; z-index: 1; pointer-events: none; }
+.c-stars {
+  box-shadow: 8vw 12vh var(--c-cyan), 15vw 78vh var(--c-yellow), 24vw 30vh #fff, 32vw 88vh var(--c-cyan),
+    41vw 18vh var(--c-pink), 52vw 66vh #fff, 58vw 8vh var(--c-cyan), 66vw 84vh var(--c-yellow),
+    74vw 52vh #fff, 83vw 24vh var(--c-cyan), 90vw 70vh var(--c-pink), 6vw 55vh #fff,
+    46vw 42vh var(--c-yellow), 95vw 40vh var(--c-cyan);
+  animation: cTwinkle 2.6s steps(2) infinite;
+}
+.c-stars2 {
+  width: 2px; height: 2px;
+  box-shadow: 12vw 40vh #fff, 28vw 60vh var(--c-cyan), 38vw 8vh #fff,
+    49vw 90vh var(--c-pink), 61vw 34vh #fff, 71vw 12vh var(--c-yellow), 80vw 88vh #fff,
+    88vw 6vh var(--c-cyan), 18vw 90vh #fff, 35vw 48vh var(--c-cyan);
+  animation: cTwinkle 3.4s steps(2) .8s infinite;
+}
+@keyframes cTwinkle { 50% { opacity: .25; } }
+/* CRT 扫描线（装饰，层外） */
+.c-crt {
+  position: absolute; inset: 0; z-index: 9; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 5px);
+  opacity: .45;
+}
+/* 虚线轨道环 + 卫星方块（装饰，层外） */
+.c-orbit {
+  position: absolute; right: 7vw; top: 9vh; width: 20vmin; height: 20vmin; z-index: 1; pointer-events: none;
+  border: 3px dashed rgba(62,230,255,.35); border-radius: 50%;
+  animation: cSpin 14s linear infinite;
+}
+.c-orbit i { position: absolute; top: -8px; left: calc(50% - 8px); width: 16px; height: 16px; background: var(--c-yellow); box-shadow: 0 0 12px var(--c-yellow); }
+@keyframes cSpin { to { transform: rotate(360deg); } }
+/* 像素火星（装饰，层外） */
+.c-mars {
+  position: absolute; right: 11.6vw; top: calc(9vh + 6vmin); width: 8vmin; height: 8vmin; z-index: 1; pointer-events: none;
+  background: var(--c-pink); border-radius: 14%;
+  box-shadow: 0 0 0 1.2vmin rgba(255,46,136,.25), 0 0 34px rgba(255,46,136,.65);
+}
+/* C 文本元件 */
+.c-eyebrow {
+  font-family: var(--font-c-disp); font-weight: 600; color: var(--c-yellow);
+  letter-spacing: .3em; font-size: clamp(.66rem, 1.02vw, .9rem); text-transform: uppercase;
+}
+.c-h1 {
+  font-family: var(--font-c-disp); font-weight: 800;
+  font-size: clamp(1.5rem, 3.3vw, 2.7rem); line-height: 1.12;
+  text-shadow: 4px 4px 0 rgba(255,46,136,.85);
+}
+.c-h1 .cy { color: var(--c-cyan); }
+.c-note { color: var(--c-muted); font-size: clamp(.7rem, 1.05vw, .9rem); line-height: 1.7; }
+/* 版本徽章 */
+.c-badge {
+  display: inline-block; font-family: var(--font-c-disp); font-weight: 800;
+  color: var(--c-void); background: var(--c-pink); padding: .12em .55em;
+  box-shadow: 5px 5px 0 var(--c-cyan); font-size: clamp(.95rem, 1.9vw, 1.5rem); letter-spacing: .05em;
+}
+/* 像素角括号面板 */
+.c-panel {
+  position: relative; background: rgba(7,10,26,.78);
+  border: 2px solid rgba(62,230,255,.35);
+  box-shadow: 6px 6px 0 rgba(255,46,136,.55);
+  padding: clamp(.8rem, 2.2vh, 1.4rem) clamp(.9rem, 1.7vw, 1.5rem);
+}
+.c-panel::before, .c-panel::after, .c-corners::before, .c-corners::after {
+  content: ""; position: absolute; width: 20px; height: 20px;
+}
+.c-panel::before { top: -2px; left: -2px; border-top: 5px solid var(--c-cyan); border-left: 5px solid var(--c-cyan); }
+.c-panel::after { top: -2px; right: -2px; border-top: 5px solid var(--c-cyan); border-right: 5px solid var(--c-cyan); }
+.c-corners::before { bottom: -2px; left: -2px; border-bottom: 5px solid var(--c-cyan); border-left: 5px solid var(--c-cyan); }
+.c-corners::after { bottom: -2px; right: -2px; border-bottom: 5px solid var(--c-cyan); border-right: 5px solid var(--c-cyan); }
+.c-corners { position: absolute; inset: 0; pointer-events: none; }
+.c-panel-label {
+  font-family: var(--font-c-disp); font-weight: 600; font-size: clamp(.58rem, .85vw, .76rem);
+  letter-spacing: .22em; color: var(--c-muted); text-transform: uppercase; margin-bottom: .7em;
+}
+/* C 代码与输出 */
+.c-code { font-family: var(--font-c-body); font-size: clamp(.74rem, 1.24vw, 1.02rem); line-height: 1.85; white-space: nowrap; }
+.c-code .tk-f { color: var(--c-cyan); }
+.c-code .tk-s { color: var(--c-yellow); }
+.c-code .tk-p { color: var(--c-muted); }
+.c-out { font-family: var(--font-c-body); font-size: clamp(.74rem, 1.24vw, 1.02rem); line-height: 1.85; color: #fff; white-space: nowrap; }
+.c-out .cy { color: var(--c-cyan); }
+/* 像素任务芯片（黄色按钮 + 硬阴影） */
+.c-chip {
+  display: inline-block; padding: .75em 1.15em; font-family: var(--font-c-body); font-weight: 600;
+  color: var(--c-void); background: var(--c-yellow); box-shadow: 6px 6px 0 var(--c-pink);
+  font-size: clamp(.7rem, 1.12vw, .95rem); line-height: 1.5;
+}
+.c-chip.alt { background: var(--c-cyan); box-shadow: 6px 6px 0 var(--c-pink); }
+/* C 验收清单 */
+.c-check-i { display: flex; align-items: baseline; gap: .7em; padding: .3em 0; }
+.c-check-i .ok { color: var(--c-yellow); font-weight: 700; flex: none; }
+.c-check-i .t { font-size: clamp(.72rem, 1.15vw, .95rem); line-height: 1.5; }
+
+/* === SECTION: Pages 侧栏缩略图修正（克隆页内动画元素直接呈现终态） === */
+.filmstrip-thumb-host .rv,
+.filmstrip-thumb-host .rv-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
+.filmstrip-thumb-host .b-pop { opacity: 1 !important; animation: none !important; }
+.filmstrip-thumb-host .b-typed { width: auto !important; animation: none !important; }
+
+/* === SECTION: 点击揭示交互（演示模式专属，编辑模式禁用并全显） === */
+[data-reveal] { cursor: pointer; }
+.rv-a { opacity: 0; transform: translateY(6px); transition: opacity .45s ease, transform .45s ease; }
+.rv-mask {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  transition: opacity .3s ease; z-index: 2;
+}
+.rv-mask span {
+  font-size: clamp(.64rem, .95vw, .82rem); padding: .35em 1em; border-radius: 999px;
+  animation: rvPulse 1.6s ease-in-out infinite;
+}
+@keyframes rvPulse { 50% { opacity: .55; } }
+.st-b .rv-mask { background: rgba(22,27,34,.72); border: 1px dashed var(--b-border); border-radius: 8px; }
+.st-b .rv-mask span { color: var(--b-green); border: 1px solid var(--b-green); font-family: var(--font-b); }
+.st-c .rv-mask { background: rgba(7,10,26,.8); border: 2px dashed rgba(62,230,255,.5); }
+.st-c .rv-mask span { color: var(--c-cyan); border: 2px solid var(--c-cyan); font-family: var(--font-c-disp); letter-spacing: .12em; }
+[data-reveal].revealed { cursor: default; }
+[data-reveal].revealed .rv-a { opacity: 1; transform: none; }
+[data-reveal].revealed .rv-mask { opacity: 0; pointer-events: none; }
+body.deck-edit-mode [data-reveal] { cursor: default; }
+body.deck-edit-mode .rv-a { opacity: 1 !important; transform: none !important; transition: none; }
+body.deck-edit-mode .rv-mask { display: none !important; }
+
+/* === SECTION: REDUCED MOTION 补充（动画终态直接呈现） === */
+@media (prefers-reduced-motion: reduce) {
+  .slide .rv, .slide .rv-pop { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .b-typed { width: auto !important; animation: none !important; }
+  .b-pop { opacity: 1 !important; animation: none !important; }
+  .b-shake { animation: none !important; }
+  .c-stars, .c-stars2, .c-orbit { animation: none !important; }
+  .rv-mask span { animation: none !important; }
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览 B · Terminal Green 终端极客</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* === 预览 B：Terminal Green —— GitHub dark + 终端绿 + 扫描线 === */
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  --green: #39d353;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --cjk: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+.slide {
+  position:relative; height:100vh; overflow:hidden;
+  background:var(--bg); color:var(--text);
+  font-family:"JetBrains Mono", var(--cjk);
+  display:flex; align-items:center; justify-content:center;
+}
+/* CRT 扫描线 */
+.scan { position:absolute; inset:0; pointer-events:none; z-index:5;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
+  opacity:.5; }
+/* 暗角 */
+.vignette { position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(90vw 90vh at 50% 50%, transparent 55%, rgba(0,0,0,.55)); }
+
+.wrap { position:relative; width:min(76vw, 980px); z-index:2; }
+
+.head { animation:fadeUp .8s .2s cubic-bezier(.2,.7,.2,1) both; }
+.path { color:var(--muted); font-size:clamp(12px,1vw,15px); margin-bottom:1.6vh; }
+.path b { color:var(--green); font-weight:400; }
+h1 { font-weight:700; font-size:clamp(30px,4vw,60px); line-height:1.15; color:#f0f6fc; }
+h1 .g { color:var(--green); text-shadow:0 0 16px rgba(57,211,83,.55); }
+.sub { margin-top:1.8vh; color:var(--muted); font-size:clamp(13px,1.2vw,18px); }
+
+/* 终端窗口 */
+.term { margin-top:4.5vh; background:var(--panel); border:1px solid var(--border); border-radius:10px;
+  overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(57,211,83,.06), 0 0 32px rgba(57,211,83,.08);
+  animation:fadeUp .8s .7s cubic-bezier(.2,.7,.2,1) both; }
+.bar { display:flex; align-items:center; gap:8px; padding:1.2vh 16px; background:#0d1117;
+  border-bottom:1px solid var(--border); }
+.bar i { width:11px; height:11px; border-radius:50%; }
+.bar i:nth-child(1){background:#ff5f56}.bar i:nth-child(2){background:#ffbd2e}.bar i:nth-child(3){background:#27c93f}
+.bar span { margin-left:auto; color:var(--muted); font-size:clamp(10px,.9vw,13px); }
+.body { padding:2.4vh 20px 3vh; font-size:clamp(14px,1.4vw,21px); line-height:2; }
+.ln { white-space:nowrap; }
+.prompt { color:var(--green); }
+.cmd { color:#f0f6fc; }
+.typed { display:inline-block; overflow:hidden; vertical-align:bottom; width:0;
+  animation:type 1s steps(15) 1.2s forwards; }
+@keyframes type { to { width:15ch; } }
+.out { color:var(--green); opacity:0; animation:pop .01s 2.4s forwards; }
+.cursor { display:inline-block; width:.62em; height:1.15em; background:var(--green);
+  vertical-align:text-bottom; margin-left:2px; box-shadow:0 0 10px rgba(57,211,83,.8);
+  animation:blink 1.05s steps(1) infinite; }
+@keyframes blink { 50% { opacity:0; } }
+@keyframes pop { to { opacity:1; } }
+
+/* 底部章节标记 */
+.foot { margin-top:4vh; display:flex; justify-content:space-between; color:var(--muted);
+  font-size:clamp(11px,.95vw,14px); animation:fadeUp .8s 1s both; }
+.foot .g { color:var(--green); }
+
+@keyframes fadeUp { from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none} }
+@media (prefers-reduced-motion: reduce) { *{animation:none !important} .typed{width:auto} .out{opacity:1} }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="scan"></div><div class="vignette"></div>
+  <div class="wrap">
+    <div class="head">
+      <div class="path"><b>~/mars-base</b> $ cat lesson_01.md</div>
+      <h1>第 1 章 <span class="g">//</span> 环境、Python<br>与第一个程序</h1>
+      <p class="sub"># 目标：创建 .py 文件，运行，修改，再运行 —— 建立第一个编程闭环</p>
+    </div>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i><span>main.py — python3</span></div>
+      <div class="body">
+        <div class="ln"><span class="prompt">$ </span><span class="cmd typed">python3 main.py</span></div>
+        <div class="ln out">Hello, Python!</div>
+        <div class="ln"><span class="prompt">$ </span><span class="cursor"></span></div>
+      </div>
+    </div>
+    <div class="foot">
+      <span><span class="g">[OK]</span> 环境验证通过</span>
+      <span>火星基地资源调度模拟器 · V0</span>
+    </div>
+  </div>
+</section>
+</body>
+</html>
