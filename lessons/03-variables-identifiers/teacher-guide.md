@@ -230,6 +230,7 @@ print(level)
 | 布尔值 | `True`、`False` |
 | 推荐命名 | `student_score` |
 
+- 本章配套幻灯片：`lessons/03-variables-identifiers/slides.html`（21 页，第 5、9、13 页含点击揭示互动，第 4、12、15、19 页含分步揭示；内容定稿见 `slides-content.md`）
 - 上一版本：`project/chapter-versions/v1_output_comments_debug.py`
 - 本章答案：`project/chapter-versions/v2_variables_types.py`
 - 下一版本：`project/chapter-versions/v3_strings_formatting.py`
