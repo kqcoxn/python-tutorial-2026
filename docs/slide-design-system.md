@@ -51,7 +51,7 @@
 --b-red: #ff7b72;   /* 仅用于报错 */
 ```
 
-- **字体**：`JetBrains Mono` + 原生 CJK 栈；全页等宽。
+- **字体**：`JetBrains Mono` + 原生 CJK 栈；全页等宽。所有代码/运算符显示元素必须禁用连字（`font-variant-ligatures: none; font-feature-settings: "calt" 0, "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;`），保证 `==`、`>=`、`<=`、`!=` 逐字符原样渲染，避免学生误读。
 - **签名元素**：CRT 扫描线覆盖层、终端窗口卡（三色灯标题栏 + 路径）、打字机逐字动画（`steps()`）、闪烁方块光标、语法着色、`$` 提示符。
 - **代码页规范**：左代码右输出，或上代码下要点 chips；代码 ≤10 行；Traceback 用 `--b-red`，逐行高亮阅读顺序。
 - **动效**：打字、行级点亮（`animation-delay` 逐行）、错误页轻微震动一次后静止。
