@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-deck-id="py00-course-intro-v1" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
+<html lang="zh-CN" data-deck-id="py09-for-break-continue-v1" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>第 0 章 · 课程导入 — 课件</title>
+<title>第 9 章 · for 循环与 break、continue — 课件</title>
 <style>
 /* === SECTION: viewport-base.css（完整内联，禁止删改） === */
 /* ===========================================
@@ -674,118 +674,25 @@ body.deck-edit-mode .rv-mask { display: none !important; }
   .rv-mask span { animation: none !important; }
 }
 
-/* === SECTION: 第 0 章专属补充样式 === */
-/* === SECTION: 第 0 章专属补充样式（拼在共享 frag-style.css 之后） ===
-   仅放第 0 章新增元件：自我介绍卡（p02）、三阶段课程表（p03）、
-   关键词超大字（p06/p08）、闭环蛇形流程（p10）、打字机宽度变体（p09）。
-   命名与共享 CSS 风格一致；所有尺寸 clamp()，1280×720 无页内滚动。 */
-
-/* 长标题降档（p04「第一阶段：三次课 · 11 章 · 一个作品」一行放下） */
-.s-title-sm { font-size: clamp(36px, 3.7vw, 60px); }
-
-/* --- p02 自我介绍：左身份栏 + 右侧两卡并排（教师自定密度，紧凑卡片排版） --- */
-.s-intro { display: flex; align-items: stretch; gap: clamp(22px, 2.8vw, 44px); }
-.s-intro-id { flex: 0 0 33%; display: flex; flex-direction: column; gap: clamp(10px, 1.8vh, 16px); }
-.s-intro-role { font-size: var(--fs-small); color: var(--s-muted); letter-spacing: .28em; }
-.s-intro-name {
-  font-family: var(--font-s-disp); font-weight: 700;
-  font-size: clamp(44px, 4.4vw, 72px); line-height: 1.12;
-}
-.s-intro-lines { display: flex; flex-direction: column; gap: .3em; font-size: clamp(17px, 1.55vw, 22px); line-height: 1.5; }
-.s-intro-cards { flex: 1; display: flex; gap: clamp(14px, 1.6vw, 24px); }
-.s-intro-card {
-  flex: 1; border: 2px solid var(--s-ink); background: #fff;
-  padding: clamp(12px, 2vh, 18px) clamp(14px, 1.5vw, 22px);
-}
-.s-intro-card-title {
-  display: flex; align-items: center; gap: .55em;
-  font-weight: 800; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.3;
-  margin-bottom: .35em;
-}
-.s-intro-card-title::before { content: ""; width: .55em; height: .55em; background: var(--s-accent); flex: none; }
-.s-intro-item { font-size: clamp(16px, 1.4vw, 20px); line-height: 1.4; padding: .32em 0; }
-.s-intro-item + .s-intro-item { border-top: 1px solid var(--s-hairline); }
-.s-intro-item.dim { color: var(--s-muted); }
-
-/* --- p03 课程安排 · 三阶段全貌（密度规则有意例外：教师要求列全 30 章） --- */
-.s-syl { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.6vw, 24px); align-items: stretch; }
-.s-syl-col {
-  border: 1.5px solid var(--s-hairline); background: #fff; color: var(--s-muted);
-  padding: clamp(12px, 2vh, 18px) clamp(12px, 1.4vw, 20px);
-  display: flex; flex-direction: column;
-}
-.s-syl-col.hot {
-  border: 2.5px solid var(--s-accent); background: rgba(255,107,53,.05); color: var(--s-ink);
-  box-shadow: 6px 6px 0 rgba(255,107,53,.2);
-}
-.s-syl-head {
-  display: flex; flex-direction: column; align-items: flex-start; gap: .3em;
-  min-height: clamp(96px, 14.5vh, 120px); /* 三列清单顶部对齐 */
-  padding-bottom: clamp(8px, 1.4vh, 12px);
-}
-.s-syl-stage { font-weight: 800; font-size: clamp(19px, 1.8vw, 25px); line-height: 1.25; }
-.s-syl-col:not(.hot) .s-syl-stage { color: #4a4a46; }
-.s-syl-meta { font-size: clamp(15px, 1.4vw, 19px); line-height: 1.4; }
-.s-syl-tag {
-  display: inline-block; margin-top: .4em;
-  background: var(--s-accent); color: #fff; font-weight: 700;
-  font-size: clamp(13px, 1.15vw, 16px); line-height: 1.3; padding: .22em .65em;
-}
-.s-syl-list { list-style: decimal outside; padding-left: 1.9em; font-size: clamp(14px, 1.15vw, 17px); line-height: 1.45; }
-.s-syl-list li { padding-left: .15em; }
-.s-syl-list li + li { margin-top: .3em; }
-.s-syl-list li::marker { font-weight: 700; color: var(--s-accent); }
-.s-syl-col:not(.hot) .s-syl-list li::marker { color: var(--s-muted); }
-
-/* --- p06 编程是什么：关键词超大字编辑式排版 --- */
-.s-what-hero { font-size: clamp(28px, 2.7vw, 42px); line-height: 1.35; }
-.s-kw {
-  font-family: var(--font-s-disp); font-weight: 700;
-  font-size: clamp(56px, 6.4vw, 100px); line-height: 1.15;
-  padding: 0 .08em; border-bottom: .14em solid var(--s-accent);
-}
-.s-what-sub { font-size: clamp(26px, 2.4vw, 38px); line-height: 1.5; }
-.s-kw2 {
-  font-family: var(--font-s-disp); font-weight: 700;
-  font-size: clamp(38px, 4.2vw, 64px); line-height: 1.2;
-  color: var(--s-accent); padding: 0 .06em;
+/* === SECTION: 课件通用补充样式（连字禁用 + C 揭示条，全套章节沿用） === */
+/* 教学防误读：代码与运算符显示一律禁用连字（== >= <= != 逐字符原样渲染） */
+.s-code, .b-code, .c-code, .b-codecard {
+  font-variant-ligatures: none;
+  font-feature-settings: "calt" 0, "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;
 }
 
-/* --- p08 强调句：橙色粗边 + 大号衬线 --- */
-.s-emph {
-  border-left: clamp(8px, 1vw, 14px) solid var(--s-accent);
-  padding-left: clamp(16px, 1.8vw, 28px);
-  font-family: var(--font-s-disp); font-weight: 700;
-  font-size: clamp(30px, 3.3vw, 50px); line-height: 1.32;
+/* C 风格 · 揭示条（对应 B 的 b-revealbar，像素轨道配色 + 硬阴影；沿用第 2 章同款） */
+.c-revealbar {
+  position: relative;
+  border: 2px dashed rgba(255, 210, 63, .45);
+  background: rgba(7, 10, 26, .6);
+  box-shadow: 6px 6px 0 rgba(255, 46, 136, .35);
+  padding: clamp(12px, 2.2vh, 18px) clamp(16px, 1.8vw, 26px);
+  font-size: var(--fs-body);
+  line-height: 1.5;
 }
-
-/* --- p10 编程的日常：6 段蛇形闭环（末段经 ↑ 指回首段，体现"转圈"） --- */
-.s-loop {
-  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
-  column-gap: clamp(8px, 1vw, 16px); row-gap: clamp(6px, 1.2vh, 12px);
-  align-items: center;
-}
-.s-loop-box {
-  border: 2px solid var(--s-ink); background: #fff; text-align: center;
-  padding: clamp(10px, 2vh, 18px) clamp(6px, .9vw, 14px);
-  font-size: clamp(22px, 2vw, 30px); font-weight: 700; line-height: 1.25;
-}
-.s-loop-num {
-  display: block; font-family: "Archivo", sans-serif; font-weight: 800;
-  color: var(--s-accent); font-size: .6em; letter-spacing: .18em; margin-bottom: .15em;
-}
-.s-loop-arr { color: var(--s-accent); font-weight: 800; font-size: clamp(24px, 2.2vw, 34px); text-align: center; }
-.s-loop-turn { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; }
-.s-loop-turn span {
-  color: var(--s-accent); font-weight: 800; font-size: clamp(24px, 2.2vw, 34px);
-  text-align: center; line-height: 1;
-}
-.s-loop-turn .up { grid-column: 1; }
-.s-loop-turn .down { grid-column: 5; }
-
-/* --- p09 打字机宽度变体：print("你好")（CJK 占宽 ≠ 1ch，放宽防裁切） --- */
-.slide.visible .b-typed.t-hello { animation: bTypingHello 1.4s steps(11) .6s forwards; }
-@keyframes bTypingHello { to { width: 13ch; } }
+.c-revealbar b { color: var(--c-yellow); }
+.c-revealbar .cy { color: var(--c-cyan); }
 
 /* === SECTION: 可编辑运行时 chrome（取自 editable-deck-reference，仅使用 --deck-chrome-* 变量） === */
 /* === deck chrome (fixed UI) === */
@@ -1405,386 +1312,582 @@ body.deck-edit-mode .rv-mask { display: none !important; }
 </div>
 
 <div class="slides-offset">
-<!-- ================= SLIDE p01 · S 封面 ================= -->
-<section class="slide st-s visible" id="p01-cover">
+<!-- ================= SLIDE 0 · P1 · S 封面 ================= -->
+<section class="slide st-s visible" id="slide-0">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="s-ghost" aria-hidden="true">00</div>
+  <div class="s-ghost" aria-hidden="true">09</div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p01-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-eyebrow rvi" style="--d:.05s;">WELCOME · 课程安排与序章</div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础 · 第 9 章</div>
         <div class="s-bar rvi" style="--d:.15s;"></div>
-        <div class="s-hero rvi" style="--d:.25s;">Python 基础与<br>AI 编程实践</div>
-        <div class="s-body rvi" style="--d:.45s;">从零基础，到写出自己的作品</div>
+        <div class="s-hero rvi" style="--d:.25s;">再来点循环：for、range()、break、continue</div>
+        <div class="s-body rvi" style="--d:.45s;">固定次数、提前结束、跳过本轮</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p02 · S 自我介绍 ================= -->
-<section class="slide st-s" id="p02-intro">
+<!-- ================= SLIDE 1 · P2 · S 两类重复问题 ================= -->
+<section class="slide st-s" id="slide-1">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p02-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">自我介绍</div>
-        <div class="s-intro rvi" style="--d:.25s;">
-          <div class="s-intro-id">
-            <div class="s-intro-role">主讲人</div>
-            <div class="s-intro-name">马锦艺</div>
-            <div class="s-hairline"></div>
-            <div class="s-intro-lines">
-              <div>东北大学 软件学院</div>
-              <div>泛虚拟现实人才培养与技术创新中心</div>
-              <div>硕士研究生</div>
-              <div>导师：高天寒 教授</div>
-            </div>
-          </div>
-          <div class="s-intro-cards">
-            <div class="s-intro-card">
-              <div class="s-intro-card-title">近期荣誉</div>
-              <div class="s-intro-list">
-                <div class="s-intro-item">xFusion AI Hackthon 2026 冠军🏆</div>
-                <div class="s-intro-item">蓝桥杯 2026 软件赛 全国一等奖</div>
-                <div class="s-intro-item">2024 年度 国家奖学金</div>
-                <div class="s-intro-item">NCDA 2023 全国一等奖</div>
-                <div class="s-intro-item dim">...</div>
-              </div>
-            </div>
-            <div class="s-intro-card">
-              <div class="s-intro-card-title">开源贡献</div>
-              <div class="s-intro-list">
-                <div class="s-intro-item">Github 项目累积 10k Star⭐</div>
-                <div class="s-intro-item">MaaFW 社区 Org Member, Core Maintainer</div>
-                <div class="s-intro-item dim">...</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p03 · S 课程安排（三阶段 30 章全貌） ================= -->
-<section class="slide st-s" id="p03-syllabus">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p03-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(14px,2.4vh,22px);">
-        <div class="s-title rvi" style="--d:.1s;">课程安排 · 共 30 章</div>
-        <div class="s-syl">
-          <div class="s-syl-col hot rvi" style="--d:.2s;">
-            <div class="s-syl-head">
-              <div class="s-syl-stage">Python 基础（上）</div>
-              <div class="s-syl-meta">（11 章）—— 马锦艺、梁健</div>
-              <div class="s-syl-tag">我们从第一阶段开始</div>
-            </div>
-            <ol class="s-syl-list">
-              <li>Python、PyCharm 的安装与相关配置</li>
-              <li>了解 Python，并编写第一个程序，常见的 bug</li>
-              <li>Debug、注释与输出函数</li>
-              <li>变量与标识符</li>
-              <li>数值类型、字符串与格式化输出</li>
-              <li>算术与赋值运算符、输入函数与转义字符</li>
-              <li>if 判断、比较运算符与逻辑运算符</li>
-              <li>if-else、if-elif 与 if 嵌套</li>
-              <li>while 循环与循环嵌套</li>
-              <li>for 循环与 break、continue 关键字</li>
-              <li>课上作业</li>
-            </ol>
-          </div>
-          <div class="s-syl-col rvi" style="--d:.3s;">
-            <div class="s-syl-head">
-              <div class="s-syl-stage">Python 基础（下）</div>
-              <div class="s-syl-meta">（9 章）—— 杨景森、谢雨荷</div>
-            </div>
-            <ol class="s-syl-list" start="12">
-              <li>字符串编码与字符串常见操作</li>
-              <li>字符串的查找、判断、修改</li>
-              <li>列表的定义与增删改查，列表的推导式与嵌套</li>
-              <li>元组、字典的定义与字典的增删改查</li>
-              <li>字典的常见操作二、集合的格式及使用</li>
-              <li>类型转换：int、float、str、eval、tuple、list、chr()</li>
-              <li>赋值、深浅拷贝、可变与不可变对象</li>
-              <li>函数、return 返回值与形参实参</li>
-              <li>作用域、匿名函数与匿名函数的参数</li>
-            </ol>
-          </div>
-          <div class="s-syl-col rvi" style="--d:.4s;">
-            <div class="s-syl-head">
-              <div class="s-syl-stage">AI 编程实践</div>
-              <div class="s-syl-meta">（10 章）</div>
-            </div>
-            <ol class="s-syl-list" start="21">
-              <li>AI 核心概念讲解：LLM 到 Agent、Skill</li>
-              <li>利用 Agent 进行编程（1）</li>
-              <li>课上作业</li>
-              <li>利用 Agent 进行编程（2）</li>
-              <li>课上作业</li>
-              <li>AI 方法概述</li>
-              <li>利用 Agent 进行 AI 方法构建（1）</li>
-              <li>课上作业</li>
-              <li>利用 Agent 进行 AI 方法构建（2）</li>
-              <li>课上作业</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p04 · S 第一阶段的安排 ================= -->
-<section class="slide st-s" id="p04-map">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p04-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title s-title-sm rvi" style="--d:.1s;">第一阶段：三次课 · 11 章 · 一个作品</div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">WHY · 两类重复问题</div>
+        <div class="s-title rvi" style="--d:.15s;">重复次数已知，还是只知道条件？</div>
         <div class="rvi" style="--d:.3s;">
-          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>起步</b>（1–3 章）：环境、输出与排错</span></div>
-          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>积木</b>（4–6 章）：变量、字符串与输入</span></div>
-          <div class="s-row"><span class="s-num">03</span><span class="s-txt"><b>逻辑</b>（7–10 章）：判断与循环</span></div>
-          <div class="s-row"><span class="s-num">04</span><span class="s-txt"><b>作品</b>（11 章）：火星基地模拟器</span></div>
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">“输出 5 次” -&gt; 次数已知</span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">“输入到合法为止” -&gt; 条件控制</span></div>
         </div>
+        <div class="s-body rvi" style="--d:.45s;">前者更适合 <span class="s-code">for</span>，后者更适合 <span class="s-code">while</span>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p05 · S 上课注意事项 ================= -->
-<section class="slide st-s" id="p05-rules">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p05-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">上课的四个注意事项</div>
-        <div class="rvi" style="--d:.3s;">
-          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>先猜，再运行</b> —— 运行前先说预测</span></div>
-          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>动手 &gt; 听讲</b> —— 一半以上在写代码</span></div>
-          <div class="s-row"><span class="s-num">03</span><span class="s-txt"><b>红字是朋友</b> —— 报错在给你指路</span></div>
-          <div class="s-row"><span class="s-num">04</span><span class="s-txt"><b>求助三步走</b> —— 读报错 → 问同学 → 举手示意</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p06 · S 编程是什么 ================= -->
-<section class="slide st-s" id="p06-what">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p06-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">编程是什么？</div>
-        <div class="s-body rvi" style="--d:.3s;">用电脑能懂的语言，</div>
-        <div class="s-what-hero rvi" style="--d:.45s;">写一份让它<b>照着做的</b><span class="s-kw">说明书</span>。</div>
-        <div class="s-what-sub rvi" style="--d:.65s;">这份说明书叫<span class="s-kw2">程序</span>；写说明书，就是<span class="s-kw2">编程</span>。</div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p07 · S 电脑的三个特点 ================= -->
-<section class="slide st-s" id="p07-computer">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p07-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">认识你的新同事：电脑</div>
-        <div class="rvi" style="--d:.3s;">
-          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>很笨</b> —— 不会猜你的意思</span></div>
-          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>很听话</b> —— 只按字面照做</span></div>
-          <div class="s-row"><span class="s-num">03</span><span class="s-txt"><b>很快</b> —— 一秒能算上亿次</span></div>
-        </div>
-        <div class="rvi" style="--d:.5s;">
-          <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
-          <div class="s-body">编程的所有规矩，都来自这三条。</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p08 · S 为什么要"较真" ================= -->
-<section class="slide st-s" id="p08-precision">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p08-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">为什么一个括号都不能错？</div>
-        <div class="rvi" style="--d:.3s;">
-          <div class="s-body">菜谱写「盐少许」，厨师能领会；</div>
-          <div class="s-body">代码少个括号，电脑直接罢工。</div>
-        </div>
-        <div class="s-emph rvi" style="--d:.55s;">电脑不领会精神，只逐字照做。</div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE p09 · B 编程语言 ================= -->
-<section class="slide st-b" id="p09-language">
+<!-- ================= SLIDE 2 · P3 · B 第一个 for ================= -->
+<section class="slide st-b" id="slide-2">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p09-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">电脑只懂 <span class="g">0 和 1</span></div>
-        <div class="b-body rvi" style="--d:.2s;">同样让电脑说声「你好」：</div>
-        <div class="b-term rvi" style="--d:.35s;">
-          <div class="b-termbar"><i></i><i></i><i></i><span>hello.py — python3</span></div>
-          <div class="b-termbody">
-            <div class="b-ln"><span class="tk-c">机器语言（示意）：10110000 01100001 ...</span></div>
-            <div class="b-ln"><span class="tk-c">Python：</span><span class="b-typed t-hello"><span class="tk-f">print</span>(<span class="tk-s">"你好"</span>)</span><span class="b-cursor"></span></div>
+        <div class="b-h1 rvi" style="--d:.05s;">依次取得<span class="g">一组整数</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> number <span class="tk-f">in</span> <span class="tk-f">range</span>(5):</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(number)</div>
+        </div>
+        <div class="b-body rvi" data-step style="--d:.45s;">输出：<span class="g">0 · 1 · 2 · 3 · 4</span></div>
+        <div class="b-body rvi" style="--d:.6s;"><span class="b-code">number</span> 每一轮自动取得下一个值。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 3 · P4 · B range(stop) ================= -->
+<section class="slide st-b" id="slide-3">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">只写终点时，<span class="g">从 0 开始</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">range</span>(5)</div>
+        </div>
+        <div class="b-body rvi" style="--d:.4s;">开始：0　终点边界：5　步长：1</div>
+        <div class="b-body rvi" data-step style="--d:.55s;">实际序列：<span class="g">0、1、2、3、4</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 4 · P5 · B range(start, stop) ================= -->
+<section class="slide st-b" id="slide-4">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s4-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">指定<span class="g">起点</span>和终点边界</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> number <span class="tk-f">in</span> <span class="tk-f">range</span>(2, 6):</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(number)</div>
+        </div>
+        <div class="b-body rvi" data-step style="--d:.45s;">实际序列：<span class="g">2、3、4、5</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 5 · P6 · B 左闭右开 ================= -->
+<section class="slide st-b" id="slide-5">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s5-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">包含起点，<span class="g">不包含终点</span></div>
+        <div class="b-body rvi" style="--d:.25s;"><span class="b-code">range(1, 5)</span> -&gt; 1、2、3、4</div>
+        <div class="b-body rvi" style="--d:.45s;">想输出 1 到 5：<span class="b-code">range(1, 6)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 6 · P7 · B 指定步长 ================= -->
+<section class="slide st-b" id="slide-6">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s6-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">第三个参数决定<span class="g">每次走多远</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> number <span class="tk-f">in</span> <span class="tk-f">range</span>(10, 3, -2):</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(number)</div>
+        </div>
+        <div class="b-body rvi" data-step style="--d:.45s;">实际序列：<span class="g">10、8、6、4</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 7 · P8 · B 范围预测（点击揭示） ================= -->
+<section class="slide st-b" id="slide-7">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s7-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">写出全部实际值</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">range</span>(3)</div>
+          <div class="b-cl"><span class="tk-f">range</span>(3, 7)</div>
+          <div class="b-cl"><span class="tk-f">range</span>(8, 1, -3)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.45s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>0,1,2</b> ／ <b>3,4,5,6</b> ／ <b>8,5,2</b></div>
+            <div class="rv-mask"><span>点击揭示 · 结果</span></div>
           </div>
         </div>
-        <div class="rvi" style="--d:.55s;">
-          <div class="b-row"><span class="b-num">›</span><span>编程语言，是人和电脑之间的「约定语言」。</span></div>
-          <div class="b-row"><span class="b-num">›</span><span>你只管写 Python，<b>解释器</b>负责翻译——第 1 章见。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 8 · P9 · B for 还是 while ================= -->
+<section class="slide st-b" id="slide-8">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s8-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">用最直接的结构<span class="g">表达题意</span></div>
+        <div class="b-body rvi" style="--d:.25s;">固定次数、整数范围 -&gt; <span class="b-code">for</span></div>
+        <div class="b-body rvi" style="--d:.4s;">条件控制 -&gt; <span class="b-code">while</span></div>
+        <div class="b-body rvi" style="--d:.55s;">两者有时都能完成，但清晰度不同。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 9 · P10 · B break ================= -->
+<section class="slide st-b" id="slide-9">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s9-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">条件满足，<span class="g">立即结束循环</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> attempt <span class="tk-f">in</span> <span class="tk-f">range</span>(1, 4):</div>
+          <div class="b-cl">    answer = <span class="tk-f">input</span>(<span class="tk-s">f"第 {attempt} 次尝试："</span>)</div>
+          <div class="b-cl">    <span class="tk-f">if</span> answer == <span class="tk-s">"python"</span>:</div>
+          <div class="b-cl">        <span class="tk-f">print</span>(<span class="tk-s">"回答正确"</span>)</div>
+          <div class="b-cl">        <span class="tk-f">break</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p10 · S 编程的日常（蛇形闭环） ================= -->
-<section class="slide st-s" id="p10-loop">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+<!-- ================= SLIDE 10 · P11 · B break 到哪里 ================= -->
+<section class="slide st-b" id="slide-10">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p10-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s10-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">编程的日常，是转圈，不是冲刺</div>
-        <div class="s-loop">
-          <div class="s-loop-box rvi" style="--d:.25s;"><span class="s-loop-num">01</span>理解问题</div>
-          <div class="s-loop-arr rvi" style="--d:.32s;">→</div>
-          <div class="s-loop-box rvi" style="--d:.39s;"><span class="s-loop-num">02</span>设计步骤</div>
-          <div class="s-loop-arr rvi" style="--d:.46s;">→</div>
-          <div class="s-loop-box rvi" style="--d:.53s;"><span class="s-loop-num">03</span>编写代码</div>
-          <div class="s-loop-turn rvi" style="--d:.6s;"><span class="up">↑</span><span class="down">↓</span></div>
-          <div class="s-loop-box rvi" style="--d:.67s;"><span class="s-loop-num">06</span>修改验证</div>
-          <div class="s-loop-arr rvi" style="--d:.74s;">←</div>
-          <div class="s-loop-box rvi" style="--d:.81s;"><span class="s-loop-num">05</span>阅读错误</div>
-          <div class="s-loop-arr rvi" style="--d:.88s;">←</div>
-          <div class="s-loop-box rvi" style="--d:.95s;"><span class="s-loop-num">04</span>运行观察</div>
-        </div>
-        <div class="s-body rvi" style="--d:1.1s;">高手也是写一点、跑一下、改一下。</div>
+        <div class="b-h1 rvi" style="--d:.05s;"><span class="b-code">break</span> 结束的是<span class="g">最近一层循环</span></div>
+        <div class="b-body rvi" style="--d:.25s;">它不会关闭 Python 程序。</div>
+        <div class="b-body rvi" style="--d:.45s;">循环后的代码仍然会继续执行。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p11 · S 所有程序都是这四招 ================= -->
-<section class="slide st-s" id="p11-four">
+<!-- ================= SLIDE 11 · P12 · B continue ================= -->
+<section class="slide st-b" id="slide-11">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s11-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">跳过本轮剩余代码，<span class="g">进入下一轮</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> number <span class="tk-f">in</span> <span class="tk-f">range</span>(1, 8):</div>
+          <div class="b-cl">    <span class="tk-f">if</span> number % 2 == 0:</div>
+          <div class="b-cl">        <span class="tk-f">continue</span></div>
+          <div class="b-cl">    <span class="tk-f">print</span>(number)</div>
+        </div>
+        <div class="b-body rvi" data-step style="--d:.45s;">输出：<span class="g">1、3、5、7</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 12 · P13 · S 一句话区分 ================= -->
+<section class="slide st-s" id="slide-12">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p11-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s12-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">再厉害的程序，也只用这四招</div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">KEY · 一句话区分</div>
+        <div class="s-title rvi" style="--d:.15s;">break 与 continue</div>
         <div class="rvi" style="--d:.3s;">
-          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>说话</b> —— 输出和输入</span></div>
-          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>记住</b> —— 变量和数据</span></div>
-          <div class="s-row"><span class="s-num">03</span><span class="s-txt"><b>选择</b> —— 条件判断</span></div>
-          <div class="s-row"><span class="s-num">04</span><span class="s-txt"><b>重复</b> —— 循环</span></div>
-        </div>
-        <div class="rvi" style="--d:.5s;">
-          <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
-          <div class="s-body">后面十章，就是把这四招学到手。</div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">break</span>：后面的轮次也不要了</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">continue</span>：只放弃本轮剩余部分</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p12 · S 考考你的理解（点击揭示） ================= -->
-<section class="slide st-s" id="p12-quiz">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+<!-- ================= SLIDE 13 · P14 · B while 中的 continue 风险（点击揭示） ================= -->
+<section class="slide st-b" id="slide-13">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p12-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s13-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-title rvi" style="--d:.1s;">考考你的理解</div>
-        <div class="s-qa-grid">
-          <div class="s-qa rvi-pop" data-reveal style="--d:.2s;">
-            <div class="s-qa-q"><span class="qn">Q1</span>电脑会「自己想办法」吗？</div>
-            <div class="s-qa-abox">
-              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <b>不会。</b>它只按你写的指令逐字照做。</div>
-              <div class="rv-mask"><span>点击揭示</span></div>
-            </div>
-          </div>
-          <div class="s-qa rvi-pop" data-reveal style="--d:.3s;">
-            <div class="s-qa-q"><span class="qn">Q2</span>程序结果不对，怪电脑吗？</div>
-            <div class="s-qa-abox">
-              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <b>不怪。</b>电脑只是照做，问题出在指令上。</div>
-              <div class="rv-mask"><span>点击揭示</span></div>
-            </div>
-          </div>
-          <div class="s-qa rvi-pop" data-reveal style="--d:.4s;">
-            <div class="s-qa-q"><span class="qn">Q3</span>只靠四招，能写出大程序吗？</div>
-            <div class="s-qa-abox">
-              <div class="s-qa-a rv-a"><span style="color:var(--s-accent);font-weight:800;">→</span> <b>能。</b>再大的程序，都是四招的组合。</div>
-              <div class="rv-mask"><span>点击揭示</span></div>
-            </div>
+        <div class="b-h1 rvi" style="--d:.05s;">必要更新被跳过，<span class="g">就会死循环</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">count = 0</div>
+          <div class="b-cl"><span class="tk-f">while</span> count &lt; 5:</div>
+          <div class="b-cl">    <span class="tk-f">if</span> count == 2:</div>
+          <div class="b-cl">        <span class="tk-f">continue</span></div>
+          <div class="b-cl">    count += 1</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.45s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：到 2 后，<b>count += 1</b> 永远执行不到。</div>
+            <div class="rv-mask"><span>点击揭示 · 答案</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE p13 · S 欢迎来上课 ================= -->
-<section class="slide st-s" id="p13-welcome">
+<!-- ================= SLIDE 14 · P15 · B 嵌套循环中的 break ================= -->
+<section class="slide st-b" id="slide-14">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s14-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">只退出<span class="g">内层</span>，外层仍继续</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">for</span> row <span class="tk-f">in</span> <span class="tk-f">range</span>(1, 4):</div>
+          <div class="b-cl">    <span class="tk-f">for</span> column <span class="tk-f">in</span> <span class="tk-f">range</span>(1, 5):</div>
+          <div class="b-cl">        <span class="tk-f">if</span> column == 3:</div>
+          <div class="b-cl">            <span class="tk-f">break</span></div>
+          <div class="b-cl">        <span class="tk-f">print</span>(row, column)</div>
+        </div>
+        <div class="b-body rvi" data-step style="--d:.45s;">每一行只输出第 <span class="g">1、2</span> 列。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 15 · P16 · B 流程控制检查 ================= -->
+<section class="slide st-b" id="slide-15">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s15-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">看到 <span class="b-code">break</span> / <span class="b-code">continue</span>，<span class="g">问三句</span></div>
+        <div class="b-body rvi" style="--d:.25s;">1. 它位于哪一层循环？</div>
+        <div class="b-body rvi" style="--d:.4s;">2. 哪些代码会被跳过？</div>
+        <div class="b-body rvi" style="--d:.55s;">3. 循环后下一行在哪里？</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 16 · P17 · C 项目切换 ================= -->
+<section class="slide st-c" id="slide-16">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-orbit" aria-hidden="true"><i></i></div>
+  <div class="c-mars" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s16-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col c-decl" contenteditable="false">
+        <div class="c-stmt dim rvi" style="--d:.1s;">七日循环已经能跑。</div>
+        <div class="c-stmt rvi" style="--d:.4s;">现在，把退出与重试写得更直接。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 17 · P18 · C V8 自检循环 ================= -->
+<section class="slide st-c" id="slide-17">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s17-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(12px,2vh,18px);">
+        <div class="rvi" style="--d:.1s;display:flex;align-items:center;gap:clamp(16px,1.8vw,28px);">
+          <span class="c-badge">V8</span>
+          <span class="c-h1">三条重复输出，<span class="cy">改成固定次数</span></span>
+        </div>
+        <div class="c-panel rvi-pop" style="--d:.3s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">for</span> check_number <span class="tk-f">in</span> <span class="tk-f">range</span>(1, 4):</div>
+          <div class="c-code">    <span class="tk-f">print</span>(<span class="tk-s">f"系统自检 {check_number}/3：正常"</span>)</div>
+        </div>
+        <div class="c-body rvi" style="--d:.5s;">实际编号：1、2、3。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 18 · P19 · C 先替换 V7 输入验证 ================= -->
+<section class="slide st-c" id="slide-18">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s18-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">删除<span class="cy">内层验证 while</span></div>
+        <div class="c-body rvi" style="--d:.25s;">V7：内层循环反复询问，直到输入合法</div>
+        <div class="c-body rvi" style="--d:.4s;">V8：每天只读取一次 <span class="cy">choice</span></div>
+        <div class="c-panel rvi-pop" style="--d:.55s;">
+          <div class="c-corners"></div>
+          <div class="c-code">choice = <span class="tk-f">input</span>(<span class="tk-s">"请输入任务编号（1/2/3）："</span>)</div>
+        </div>
+        <div class="c-body rvi" style="--d:.7s;">无效时用 <span class="cy">continue</span> 回到外层任务日循环开头。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 19 · P20 · C 任务 1 与任务 2 ================= -->
+<section class="slide st-c" id="slide-19">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s19-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">外层分支链<span class="cy">先处理两项任务</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">if</span> choice == <span class="tk-s">"1"</span>:</div>
+          <div class="c-code">    energy += 25</div>
+          <div class="c-code"><span class="tk-f">elif</span> choice == <span class="tk-s">"2"</span>:</div>
+          <div class="c-code">    energy -= 15</div>
+          <div class="c-code">    oxygen += 20</div>
+          <div class="c-code">    water += 15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 20 · P21 · C 科研不足：continue ================= -->
+<section class="slide st-c" id="slide-20">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s20-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">任务未完成，<span class="cy">不结算一天</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">elif</span> choice == <span class="tk-s">"3"</span>:</div>
+          <div class="c-code">    can_explore = energy &gt;= 20 <span class="tk-f">and</span> oxygen &gt;= 15 <span class="tk-f">and</span> water &gt;= 10</div>
+          <div class="c-code">    <span class="tk-f">if</span> <span class="tk-f">not</span> can_explore:</div>
+          <div class="c-code">        <span class="tk-f">print</span>(<span class="tk-s">"资源不足，请重新调度。"</span>)</div>
+          <div class="c-code">        <span class="tk-f">continue</span></div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">门槛失败在这里结束本轮，同一天重新调度。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 21 · P22 · C 科研成功：保留更新 ================= -->
+<section class="slide st-c" id="slide-21">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s21-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">没有 <span class="cy">continue</span>，说明门槛通过</div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code">energy -= 20</div>
+          <div class="c-code">oxygen -= 10</div>
+          <div class="c-code">water -= 8</div>
+          <div class="c-code">research_points += 30</div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">四项更新仍在任务 3 分支内，位于门槛检查之后。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 22 · P23 · C 无效编号：continue ================= -->
+<section class="slide st-c" id="slide-22">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s22-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">分支链最后<span class="cy">接住其他输入</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">else</span>:</div>
+          <div class="c-code">    <span class="tk-f">print</span>(<span class="tk-s">"无效选择，请输入 1、2 或 3。"</span>)</div>
+          <div class="c-code">    <span class="tk-f">continue</span></div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">消耗与日期更新在后面，因此不会执行。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 23 · P24 · C 资源耗尽：break ================= -->
+<section class="slide st-c" id="slide-23">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s23-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">应急撤离，<span class="cy">提前结束任务循环</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">if</span> energy &lt;= 0 <span class="tk-f">or</span> oxygen &lt;= 0 <span class="tk-f">or</span> water &lt;= 0:</div>
+          <div class="c-code">    mission_active = False</div>
+          <div class="c-code">    <span class="tk-f">print</span>(<span class="tk-s">"关键资源耗尽，启动应急撤离！"</span>)</div>
+          <div class="c-code">    <span class="tk-f">break</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 24 · P25 · C 最终路径测试 ================= -->
+<section class="slide st-c" id="slide-24">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s24-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">四条<span class="cy">代表性路径</span></div>
+        <div class="c-body rvi" style="--d:.25s;"><span class="cy">1 1 1 1 1 1 1</span> -&gt; 稳定运行</div>
+        <div class="c-body rvi" style="--d:.4s;"><span class="cy">3 3 1 1 1 1 1</span> -&gt; 科研 60</div>
+        <div class="c-body rvi" style="--d:.55s;"><span class="cy">3 3 3 2 1 1 1</span> -&gt; 科研 90</div>
+        <div class="c-body rvi" style="--d:.7s;"><span class="cy">3 3 3 3</span> -&gt; 应急撤离</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 25 · P26 · C 独立任务：continue ================= -->
+<section class="slide st-c" id="slide-25">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s25-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">1 到 20，<span class="cy">跳过 3 的倍数</span></div>
+        <div class="rvi-pop" style="--d:.3s;"><span class="c-chip">使用 for 与 range()；遇到 3 的倍数时 continue。</span></div>
+        <div class="c-body rvi" style="--d:.5s;">运行前先写下预期序列。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 26 · P27 · C 独立任务：break ================= -->
+<section class="slide st-c" id="slide-26">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s26-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">最多输入<span class="cy">三次口令</span></div>
+        <div class="rvi-pop" style="--d:.3s;"><span class="c-chip">使用 for 与 range(1, 4)；正确时 break，错误时继续下一次。</span></div>
+        <div class="c-body rvi" style="--d:.5s;">说明 break 结束的是哪一层循环。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 27 · P28 · S 总结与预告 ================= -->
+<section class="slide st-s" id="slide-27">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="s-ghost" aria-hidden="true">01</div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="p13-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s27-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础与 AI 编程实践</div>
-        <div class="s-bar rvi" style="--d:.15s;"></div>
-        <div class="s-hero rvi" style="--d:.25s;">欢迎来上课！</div>
-        <div class="s-body rvi" style="--d:.45s;">下一站：第 1 章 · 环境、Python 与第一个程序</div>
+        <div class="s-eyebrow rvi" style="--d:.1s;">DONE · 总结与预告</div>
+        <div class="s-title rvi" style="--d:.1s;">循环工具箱完整了</div>
+        <div class="rvi" style="--d:.25s;">
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">for + range()</span>：固定次数</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">break</span>：结束最近循环</span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">continue</span>：跳过本轮余下代码</span></div>
+        </div>
+        <div class="rvi" style="--d:.4s;">
+          <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
+          <div class="s-body">下一章：用全部知识完成作品。</div>
+        </div>
       </div>
     </div>
   </div>
