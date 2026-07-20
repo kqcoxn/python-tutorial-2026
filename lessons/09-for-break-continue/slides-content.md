@@ -20,7 +20,7 @@
 
 > PYTHON 基础 · 第 9 章
 >
-> # `for`、`range()`、`break`、`continue`
+> # 再来点循环：`for`、`range()`、`break`、`continue`
 >
 > 固定次数、提前结束、跳过本轮
 
