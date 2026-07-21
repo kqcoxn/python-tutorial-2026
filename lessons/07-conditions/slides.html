@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-deck-id="py03-variables-identifiers-v1" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
+<html lang="zh-CN" data-deck-id="py07-conditions-v1" data-template-edit-mode="components" data-mobile-adaptation="desktop-default">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>第 3 章 · 变量、标识符与基本类型 — 课件</title>
+<title>第 7 章 · 条件分支 — 课件</title>
 <style>
 /* === SECTION: viewport-base.css（完整内联，禁止删改） === */
 /* ===========================================
@@ -674,15 +674,15 @@ body.deck-edit-mode .rv-mask { display: none !important; }
   .rv-mask span { animation: none !important; }
 }
 
-/* === SECTION: 第 2 章专属补充样式 === */
-/* === SECTION: 第 2 章专属补充样式 === */
+/* === SECTION: 第 7 章专属补充样式 === */
+/* === SECTION: 第 7 章专属补充样式 === */
 /* 教学防误读：代码与运算符显示一律禁用连字（== >= <= != 逐字符原样渲染） */
-.s-code, .b-code, .c-code, .b-codecard, .b-op-sym, .b-ttable {
+.s-code, .b-code, .c-code, .b-codecard {
   font-variant-ligatures: none;
   font-feature-settings: "calt" 0, "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;
 }
 
-/* C 风格 · V1 故障链修复揭示条（对应 B 的 b-revealbar，像素轨道配色 + 硬阴影） */
+/* C 风格 · 揭示条（对应 B 的 b-revealbar，像素轨道配色 + 硬阴影；沿用第 2 章同款） */
 .c-revealbar {
   position: relative;
   border: 2px dashed rgba(255, 210, 63, .45);
@@ -1320,21 +1320,21 @@ body.deck-edit-mode .rv-mask { display: none !important; }
   <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
-  <div class="s-ghost" aria-hidden="true">03</div>
+  <div class="s-ghost" aria-hidden="true">07</div>
   <div class="slide-edit-layer" aria-hidden="true">
     <div class="slide-object obj-center" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础 · 第 3 章</div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">PYTHON 基础 · 第 7 章</div>
         <div class="s-bar rvi" style="--d:.15s;"></div>
-        <div class="s-hero rvi" style="--d:.25s;">变量、标识符<br>与基本类型</div>
-        <div class="s-body rvi" style="--d:.45s;">让程序第一次“记住”状态</div>
+        <div class="s-hero rvi" style="--d:.25s;">条件分支</div>
+        <div class="s-body rvi" style="--d:.45s;">让真假结果，变成不同的执行路径</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 1 · P2 · S 为什么需要变量 ================= -->
+<!-- ================= SLIDE 1 · P2 · S 从判断到行动 ================= -->
 <section class="slide st-s" id="slide-1">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
@@ -1344,19 +1344,17 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-eyebrow rvi" style="--d:.05s;">WHY · 为什么需要变量</div>
-        <div class="s-title rvi" style="--d:.15s;">只会直接输出，还不算会记忆</div>
-        <div class="s-body dim rvi" style="--d:.3s;">今天让程序记住：</div>
-        <div class="rvi" style="--d:.4s;">
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">一个人的姓名</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">一次考试的分数</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">一个会变化的当前状态</span></div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">RECAP · 从判断到行动</div>
+        <div class="s-title rvi" style="--d:.15s;">成立以后做什么？</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt">第 6 章：条件成立吗？ <span class="s-code">score &gt;= 60</span> -&gt; <span class="s-code">True</span> / <span class="s-code">False</span></span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt">第 7 章：输出不同结果，更新不同状态。</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 2 · P3 · B 第一个变量 ================= -->
+<!-- ================= SLIDE 2 · P3 · B 第一个 if ================= -->
 <section class="slide st-b" id="slide-2">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1365,25 +1363,20 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">变量：给一个值起名字</div>
-        <div class="b-term rvi" style="--d:.2s;">
-          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
-          <div class="b-termbody">
-            <div class="b-ln rvi" style="--d:.35s;">student_name = <span class="tk-s">"小林"</span></div>
-            <div class="b-ln rvi" style="--d:.5s;">score = 92</div>
-            <div class="b-ln rvi" style="--d:.65s;"><span class="tk-f">print</span>(student_name)</div>
-            <div class="b-ln rvi" style="--d:.8s;"><span class="tk-f">print</span>(score)</div>
-            <div class="b-ln rvi" style="--d:1s;"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
-            <div class="b-ln b-out rvi" style="--d:1.2s;">小林</div>
-            <div class="b-ln b-out rvi" style="--d:1.35s;">92</div>
-          </div>
+        <div class="b-h1 rvi" style="--d:.05s;">条件为真，才执行<span class="g">缩进代码块</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">score = <span class="tk-f">int</span>(<span class="tk-f">input</span>(<span class="tk-s">"请输入分数："</span>))</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">if</span> score &gt;= 60:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"及格"</span>)</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"判定结束"</span>)</div>
         </div>
-        <div class="b-body rvi" style="--d:1.55s;">看到名称时，Python 读取它<b>当前保存的值</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 3 · P4 · B 赋值方向（分步揭示：右侧值 → 左侧名称 → 结论） ================= -->
+<!-- ================= SLIDE 3 · P4 · B if 执行模型（分步揭示） ================= -->
 <section class="slide st-b" id="slide-3">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1392,20 +1385,15 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;"><span class="b-code">score = 92</span> <span class="g">怎么执行？</span></div>
-        <div class="b-codecard rvi" style="--d:.25s;">
-          <div class="b-cl"><span class="seg" data-flash-with="2">score</span> = <span class="seg" data-flash-with="1">92</span></div>
-        </div>
-        <div>
-          <div class="b-row rvi" data-step="1"><span class="b-num">①</span><span>先得到右侧的 92</span></div>
-          <div class="b-row rvi" data-step="2"><span class="b-num">②</span><span>再把它保存到左侧 score</span></div>
-        </div>
-        <div class="b-body rvi" data-step="3"><b>赋值：先看右边，再存到左边。</b></div>
+        <div class="b-h1 rvi" style="--d:.05s;">每次只问<span class="g">一个真假问题</span></div>
+        <div class="b-body rvi" data-step style="--d:.25s;">条件为 <span class="b-code">True</span> -&gt; 执行缩进块 -&gt; 继续向下</div>
+        <div class="b-body rvi" data-step style="--d:.35s;">条件为 <span class="b-code">False</span> -&gt; 跳过缩进块 -&gt; 继续向下</div>
+        <div class="b-body rvi" data-step style="--d:.45s;">与 <span class="b-code">if</span> 对齐的代码，不受它控制。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 4 · P5 · B 重新赋值（点击揭示） ================= -->
+<!-- ================= SLIDE 4 · P5 · B 路径预测（点击揭示） ================= -->
 <section class="slide st-b" id="slide-4">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1414,23 +1402,23 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">最后会输出什么？</div>
-        <div class="b-codecard rvi" style="--d:.2s;">
-          <div class="b-cl">score = 80</div>
-          <div class="b-cl">score = 95</div>
-          <div class="b-cl"><span class="tk-f">print</span>(score)</div>
+        <div class="b-h1 rvi" style="--d:.05s;">输入 <span class="g">59</span>，输出什么？</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">if</span> score &gt;= 60:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"及格"</span>)</div>
+          <div class="b-cl"><span class="tk-f">print</span>(<span class="tk-s">"判定结束"</span>)</div>
         </div>
-        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
+        <div class="b-revealbar rvi" data-reveal style="--d:.45s;">
           <div class="rv-wrap">
-            <div class="rv-a"><b>揭示：95。新值替换了变量原来的当前值。</b></div>
-            <div class="rv-mask"><span>点击揭示</span></div>
+            <div class="rv-a">揭示：只输出<b>“判定结束”</b>。</div>
+            <div class="rv-mask"><span>点击揭示 · 结果</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 5 · P6 · B 变量只保留当前值 ================= -->
+<!-- ================= SLIDE 5 · P6 · B 冒号与缩进 ================= -->
 <section class="slide st-b" id="slide-5">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1439,19 +1427,17 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">追踪变量，要按执行顺序</div>
+        <div class="b-h1 rvi" style="--d:.05s;">Python 用结构表示<span class="g">“谁控制谁”</span></div>
         <div class="b-codecard rvi" style="--d:.25s;">
-          <div class="b-cl">level = 1</div>
-          <div class="b-cl">level = 2</div>
-          <div class="b-cl">level = 5</div>
-          <div class="b-cl"><span class="tk-f">print</span>(level)</div>
+          <div class="b-cl"><span class="tk-f">if</span> temperature &gt;= 35:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"今天适合待在空调房里。"</span>)</div>
         </div>
-        <div class="b-body rvi" style="--d:.45s;">不是同时保存 1、2、5；此刻的 <span class="b-code">level</span> 是 <b>5</b>。</div>
+        <div class="b-body rvi" style="--d:.45s;">条件末尾是<b>英文冒号</b>；代码块通常缩进 <b>4 空格</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 6 · P7 · B = 不是数学等号 ================= -->
+<!-- ================= SLIDE 6 · P7 · B if-else ================= -->
 <section class="slide st-b" id="slide-6">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1460,17 +1446,19 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">在 Python 中，<span class="g">=</span> 表示“保存”</div>
+        <div class="b-h1 rvi" style="--d:.05s;">二选一：一次恰好走<span class="g">一条路</span></div>
         <div class="b-codecard rvi" style="--d:.25s;">
-          <div class="b-cl">score = 95</div>
+          <div class="b-cl"><span class="tk-f">if</span> number % 2 == 0:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"偶数"</span>)</div>
+          <div class="b-cl"><span class="tk-f">else</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"奇数"</span>)</div>
         </div>
-        <div class="b-body rvi" style="--d:.45s;">读作：把 <span class="b-code">95</span> 赋值给 <span class="b-code">score</span>。</div>
-        <div class="b-body rvi" style="--d:.6s;">判断“是否相等”以后使用 <span class="b-code">==</span>。</div>
+        <div class="b-body rvi" style="--d:.45s;"><span class="b-code">else</span> 表示“前面条件不成立的其余情况”。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 7 · P8 · B 标识符规则 ================= -->
+<!-- ================= SLIDE 7 · P8 · B 奇偶预测（点击揭示） ================= -->
 <section class="slide st-b" id="slide-7">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1479,18 +1467,20 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">变量名必须守<span class="g">四条规则</span></div>
-        <div class="rvi" style="--d:.25s;">
-          <div class="b-row"><span class="b-num">1.</span><span>字母或下划线开头</span></div>
-          <div class="b-row"><span class="b-num">2.</span><span>只含字母、数字、下划线</span></div>
-          <div class="b-row"><span class="b-num">3.</span><span>区分大小写</span></div>
-          <div class="b-row"><span class="b-num">4.</span><span>不能使用 Python 关键字</span></div>
+        <div class="b-h1 rvi" style="--d:.05s;">输入 <span class="g">8 与 7</span></div>
+        <div class="b-body rvi" style="--d:.25s;"><span class="b-code">number % 2 == 0</span></div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.4s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>8</b> 走 <b>if</b>；<b>7</b> 走 <b>else</b>。</div>
+            <div class="rv-mask"><span>点击揭示 · 结果</span></div>
+          </div>
         </div>
+        <div class="b-body rvi" style="--d:.55s;">一次运行不会同时输出“偶数”和“奇数”。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 8 · P9 · B 名称体检（点击揭示） ================= -->
+<!-- ================= SLIDE 8 · P9 · B if-elif-else ================= -->
 <section class="slide st-b" id="slide-8">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1499,22 +1489,20 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">哪些名称不合法？</div>
-        <div class="b-codecard rvi" style="--d:.2s;">
-          <div class="b-cl">score2&nbsp;&nbsp;&nbsp;&nbsp;2score</div>
-          <div class="b-cl">student name&nbsp;&nbsp;&nbsp;&nbsp;class</div>
-        </div>
-        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
-          <div class="rv-wrap">
-            <div class="rv-a"><b>揭示：后三个不合法。</b></div>
-            <div class="rv-mask"><span>点击揭示</span></div>
-          </div>
+        <div class="b-h1 rvi" style="--d:.05s;">多选一：<span class="g">正数、负数或零</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">if</span> number &gt; 0:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"正数"</span>)</div>
+          <div class="b-cl"><span class="tk-f">elif</span> number &lt; 0:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"负数"</span>)</div>
+          <div class="b-cl"><span class="tk-f">else</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"零"</span>)</div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 9 · P10 · B 命名质量 ================= -->
+<!-- ================= SLIDE 9 · P10 · B 分支链怎么走（分步揭示） ================= -->
 <section class="slide st-b" id="slide-9">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1523,69 +1511,59 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">合法，只是<span class="g">最低要求</span></div>
-        <div class="b-codecard rvi" style="--d:.25s;">
-          <div class="b-cl">s = 95</div>
-          <div class="b-cl">student_score = 95</div>
-        </div>
-        <div class="b-body rvi" style="--d:.45s;">两个都能运行；第二个让人<b>一眼看懂</b>。</div>
-        <div class="b-body rvi" style="--d:.6s;">本课程统一使用 <span class="b-code">snake_case</span>。</div>
+        <div class="b-h1 rvi" style="--d:.05s;">从上到下，只取<span class="g">第一条真路径</span></div>
+        <div class="b-body rvi" data-step style="--d:.25s;">1. 检查 <span class="b-code">if</span></div>
+        <div class="b-body rvi" data-step style="--d:.35s;">2. 不成立，再检查 <span class="b-code">elif</span></div>
+        <div class="b-body rvi" data-step style="--d:.45s;">3. 都不成立，执行 <span class="b-code">else</span></div>
+        <div class="b-body rvi" style="--d:.6s;">一旦命中，其余分支<b>全部跳过</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 10 · P11 · S 值也有类别 ================= -->
-<section class="slide st-s" id="slide-10">
-  <div class="s-grid" aria-hidden="true"></div>
-  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
-  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+<!-- ================= SLIDE 10 · P11 · B 多个独立 if ================= -->
+<section class="slide st-b" id="slide-10">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
     <div class="slide-object obj-center" data-slide-object data-oid="s10-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="s-eyebrow rvi" style="--d:.05s;">TYPES · 值也有类别</div>
-        <div class="s-title rvi" style="--d:.15s;">四种基本类型</div>
-        <div class="rvi" style="--d:.3s;">
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">str</span>：文本</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">int</span>：整数</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">float</span>：小数</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><span class="s-code">bool</span>：真或假</span></div>
+        <div class="b-h1 rvi" style="--d:.05s;">多个性质可以<span class="g">同时成立</span></div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">if</span> number % 2 == 0:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"能被 2 整除"</span>)</div>
+          <div class="b-cl"> </div>
+          <div class="b-cl"><span class="tk-f">if</span> number % 3 == 0:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"能被 3 整除"</span>)</div>
         </div>
+        <div class="b-body rvi" style="--d:.45s;"><span class="b-code">number = 6</span> 时，<b>两条都会输出</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 11 · P12 · B 用 type() 观察（分步揭示：两行结果 → 后两种类型） ================= -->
-<section class="slide st-b" id="slide-11">
-  <div class="b-vignette" aria-hidden="true"></div>
-  <div class="b-scan" aria-hidden="true"></div>
+<!-- ================= SLIDE 11 · P12 · S 选哪种结构 ================= -->
+<section class="slide st-s" id="slide-11">
+  <div class="s-grid" aria-hidden="true"></div>
+  <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
     <div class="slide-object obj-center" data-slide-object data-oid="s11-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">不只靠猜，让 <span class="g">Python 自己回答</span></div>
-        <div class="b-term rvi" style="--d:.2s;">
-          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
-          <div class="b-termbody">
-            <div class="b-ln rvi" style="--d:.35s;">name = <span class="tk-s">"小林"</span></div>
-            <div class="b-ln rvi" style="--d:.45s;">score = 92</div>
-            <div class="b-ln rvi" style="--d:.55s;">accuracy = 0.95</div>
-            <div class="b-ln rvi" style="--d:.65s;">is_online = True</div>
-            <div class="b-ln rvi" style="--d:.8s;"><span class="tk-f">print</span>(type(name))</div>
-            <div class="b-ln rvi" style="--d:.9s;"><span class="tk-f">print</span>(type(score))</div>
-            <div class="b-ln rvi" style="--d:1.05s;"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
-            <div class="b-ln b-out rvi" data-step="1">&lt;class 'str'&gt;</div>
-            <div class="b-ln b-out rvi" data-step="1">&lt;class 'int'&gt;</div>
-          </div>
+        <div class="s-eyebrow rvi" style="--d:.05s;">CHOICE · 选哪种结构</div>
+        <div class="s-title rvi" style="--d:.15s;">先问：这些情况能同时发生吗？</div>
+        <div class="rvi" style="--d:.3s;">
+          <div class="s-row"><span class="s-num">01</span><span class="s-txt"><b>可以同时发生</b> -&gt; 多个独立 <span class="s-code">if</span></span></div>
+          <div class="s-row"><span class="s-num">02</span><span class="s-txt"><b>一次只能选一个</b> -&gt; <span class="s-code">if-elif-else</span></span></div>
         </div>
-        <div class="b-body rvi" data-step="2">再试 <span class="b-code">type(accuracy)</span> 与 <span class="b-code">type(is_online)</span>：分别是 <span class="b-code">float</span> 与 <span class="b-code">bool</span>。</div>
+        <div class="s-body rvi" style="--d:.45s;">结构取决于问题，不取决于条件数量。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 12 · P13 · B 外观相似（点击揭示） ================= -->
+<!-- ================= SLIDE 12 · P13 · B 分支顺序 ================= -->
 <section class="slide st-b" id="slide-12">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1594,22 +1572,19 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">先看引号，<span class="g">再猜类型</span></div>
-        <div class="b-codecard rvi" style="--d:.2s;">
-          <div class="b-cl">7&nbsp;&nbsp;&nbsp;&nbsp;<span class="tk-s">"7"</span>&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;&nbsp;&nbsp;&nbsp;<span class="tk-s">"True"</span></div>
+        <div class="b-h1 rvi" style="--d:.05s;"><span class="g">更严格的条件</span>要先检查</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl"><span class="tk-f">if</span> score &gt;= 90:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"优秀"</span>)</div>
+          <div class="b-cl"><span class="tk-f">elif</span> score &gt;= 60:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"及格"</span>)</div>
         </div>
-        <div class="b-revealbar rvi" data-reveal style="--d:.35s;">
-          <div class="rv-wrap">
-            <div class="rv-a"><b>揭示：int · str · bool · str</b></div>
-            <div class="rv-mask"><span>点击揭示</span></div>
-          </div>
-        </div>
-        <div class="b-body rvi" style="--d:.55s;">引号中的内容一律是<b>字符串</b>。</div>
+        <div class="b-body rvi" style="--d:.45s;">若先写 <span class="b-code">&gt;= 60</span>，90 分会被<b>提前接住</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 13 · P14 · B 布尔值 ================= -->
+<!-- ================= SLIDE 13 · P14 · B 嵌套判断 ================= -->
 <section class="slide st-b" id="slide-13">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1618,18 +1593,22 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;"><span class="g">bool</span> 只有两个值</div>
-        <div class="b-codecard rvi" style="--d:.25s;">
-          <div class="b-cl">is_online = True</div>
-          <div class="b-cl">homework_done = False</div>
+        <div class="b-h1 rvi" style="--d:.05s;">第二个问题，<span class="g">只在需要时询问</span></div>
+        <div class="b-body rvi" style="--d:.25s;">假设两个变量已经由输入得到：</div>
+        <div class="b-codecard rvi" style="--d:.4s;">
+          <div class="b-cl"><span class="tk-f">if</span> is_weekend == <span class="tk-s">"是"</span>:</div>
+          <div class="b-cl">    <span class="tk-f">if</span> homework_done == <span class="tk-s">"是"</span>:</div>
+          <div class="b-cl">        <span class="tk-f">print</span>(<span class="tk-s">"可以安心打游戏"</span>)</div>
+          <div class="b-cl">    <span class="tk-f">else</span>:</div>
+          <div class="b-cl">        <span class="tk-f">print</span>(<span class="tk-s">"先写作业"</span>)</div>
+          <div class="b-cl"><span class="tk-f">else</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"先去上课"</span>)</div>
         </div>
-        <div class="b-body rvi" style="--d:.45s;">首字母大写；不加引号。</div>
-        <div class="b-body rvi" style="--d:.6s;"><span class="b-code">true</span> 是未知名称，<span class="b-code">"True"</span> 是字符串。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 14 · P15 · B 大小写与 NameError（分步揭示：报错 → 高亮写错的名称） ================= -->
+<!-- ================= SLIDE 14 · P15 · B 嵌套路径（点击揭示） ================= -->
 <section class="slide st-b" id="slide-14">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1638,22 +1617,23 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">Python <span class="g">区分大小写</span></div>
-        <div class="b-term rvi" style="--d:.25s;">
-          <div class="b-termbar"><i></i><i></i><i></i><span>main.py — python3</span></div>
-          <div class="b-termbody">
-            <div class="b-ln">student_name = <span class="tk-s">"小林"</span></div>
-            <div class="b-ln"><span class="tk-f">print</span>(<span class="seg" data-flash-with="1">Student_Name</span>)</div>
-            <div class="b-ln b-pop d0"><span class="b-prompt">$ </span><span class="b-cmd">python main.py</span></div>
-            <div class="b-ln b-pop b-err b-shake" data-step="1">NameError: name 'Student_Name' is not defined</div>
+        <div class="b-h1 rvi" style="--d:.05s;">非周末时，<span class="g">会检查作业吗？</span></div>
+        <div class="b-body rvi" style="--d:.25s;">周末？</div>
+        <div class="rvi" style="--d:.35s;">
+          <div class="b-row"><span>否</span><span class="arrow">-&gt;</span><span>先去上课</span></div>
+          <div class="b-row"><span>是</span><span class="arrow">-&gt;</span><span>再检查作业</span></div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.5s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>不会</b>。外层为假，内层整块被跳过。</div>
+            <div class="rv-mask"><span>点击揭示 · 结果</span></div>
           </div>
         </div>
-        <div class="b-body rvi" style="--d:.5s;"><span class="b-code">student_name</span> 与 <span class="b-code">Student_Name</span> 是<b>两个不同名称</b>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 15 · P16 · B 类型预测挑战（无揭示：课堂上现场运行 type() 验证） ================= -->
+<!-- ================= SLIDE 15 · P16 · B 四类高频错误 ================= -->
 <section class="slide st-b" id="slide-15">
   <div class="b-vignette" aria-hidden="true"></div>
   <div class="b-scan" aria-hidden="true"></div>
@@ -1662,96 +1642,87 @@ body.deck-edit-mode .rv-mask { display: none !important; }
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="b-h1 rvi" style="--d:.05s;">不运行，<span class="g">先写下答案</span></div>
-        <div class="b-codecard rvi" style="--d:.2s;">
-          <div class="b-cl">18&nbsp;&nbsp;&nbsp;&nbsp;18.0&nbsp;&nbsp;&nbsp;&nbsp;<span class="tk-s">"18"</span>&nbsp;&nbsp;&nbsp;&nbsp;False</div>
-        </div>
-        <div class="b-body rvi" style="--d:.4s;">再用 <span class="b-code">type()</span> 逐个验证。</div>
-        <div class="b-body rvi" style="--d:.55s;"><b><span class="g">预测不是猜完就算；验证才闭环。</span></b></div>
+        <div class="b-h1 rvi" style="--d:.05s;">分支不按预期，<span class="g">先查这里</span></div>
+        <div class="b-body rvi" style="--d:.25s;">1. 条件末尾有没有 <span class="b-code">:</span></div>
+        <div class="b-body rvi" style="--d:.35s;">2. 比较是否误写成 <span class="b-code">=</span></div>
+        <div class="b-body rvi" style="--d:.45s;">3. 分支关键字对齐吗</div>
+        <div class="b-body rvi" style="--d:.55s;">4. 代码块是否保持同级缩进</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 16 · P17 · C 项目切换宣言 ================= -->
-<section class="slide st-c" id="slide-16">
-  <div class="c-stars" aria-hidden="true"></div>
-  <div class="c-stars2" aria-hidden="true"></div>
-  <div class="c-orbit" aria-hidden="true"><i></i></div>
-  <div class="c-crt" aria-hidden="true"></div>
+<!-- ================= SLIDE 16 · P17 · B input() 编号是字符串（点击揭示） ================= -->
+<!-- 互动说明（不上屏）：先回忆 input() 的返回类型，再揭示修复。 -->
+<section class="slide st-b" id="slide-16">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
     <div class="slide-object obj-center" data-slide-object data-oid="s16-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col c-decl" contenteditable="false">
-        <div class="c-stmt dim rvi" style="--d:.1s;">现在，给火星基地</div>
-        <div class="c-stmt rvi" style="--d:.4s;">建立第一份<span class="cy">“状态档案”</span>。</div>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-h1 rvi" style="--d:.05s;">为什么这个条件<span class="g">永远进不去</span>？</div>
+        <div class="b-codecard rvi" style="--d:.25s;">
+          <div class="b-cl">choice = <span class="tk-f">input</span>(<span class="tk-s">"请输入编号："</span>)</div>
+          <div class="b-cl"><span class="tk-f">if</span> choice == 1:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"已选择 1"</span>)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.45s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：应与字符串 <b>"1"</b> 比较，而不是整数 <b>1</b>。</div>
+            <div class="rv-mask"><span>点击揭示 · 答案</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 17 · P18 · C 火星基地 V2 ================= -->
-<section class="slide st-c" id="slide-17">
+<!-- ================= SLIDE 17 · P18 · B 找错：else 属于谁（点击揭示） ================= -->
+<section class="slide st-b" id="slide-17">
+  <div class="b-vignette" aria-hidden="true"></div>
+  <div class="b-scan" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s17-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="b-codecard rvi" style="--d:.05s;">
+          <div class="b-cl"><span class="tk-f">if</span> choice == <span class="tk-s">"1"</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"任务 1"</span>)</div>
+          <div class="b-cl"><span class="tk-f">if</span> choice == <span class="tk-s">"2"</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"任务 2"</span>)</div>
+          <div class="b-cl"><span class="tk-f">else</span>:</div>
+          <div class="b-cl">    <span class="tk-f">print</span>(<span class="tk-s">"无效"</span>)</div>
+        </div>
+        <div class="b-revealbar rvi" data-reveal style="--d:.3s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：<b>else</b> 只和第二个 <b>if</b> 配对。互斥选择应改成分支链。</div>
+            <div class="rv-mask"><span>点击揭示 · 答案</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 18 · P19 · C 项目切换 ================= -->
+<section class="slide st-c" id="slide-18">
   <div class="c-stars" aria-hidden="true"></div>
   <div class="c-stars2" aria-hidden="true"></div>
   <div class="c-orbit" aria-hidden="true"><i></i></div>
   <div class="c-mars" aria-hidden="true"></div>
   <div class="c-crt" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="s17-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
-      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
-      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(10px,1.6vh,16px);">
-        <div class="rvi" style="--d:.1s;display:flex;align-items:center;gap:clamp(16px,1.8vw,28px);">
-          <span class="c-badge">V2</span>
-          <span class="c-h1">八个<span class="cy">状态变量</span></span>
-        </div>
-        <div class="c-panel rvi-pop" style="--d:.3s;">
-          <div class="c-corners"></div>
-          <div class="c-code">base_name = <span class="tk-s">"星火基地"</span></div>
-          <div class="c-code">mission_day = 1</div>
-          <div class="c-code">max_days = 7</div>
-          <div class="c-code">energy = 100</div>
-          <div class="c-code">oxygen = 100</div>
-          <div class="c-code">water = 100</div>
-          <div class="c-code">research_points = 0</div>
-          <div class="c-code">mission_active = True</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= SLIDE 18 · P19 · C 读出当前状态（分步揭示：点击后显示输出面板） ================= -->
-<section class="slide st-c" id="slide-18">
-  <div class="c-stars" aria-hidden="true"></div>
-  <div class="c-stars2" aria-hidden="true"></div>
-  <div class="c-orbit" aria-hidden="true"><i></i></div>
-  <div class="c-crt" aria-hidden="true"></div>
-  <div class="slide-edit-layer" aria-hidden="true">
     <div class="slide-object obj-center" data-slide-object data-oid="s18-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
-      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(12px,2vh,18px);">
-        <div class="c-h1 rvi" style="--d:.05s;">名称负责含义，<span class="cy">值负责状态</span></div>
-        <div class="c-panel rvi-pop" style="--d:.25s;">
-          <div class="c-corners"></div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"基地名称："</span>, base_name)</div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"当前任务日："</span>, mission_day)</div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"能源："</span>, energy)</div>
-          <div class="c-code"><span class="tk-f">print</span>(<span class="tk-s">"任务状态："</span>, mission_active)</div>
-        </div>
-        <div class="c-panel rvi-pop" data-step style="border-color:rgba(255,46,136,.5);box-shadow:6px 6px 0 rgba(62,230,255,.5);">
-          <div class="c-corners"></div>
-          <div class="c-out">基地名称： 星火基地</div>
-          <div class="c-out">当前任务日： 1</div>
-          <div class="c-out">能源： 100</div>
-          <div class="c-out">任务状态： True</div>
-        </div>
-        <div class="c-body rvi" style="--d:.55s;">再用 type() 检查名称、能源与任务状态。</div>
+      <div class="slide-object-text deck-col c-decl" contenteditable="false">
+        <div class="c-stmt dim rvi" style="--d:.1s;">条件已经会判断。</div>
+        <div class="c-stmt rvi" style="--d:.4s;">现在，让基地真正做出一次<span class="cy">决策</span>。</div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 19 · P20 · C 独立任务 ================= -->
+<!-- ================= SLIDE 19 · P20 · C V6 调度规则 ================= -->
 <section class="slide st-c" id="slide-19">
   <div class="c-stars" aria-hidden="true"></div>
   <div class="c-stars2" aria-hidden="true"></div>
@@ -1760,41 +1731,228 @@ body.deck-edit-mode .rv-mask { display: none !important; }
     <div class="slide-object obj-center" data-slide-object data-oid="s19-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false" style="gap:clamp(12px,2vh,18px);">
+        <div class="rvi" style="--d:.1s;display:flex;align-items:center;gap:clamp(16px,1.8vw,28px);">
+          <span class="c-badge">V6</span>
+          <span class="c-h1">三项任务，只执行<span class="cy">一项</span></span>
+        </div>
+        <div class="c-body rvi" style="--d:.3s;"><span class="cy">1</span> 供能维护：能源 <span class="cy">+25</span></div>
+        <div class="c-body rvi" style="--d:.4s;"><span class="cy">2</span> 生命保障：能源 <span class="cy">-15</span>，氧气 <span class="cy">+20</span>，水 <span class="cy">+15</span></div>
+        <div class="c-body rvi" style="--d:.5s;"><span class="cy">3</span> 科研探索：消耗资源，科研 <span class="cy">+30</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 20 · P21 · C 默认基地名 ================= -->
+<section class="slide st-c" id="slide-20">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s20-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
-        <div class="c-h1 rvi" style="--d:.05s;">做一张<span class="cy">“个人状态卡”</span></div>
-        <div class="c-body dim rvi" style="--d:.25s;">定义并输出：</div>
-        <div class="rvi" style="--d:.4s;display:flex;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px);">
-          <span class="c-chip">昵称 · str</span>
-          <span class="c-chip">年级 · int</span>
-          <span class="c-chip">跑步用时 · float</span>
-          <span class="c-chip">作业完成 · bool</span>
+        <div class="c-h1 rvi" style="--d:.05s;">单个 <span class="cy">if</span>：只在输入为空时替换</div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code">base_name = <span class="tk-f">input</span>(<span class="tk-s">"请输入基地名称："</span>)</div>
+          <div class="c-code"> </div>
+          <div class="c-code"><span class="tk-f">if</span> base_name == <span class="tk-s">""</span>:</div>
+          <div class="c-code">    base_name = <span class="tk-s">"星火基地"</span></div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">输入非空名称时，原名称保持不变。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 21 · P22 · C 任务 1 与任务 2 ================= -->
+<section class="slide st-c" id="slide-21">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s21-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">先处理<span class="cy">两项直接任务</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code">task_completed = True</div>
+          <div class="c-code"><span class="tk-f">if</span> choice == <span class="tk-s">"1"</span>:</div>
+          <div class="c-code">    energy += 25</div>
+          <div class="c-code"><span class="tk-f">elif</span> choice == <span class="tk-s">"2"</span>:</div>
+          <div class="c-code">    energy -= 15</div>
+          <div class="c-code">    oxygen += 20</div>
+          <div class="c-code">    water += 15</div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ================= SLIDE 20 · P21 · S 总结与预告 ================= -->
-<section class="slide st-s" id="slide-20">
+<!-- ================= SLIDE 22 · P23 · C 科研的第二层判断 ================= -->
+<section class="slide st-c" id="slide-22">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s22-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">只有选择<span class="cy">任务 3</span>，才检查资源</div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">elif</span> choice == <span class="tk-s">"3"</span>:</div>
+          <div class="c-code">    can_explore = energy &gt;= 20 <span class="tk-f">and</span> oxygen &gt;= 15 <span class="tk-f">and</span> water &gt;= 10</div>
+          <div class="c-code">    <span class="tk-f">if</span> can_explore:</div>
+          <div class="c-code">        energy -= 20</div>
+          <div class="c-code">        oxygen -= 10</div>
+          <div class="c-code">        water -= 8</div>
+          <div class="c-code">        research_points += 30</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 23 · P24 · C 两个失败出口 ================= -->
+<section class="slide st-c" id="slide-23">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s23-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">缩进决定 <span class="cy">else</span> 属于谁</div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code">    <span class="tk-f">else</span>:</div>
+          <div class="c-code">        task_completed = False</div>
+          <div class="c-code">        <span class="tk-f">print</span>(<span class="tk-s">"科研资源不足。"</span>)</div>
+          <div class="c-code"><span class="tk-f">else</span>:</div>
+          <div class="c-code">    task_completed = False</div>
+          <div class="c-code">    <span class="tk-f">print</span>(<span class="tk-s">"无效选择。"</span>)</div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">内层处理科研不足；外层处理无效编号。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 24 · P25 · C 有效任务才结算 ================= -->
+<section class="slide st-c" id="slide-24">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s24-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">日常消耗属于<span class="cy">所有有效任务</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">if</span> task_completed:</div>
+          <div class="c-code">    energy -= 5</div>
+          <div class="c-code">    oxygen -= 10</div>
+          <div class="c-code">    water -= 8</div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">无效选择与科研失败，<b>不消耗资源</b>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 25 · P26 · C 三项上限用独立 if ================= -->
+<section class="slide st-c" id="slide-25">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s25-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">多项资源可能同时超过 <span class="cy">100</span></div>
+        <div class="c-panel rvi-pop" style="--d:.25s;">
+          <div class="c-corners"></div>
+          <div class="c-code"><span class="tk-f">if</span> energy &gt; 100:</div>
+          <div class="c-code">    energy = 100</div>
+          <div class="c-code"><span class="tk-f">if</span> oxygen &gt; 100:</div>
+          <div class="c-code">    oxygen = 100</div>
+          <div class="c-code"><span class="tk-f">if</span> water &gt; 100:</div>
+          <div class="c-code">    water = 100</div>
+        </div>
+        <div class="c-body rvi" style="--d:.45s;">这里不是三选一，不能改成 <span class="cy">elif</span>。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 26 · P27 · C 手算后再运行（点击揭示） ================= -->
+<section class="slide st-c" id="slide-26">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s26-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">初始资源都是 <span class="cy">100</span></div>
+        <div class="c-body rvi" style="--d:.25s;">选择 <span class="cy">2</span>：任务效果 -&gt; 日常消耗 -&gt; 上限处理</div>
+        <div class="c-revealbar rvi" data-reveal style="--d:.4s;">
+          <div class="rv-wrap">
+            <div class="rv-a">揭示：能源 <b>80</b> · 氧气 <b>100</b> · 饮用水 <b>100</b></div>
+            <div class="rv-mask"><span>点击揭示 · 结果</span></div>
+          </div>
+        </div>
+        <div class="c-body rvi" style="--d:.55s;">能运行不等于结果正确；每一阶段都要可追踪。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 27 · P28 · C 最小路径测试 ================= -->
+<section class="slide st-c" id="slide-27">
+  <div class="c-stars" aria-hidden="true"></div>
+  <div class="c-stars2" aria-hidden="true"></div>
+  <div class="c-crt" aria-hidden="true"></div>
+  <div class="slide-edit-layer" aria-hidden="true">
+    <div class="slide-object obj-center" data-slide-object data-oid="s27-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+      <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
+      <div class="slide-object-text deck-col" contenteditable="false">
+        <div class="c-h1 rvi" style="--d:.05s;">V6 至少重新运行<span class="cy">四次</span></div>
+        <div class="c-body rvi" style="--d:.25s;"><span class="cy">1</span> -&gt; 供能维护</div>
+        <div class="c-body rvi" style="--d:.35s;"><span class="cy">2</span> -&gt; 生命保障</div>
+        <div class="c-body rvi" style="--d:.45s;"><span class="cy">3</span> -&gt; 科研成功</div>
+        <div class="c-body rvi" style="--d:.55s;"><span class="cy">9</span> -&gt; 无效选择，资源不变</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 28 · P29 · S 总结与预告 ================= -->
+<section class="slide st-s" id="slide-28">
   <div class="s-grid" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;top:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="s-cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
   <div class="slide-edit-layer" aria-hidden="true">
-    <div class="slide-object obj-center" data-slide-object data-oid="s20-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
+    <div class="slide-object obj-center" data-slide-object data-oid="s28-o0" data-object-type="text" style="left:50%;top:50%;transform:translate(-50%,-50%);width:76%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete">×</button>
       <div class="slide-object-text deck-col" contenteditable="false">
         <div class="s-eyebrow rvi" style="--d:.1s;">DONE · 总结与预告</div>
-        <div class="s-title rvi" style="--d:.1s;">程序开始拥有状态</div>
+        <div class="s-title rvi" style="--d:.1s;">程序第一次拥有了“路径”</div>
         <div class="rvi" style="--d:.25s;">
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">赋值：先右后左</span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">命名：合法 · 清晰 · <span class="s-code">snake_case</span></span></div>
-          <div class="s-row"><span class="s-sq"></span><span class="s-txt">类型：<span class="s-code">str</span> · <span class="s-code">int</span> · <span class="s-code">float</span> · <span class="s-code">bool</span></span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>单个判断</b>：<span class="s-code">if</span></span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>二选一</b>：<span class="s-code">if-else</span></span></div>
+          <div class="s-row"><span class="s-sq"></span><span class="s-txt"><b>多选一</b>：<span class="s-code">if-elif-else</span></span></div>
         </div>
         <div class="rvi" style="--d:.4s;">
           <div class="s-hairline" style="margin-bottom:clamp(14px,2.4vh,22px);"></div>
-          <div class="s-body">下一章：把变量排成可读信息。</div>
+          <div class="s-body">下一章：让一条路径重复执行，直到条件改变。</div>
         </div>
       </div>
     </div>

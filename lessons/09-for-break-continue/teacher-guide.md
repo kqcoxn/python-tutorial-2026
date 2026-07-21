@@ -242,4 +242,5 @@ for check_number in range(1, 4):
 - 上一版本：`project/chapter-versions/v7_while_loops.py`
 - 本章答案：`project/reference-solution/mars_base_simulator.py`
 - 最终项目规则：`project/reference-solution/README.md`
+- 本章配套幻灯片：`lessons/09-for-break-continue/slides.html`（28 页，第 8、14 页含点击揭示互动，第 3、4、5、7、12、15 页含分步揭示；内容定稿见 `slides-content.md`）
 

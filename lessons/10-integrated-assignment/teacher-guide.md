@@ -190,3 +190,4 @@
 - 规则与测试：`project/reference-solution/README.md`
 - 课程评价依据：`docs/python-foundations-course-design.md`
 - 学生材料：`lessons/10-integrated-assignment/student-handout.md`
+- 本章配套幻灯片：`lessons/10-integrated-assignment/slides.html`（19 页，第 8、9 页含点击揭示互动；内容定稿见 `slides-content.md`）
