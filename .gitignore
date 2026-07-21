@@ -1,5 +1,3 @@
-.design/lesson*-build/shots/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.design/lesson*-build/.venv/
