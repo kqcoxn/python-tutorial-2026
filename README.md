@@ -6,6 +6,7 @@
 
 - [课程重构决策记录](docs/course-decisions.md)：已确认事实、教学自由度、编程思维主线和废弃假设
 - [课程规划基线](docs/course-outline.md)：课程目标、对外课时安排和待细化的内容模块
+- [课程蓝图（待审核）](docs/curriculum-map.md)：模块边界、依赖、时间预算、实践结构和六天推荐路线
 - [课程安排原表](docs/课程安排.xlsx)：面向教师与家长的 12 课时整体规划及人员安排
 - [课程 PPT 双风格参考](docs/slide-design-system.md)：保留瑞士纸白与终端绿作为候选视觉方向
 
