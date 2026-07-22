@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览 S · Swiss Paper 瑞士纸白</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* === 预览 S：Swiss Paper —— 纸白 + 细网格 + 发丝线 + 安全橙 === */
+:root {
+  --s-bg: #FAFAF8;
+  --s-ink: #0A0A0A;
+  --s-accent: #FF6B35;
+  --s-muted: #6B6B66;
+  --s-hairline: rgba(10,10,10,.14);
+  --font-s-disp: "Archivo","Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  --font-s-body: "Archivo","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+.slide {
+  position:relative; height:100vh; overflow:hidden;
+  background:var(--s-bg); color:var(--s-ink);
+  font-family:var(--font-s-body);
+  display:flex; align-items:center; justify-content:center;
+}
+/* 细网格：全幅低对比陪衬 */
+.grid {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(10,10,10,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.035) 1px, transparent 1px);
+  background-size:8.333vw 8.333vh;
+}
+/* 十字对位标记：仅四角 */
+.cross { position:absolute; width:14px; height:14px; pointer-events:none; }
+.cross::before, .cross::after { content:""; position:absolute; background:rgba(10,10,10,.35); }
+.cross::before { left:50%; top:0; width:1px; height:100%; }
+.cross::after { top:50%; left:0; height:1px; width:100%; }
+/* 超大描边幽灵数字：贴右缘低对比 */
+.ghost {
+  position:absolute; right:-1vw; top:2vh; pointer-events:none; user-select:none;
+  font-family:"Archivo","Arial Black",sans-serif; font-weight:800;
+  font-size:clamp(180px,22vw,400px); line-height:1;
+  color:rgba(10,10,10,.04); -webkit-text-stroke:2px rgba(10,10,10,.12);
+  animation:fadeIn 1.4s .3s both;
+}
+
+.wrap { position:relative; width:min(76vw, 1040px); z-index:2; }
+
+/* 眉头：橙色小方块 + 大字距大写 */
+.eyebrow {
+  font-family:"Archivo","Helvetica Neue",sans-serif; font-weight:800;
+  font-size:clamp(14px,1.2vw,18px); letter-spacing:.3em; text-transform:uppercase;
+  display:flex; align-items:center; gap:.8em;
+  animation:fadeUp .7s .1s cubic-bezier(.2,.7,.2,1) both;
+}
+.eyebrow::before { content:""; width:.9em; height:.9em; background:var(--s-accent); flex:none; }
+/* 橙色色条 */
+.bar { margin-top:2.2vh; width:clamp(72px,7vw,120px); height:clamp(9px,1.3vh,13px);
+  background:var(--s-accent); animation:fadeUp .7s .25s cubic-bezier(.2,.7,.2,1) both; }
+
+h1 {
+  margin-top:2.6vh; font-family:var(--font-s-disp); font-weight:700;
+  font-size:clamp(44px,5.4vw,88px); line-height:1.16; letter-spacing:.01em;
+  animation:fadeUp .8s .4s cubic-bezier(.2,.7,.2,1) both;
+}
+h1 .o { color:var(--s-accent); }
+.sub { margin-top:2.4vh; color:var(--s-muted); font-size:clamp(18px,1.6vw,24px); line-height:1.55;
+  animation:fadeUp .8s .6s cubic-bezier(.2,.7,.2,1) both; }
+/* 行内代码片 */
+.code {
+  font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+  font-size:.86em; background:#F1F0EC; border:1px solid var(--s-hairline);
+  padding:.02em .35em; border-radius:4px; white-space:nowrap; color:var(--s-ink);
+}
+
+/* 编号列表：发丝线分隔 */
+.rows { margin-top:4vh; animation:fadeUp .8s .8s cubic-bezier(.2,.7,.2,1) both; }
+.row { display:flex; align-items:baseline; gap:clamp(14px,1.6vw,24px); padding:clamp(10px,1.9vh,16px) 0; }
+.row + .row { border-top:1px solid var(--s-hairline); }
+.num {
+  font-family:"Archivo",sans-serif; font-weight:800; color:var(--s-accent);
+  font-size:clamp(26px,2.6vw,42px); min-width:1.7em; flex:none; line-height:1.1;
+}
+.txt { font-size:clamp(24px,2vw,32px); line-height:1.5; }
+
+/* 底部：发丝线 + 左右页脚 */
+.foot {
+  margin-top:3.6vh; padding-top:1.8vh; border-top:1px solid var(--s-hairline);
+  display:flex; justify-content:space-between; align-items:baseline;
+  color:var(--s-muted); font-size:clamp(13px,1.1vw,17px); letter-spacing:.06em;
+  animation:fadeUp .8s 1.05s both;
+}
+.foot .l { display:flex; align-items:center; gap:.7em; }
+.foot .sq { width:.55em; height:.55em; background:var(--s-accent); flex:none; }
+
+@keyframes fadeUp { from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@media (prefers-reduced-motion: reduce) { *{animation:none !important} }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="grid" aria-hidden="true"></div>
+  <div class="cross" style="left:5%;top:6%;" aria-hidden="true"></div>
+  <div class="cross" style="right:5%;top:6%;" aria-hidden="true"></div>
+  <div class="cross" style="left:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="cross" style="right:5%;bottom:6%;" aria-hidden="true"></div>
+  <div class="ghost" aria-hidden="true">01</div>
+  <div class="wrap">
+    <div class="eyebrow">Python 基础与 AI 编程实践 · Chapter 01</div>
+    <div class="bar"></div>
+    <h1>环境、Python<br>与<span class="o">第一个程序</span></h1>
+    <p class="sub">目标：创建 <span class="code">main.py</span>，运行，修改，再运行 —— 建立第一个编程闭环</p>
+    <div class="rows">
+      <div class="row"><span class="num">01</span><span class="txt">新建 <span class="code">main.py</span>，写下第一行代码</span></div>
+      <div class="row"><span class="num">02</span><span class="txt">运行程序，观察终端输出</span></div>
+      <div class="row"><span class="num">03</span><span class="txt">修改代码，再运行 —— 完成闭环</span></div>
+    </div>
+    <div class="foot">
+      <span class="l"><span class="sq"></span>课程结构 · 叙事 · 检查点</span>
+      <span>瑞士纸白 · 风格 S 参考页</span>
+    </div>
+  </div>
+</section>
+</body>
+</html>
