@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览 S · Star Atlas 星图青 —— 科研项目平行主题</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* === 主题 S：Star Atlas 星图青 —— 科研项目「群星彼岸·候选行星分析器」平行主题 ===
+   与瑞士纸白（课程结构）、终端绿（代码执行）、账本蓝（生活项目）并列的第四种完整主题。
+   场景用途：科研项目的任务简报、观测数据呈现、证据与结论解释、规则预演比较与研究报告。
+   视觉语言：深空观测站仪表盘 —— 墨蓝底 + 星场与经纬网格 + 深色档案面板 +
+   仪表量规 + 状态灯 + 光谱信号条 + 刻度盘幽灵环。全无衬线排版。 */
+:root {
+  --p-bg: #0B1124;              /* 深空墨蓝 */
+  --p-panel: #141C36;           /* 档案面板 */
+  --p-panel-2: #1A2444;         /* 嵌层面板 / 量规轨道 */
+  --p-border: #2B3863;          /* 星图细线 */
+  --p-ink: #EAEEFB;             /* 主文字 */
+  --p-muted: #8E97BD;           /* 辅助灰蓝 */
+  --p-cyan: #41D9D6;            /* 主色 · 光谱青 */
+  --p-violet: #9B8CFF;          /* 辅色 · 星云紫 */
+  --p-tint: rgba(65,217,214,.12); /* 青光底纹 */
+  --p-ok: #34D399;              /* 优先候选 · 仅徽标/信号点/量规标记 */
+  --p-wait: #FBBF24;            /* 需要更多观测 · 仅徽标/信号点 */
+  --p-stop: #F87171;            /* 不建议继续 · 仅徽标/越界标记 */
+  --font-body: "Archivo","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  --font-mono: "JetBrains Mono","SFMono-Regular",Consolas,monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+.slide {
+  position:relative; height:100vh; overflow:hidden;
+  background:
+    radial-gradient(880px 480px at 88% -12%, rgba(155,140,255,.12), transparent 62%),
+    radial-gradient(960px 600px at -10% 110%, rgba(65,217,214,.09), transparent 60%),
+    var(--p-bg);
+  color:var(--p-ink); font-family:var(--font-body);
+  display:flex; align-items:center; justify-content:center;
+}
+/* 星图经纬网格（极低强度） */
+.grat { position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(65,217,214,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65,217,214,.05) 1px, transparent 1px);
+  background-size:120px 120px; }
+/* 星场：细星层平铺 + 亮星层极低强度闪烁 */
+.stars { position:absolute; inset:0; pointer-events:none; opacity:.55;
+  background-image:
+    radial-gradient(1.5px 1.5px at 24px 36px, rgba(234,238,251,.55) 50%, transparent 52%),
+    radial-gradient(1px 1px at 180px 120px, rgba(234,238,251,.40) 50%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 320px 220px, rgba(65,217,214,.50) 50%, transparent 52%),
+    radial-gradient(1px 1px at 460px 80px, rgba(234,238,251,.35) 50%, transparent 52%),
+    radial-gradient(1.1px 1.1px at 120px 300px, rgba(155,140,255,.45) 50%, transparent 52%),
+    radial-gradient(1px 1px at 540px 340px, rgba(234,238,251,.40) 50%, transparent 52%);
+  background-size:600px 400px;
+  animation:fadeIn 1.6s both; }
+.stars2 { position:absolute; inset:0; pointer-events:none; opacity:.55;
+  background-image:
+    radial-gradient(2px 2px at 90px 200px, rgba(234,238,251,.8) 45%, transparent 55%),
+    radial-gradient(2.4px 2.4px at 700px 90px, rgba(65,217,214,.75) 45%, transparent 55%),
+    radial-gradient(2px 2px at 520px 480px, rgba(234,238,251,.7) 45%, transparent 55%),
+    radial-gradient(1.8px 1.8px at 300px 560px, rgba(155,140,255,.7) 45%, transparent 55%),
+    radial-gradient(2.2px 2.2px at 820px 380px, rgba(234,238,251,.75) 45%, transparent 55%);
+  background-size:900px 640px;
+  animation:twinkle 7s ease-in-out infinite alternate; }
+@keyframes twinkle { from{opacity:.35} to{opacity:.75} }
+/* 发光星点 */
+.spark { position:absolute; width:3px; height:3px; border-radius:50%; background:#EAEEFB;
+  box-shadow:0 0 10px 2px rgba(234,238,251,.45); pointer-events:none; }
+/* 巨型幽灵轨道环：刻度盘式（平行于纸白的幽灵页码、账本的幽灵 ¥） */
+.ghost { position:absolute; right:-7vw; bottom:-16vh; width:36vw; height:36vw; border-radius:50%;
+  border:2px solid rgba(65,217,214,.08); pointer-events:none; user-select:none;
+  animation:fadeIn 1.4s .4s both; }
+.ghost::before { content:""; position:absolute; inset:14%; border-radius:50%;
+  border:1.5px solid rgba(155,140,255,.07); }
+.ghost::after { content:""; position:absolute; inset:-2.5%; border-radius:50%;
+  background:repeating-conic-gradient(rgba(65,217,214,.10) 0 .4deg, transparent .4deg 6deg);
+  -webkit-mask:radial-gradient(closest-side, transparent calc(100% - 14px), #000 calc(100% - 13px));
+  mask:radial-gradient(closest-side, transparent calc(100% - 14px), #000 calc(100% - 13px)); }
+.ghost i { position:absolute; top:9%; left:50%; width:14px; height:14px; margin:-7px 0 0 -7px;
+  border-radius:50%; background:var(--p-cyan); opacity:.3;
+  box-shadow:0 0 18px rgba(65,217,214,.55); }
+/* 巡天星座标绘（封面签名装饰） */
+.constel { position:absolute; right:3.5vw; top:15vh; width:clamp(240px,24vw,330px);
+  pointer-events:none; user-select:none; opacity:.85;
+  animation:fadeIn 1.6s .6s both; }
+
+.wrap { position:relative; width:min(76vw, 1040px); z-index:2; }
+
+/* 顶部任务栏：轨道徽标 + 任务名 + 观测批次胶囊 + 候选计数 + 视场坐标 + 模块标签 */
+.mission { display:flex; align-items:center; gap:clamp(10px,1.1vw,16px);
+  animation:fadeUp .7s .1s cubic-bezier(.2,.7,.2,1) both; }
+.patch { width:36px; height:36px; border-radius:50%; flex:none; position:relative;
+  border:2px solid rgba(65,217,214,.75); box-shadow:0 0 16px rgba(65,217,214,.25); }
+.patch::before { content:""; position:absolute; inset:8px; border-radius:50%;
+  background:radial-gradient(circle at 34% 32%, var(--p-cyan), var(--p-violet) 78%); }
+.appname { font-weight:800; font-size:clamp(16px,1.35vw,21px); white-space:nowrap; }
+.appname i { font-style:normal; color:var(--p-muted); font-weight:400; font-size:.76em; margin-left:.5em; }
+.chip { background:var(--p-tint); color:var(--p-cyan); font-weight:700;
+  border:1px solid rgba(65,217,214,.35);
+  font-size:clamp(13px,1.05vw,16px); padding:.4em .9em; border-radius:999px; white-space:nowrap; }
+.count { color:var(--p-muted); border:1px solid var(--p-border);
+  font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(12px,1vw,15px); padding:.42em .9em; border-radius:999px; white-space:nowrap; }
+.field { color:var(--p-muted); font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(11px,.95vw,14px); letter-spacing:.06em; white-space:nowrap; }
+.keys { color:var(--p-muted); font-size:clamp(12px,1vw,15px); white-space:nowrap; }
+.keys b { font-family:var(--font-mono); font-variant-ligatures:none; color:var(--p-cyan); font-weight:700; }
+.modchip { margin-left:auto; color:var(--p-muted); font-size:clamp(12px,1vw,15px); letter-spacing:.08em; white-space:nowrap; }
+
+h1 { margin-top:3vh; font-family:var(--font-body); font-weight:800;
+  font-size:clamp(42px,5vw,80px); line-height:1.18; letter-spacing:.01em;
+  animation:fadeUp .8s .3s cubic-bezier(.2,.7,.2,1) both; }
+h1 .c { color:var(--p-cyan); }
+.sub { margin-top:1.8vh; color:var(--p-muted); font-size:clamp(18px,1.55vw,24px); line-height:1.55;
+  animation:fadeUp .8s .5s cubic-bezier(.2,.7,.2,1) both; }
+.code { font-family:var(--font-mono); font-variant-ligatures:none; font-size:.86em;
+  background:rgba(65,217,214,.10); color:var(--p-cyan); border:1px solid rgba(65,217,214,.28);
+  padding:.08em .4em; border-radius:6px; white-space:nowrap; }
+
+.foot { margin-top:3.4vh; padding-top:1.8vh; border-top:1px solid var(--p-border);
+  display:flex; justify-content:space-between; align-items:baseline;
+  color:var(--p-muted); font-size:clamp(14px,1.15vw,18px); letter-spacing:.05em;
+  animation:fadeUp .8s 1s both; }
+.foot .brand { display:flex; align-items:center; gap:.7em; font-weight:700; color:var(--p-cyan); }
+.foot .brand::before { content:""; width:.55em; height:.55em; border-radius:50%; background:var(--p-cyan); flex:none; }
+.foot .pageno { font-family:var(--font-mono); font-variant-ligatures:none; }
+
+/* 读数：等宽、禁用连字 */
+.m { font-family:var(--font-mono); font-variant-ligatures:none; font-weight:700; }
+
+/* 功能小卡（封面 1×4，带仪表编号） */
+.feat-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(12px,1.4vw,20px);
+  margin-top:3.4vh; animation:fadeUp .8s .65s cubic-bezier(.2,.7,.2,1) both; }
+.feat { position:relative; background:var(--p-panel); border:1px solid var(--p-border); border-radius:16px;
+  padding:clamp(14px,2.2vh,22px) clamp(14px,1.4vw,20px); }
+.feat .idx { position:absolute; top:10px; right:14px;
+  color:var(--p-muted); font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(11px,.9vw,13px); letter-spacing:.1em; }
+.feat .ic { width:42px; height:42px; border-radius:12px;
+  background:rgba(65,217,214,.12); color:var(--p-cyan); border:1px solid rgba(65,217,214,.30);
+  display:flex; align-items:center; justify-content:center; font-size:20px; }
+.feat h3 { font-size:clamp(18px,1.5vw,23px); margin-top:12px; }
+.feat p { color:var(--p-muted); font-size:clamp(13px,1.1vw,16px); line-height:1.5; margin-top:6px; }
+
+/* 系统状态灯条（封面仪表盘签名组件） */
+.statusbar { margin-top:2.6vh; display:flex; align-items:center; gap:clamp(14px,1.8vw,26px); flex-wrap:wrap;
+  background:var(--p-panel); border:1px solid var(--p-border); border-radius:14px;
+  padding:clamp(10px,1.6vh,14px) clamp(16px,1.6vw,24px);
+  animation:fadeUp .8s .85s cubic-bezier(.2,.7,.2,1) both; }
+.statusbar .cap { color:var(--p-muted); font-size:clamp(12px,1vw,15px); letter-spacing:.16em; }
+.led { display:inline-flex; align-items:center; gap:.55em;
+  font-size:clamp(13px,1.15vw,17px); font-weight:700; white-space:nowrap; }
+.led i { width:.55em; height:.55em; border-radius:50%; background:currentColor;
+  box-shadow:0 0 8px currentColor; flex:none; }
+.led.cy { color:var(--p-cyan); } .led.g { color:#6EE7B7; } .led.a { color:#FCD34D; }
+.led b { color:var(--p-ink); font-family:var(--font-mono); font-variant-ligatures:none; }
+
+/* 档案面板通用 */
+.panel { background:var(--p-panel); border:1px solid var(--p-border); border-radius:18px; }
+.panel.glow { box-shadow:0 0 0 1px rgba(65,217,214,.10), 0 18px 48px rgba(2,6,18,.5); }
+.ptitle { font-weight:800; font-size:clamp(16px,1.3vw,20px); }
+.psub { color:var(--p-muted); font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(11px,.95vw,14px); letter-spacing:.12em; margin-top:3px; }
+
+/* 取景框角标（签名档案卡） */
+.dossier { position:relative; }
+.cr { position:absolute; width:15px; height:15px; border-color:rgba(65,217,214,.55);
+  border-style:solid; border-width:0; pointer-events:none; }
+.cr.tl { top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; border-top-left-radius:6px; }
+.cr.tr { top:-1px; right:-1px; border-top-width:2px; border-right-width:2px; border-top-right-radius:6px; }
+.cr.bl { bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px; border-bottom-left-radius:6px; }
+.cr.br { bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; border-bottom-right-radius:6px; }
+
+/* 结论徽标三态：当前结论实心，其余软底；语义色只出现在这里 */
+.cjs { display:inline-flex; align-items:center; gap:clamp(8px,.9vw,12px); flex-wrap:wrap; }
+.cj { display:inline-flex; align-items:center; gap:.5em; font-weight:700;
+  font-size:clamp(13px,1.1vw,17px); padding:.4em .95em; border-radius:999px; white-space:nowrap; }
+.cj::before { content:""; width:.5em; height:.5em; border-radius:50%; background:currentColor; flex:none; }
+.cj.go   { background:rgba(52,211,153,.13); color:#6EE7B7; }
+.cj.wait { background:rgba(251,191,36,.11); color:#FCD34D; }
+.cj.stop { background:rgba(248,113,113,.12); color:#FCA5A5; }
+.cj.on.go   { background:var(--p-ok); color:#052E22; box-shadow:0 6px 16px rgba(52,211,153,.30); }
+.cj.on.wait { background:var(--p-wait); color:#3A2A00; box-shadow:0 6px 16px rgba(251,191,36,.28); }
+.cj.on.stop { background:var(--p-stop); color:#3B0A0A; box-shadow:0 6px 16px rgba(248,113,113,.30); }
+
+/* 候选档案卡（签名组件） */
+.dossier-body { padding:clamp(16px,2.6vh,26px) clamp(18px,2vw,30px);
+  animation:fadeUp .8s .6s cubic-bezier(.2,.7,.2,1) both; }
+.dossier .d-head { display:flex; align-items:center; justify-content:space-between; gap:1em; flex-wrap:wrap; }
+.dossier .d-name { font-weight:800; font-size:clamp(24px,2.2vw,34px); letter-spacing:.01em; }
+.dossier .d-name i { font-style:normal; color:var(--p-muted); font-family:var(--font-mono);
+  font-variant-ligatures:none; font-weight:400; font-size:.5em; letter-spacing:.14em; margin-left:.7em; }
+
+/* 指标量规：状态灯 + 轨道条 + 接受区间高亮带 + 值标记 + 仪表刻度 */
+.gauges { margin-top:2vh; display:grid; gap:clamp(8px,1.4vh,14px); }
+.gauge .g-head { display:flex; justify-content:space-between; align-items:baseline;
+  font-size:clamp(15px,1.25vw,19px); }
+.gauge .g-head .nm { display:inline-flex; align-items:center; gap:.55em; }
+.gauge .g-head .nm i { width:.5em; height:.5em; border-radius:50%;
+  background:var(--p-ok); box-shadow:0 0 8px rgba(52,211,153,.7); flex:none; }
+.gauge .g-head b { font-size:1.06em; }
+.gauge .track { position:relative; margin-top:6px; height:10px; border-radius:999px; background:var(--p-panel-2); }
+.gauge .band { position:absolute; top:-1px; bottom:-1px; border-radius:999px;
+  background:rgba(65,217,214,.16); border:1px solid rgba(65,217,214,.45); }
+.gauge .mark { position:absolute; top:-4px; bottom:-4px; width:4px; border-radius:2px;
+  background:#fff; box-shadow:0 0 10px rgba(65,217,214,.85); transform:translateX(-50%); }
+.gauge .ticks { height:7px; margin-top:3px;
+  background:repeating-linear-gradient(90deg, rgba(142,151,189,.35) 0 1px, transparent 1px 10%); }
+.gauge .g-cap { margin-top:4px; color:var(--p-muted); font-family:var(--font-mono);
+  font-variant-ligatures:none; font-size:clamp(11px,.95vw,14px); }
+
+/* 信号行：辐射等级点 + 光谱信号条 + 观测状态软片 */
+.signals { margin-top:1.8vh; padding-top:1.8vh; border-top:1px solid var(--p-border);
+  display:flex; align-items:center; gap:clamp(10px,1.2vw,18px); flex-wrap:wrap; }
+.pips { display:inline-flex; align-items:center; gap:6px; }
+.pips i { width:11px; height:11px; border-radius:50%; border:1.5px solid rgba(65,217,214,.5); }
+.pips i.on { background:var(--p-cyan); box-shadow:0 0 8px rgba(65,217,214,.6); }
+.pips-cap { color:var(--p-muted); font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(12px,1vw,15px); }
+.spec { display:inline-flex; align-items:center; gap:10px;
+  background:var(--p-panel-2); border:1px solid var(--p-border); border-radius:10px;
+  padding:7px 12px; }
+.spec .bars { display:flex; align-items:flex-end; gap:2px; height:22px; }
+.spec .bars i { width:3px; border-radius:1px; background:rgba(142,151,189,.45); }
+.spec .bars i.pk { background:var(--p-cyan); box-shadow:0 0 6px rgba(65,217,214,.7); }
+.spec .lbl { font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(11px,.95vw,14px); color:var(--p-cyan); letter-spacing:.08em; white-space:nowrap; }
+.sig { font-weight:700; font-size:clamp(13px,1.1vw,16px); padding:.36em .9em; border-radius:999px;
+  background:rgba(65,217,214,.10); color:var(--p-cyan); border:1px solid rgba(65,217,214,.28); white-space:nowrap; }
+
+/* 候选目录行 */
+.catlist { padding:clamp(12px,2vh,18px) clamp(16px,1.6vw,24px);
+  animation:fadeUp .8s .7s cubic-bezier(.2,.7,.2,1) both; }
+.catlist .r { display:flex; align-items:center; gap:12px; padding:clamp(6px,1.1vh,10px) 0; }
+.catlist .r + .r { border-top:1px solid var(--p-border); }
+.catlist .n { color:var(--p-muted); font-family:var(--font-mono); font-variant-ligatures:none;
+  font-size:clamp(13px,1.1vw,16px); width:1.2em; }
+.catlist .name { font-size:clamp(15px,1.3vw,19px); font-weight:700; }
+.catlist .cl { margin-left:auto; display:inline-flex; align-items:center; gap:.5em;
+  font-size:clamp(13px,1.1vw,16px); font-weight:700; white-space:nowrap; }
+.catlist .cl::before { content:""; width:.55em; height:.55em; border-radius:50%; background:currentColor; flex:none; }
+.cl.go   { color:#6EE7B7; } .cl.wait { color:#FCD34D; } .cl.stop { color:#FCA5A5; }
+
+/* 提示卡 */
+.hint { padding:clamp(12px,2vh,18px) clamp(16px,1.6vw,24px);
+  animation:fadeUp .8s .85s cubic-bezier(.2,.7,.2,1) both; }
+.hint p { color:var(--p-muted); font-size:clamp(13px,1.1vw,16px); line-height:1.6; margin-top:8px; }
+.hint p b { color:var(--p-ink); }
+
+/* 规则预演卡 */
+.preview { padding:clamp(14px,2.2vh,22px) clamp(18px,1.8vw,26px);
+  animation:fadeUp .8s .6s cubic-bezier(.2,.7,.2,1) both; }
+.preview .p-head { display:flex; align-items:center; justify-content:space-between; gap:1em; flex-wrap:wrap; }
+.copybadge { display:inline-flex; align-items:center; gap:.35em;
+  background:rgba(155,140,255,.13); color:#C4B5FD; border:1px solid rgba(155,140,255,.32);
+  font-weight:700; font-size:clamp(12px,1vw,15px); padding:.32em .8em; border-radius:999px; white-space:nowrap; }
+.rulegrid { margin-top:1.6vh; display:grid; grid-template-columns:1fr 1.05fr 1.05fr .85fr;
+  gap:clamp(4px,.8vh,8px) clamp(10px,1vw,16px); align-items:baseline;
+  font-size:clamp(13px,1.1vw,16px); }
+.rulegrid .h { color:var(--p-muted); font-size:.86em; letter-spacing:.1em; }
+.rulegrid .v { font-family:var(--font-mono); font-variant-ligatures:none; }
+.rulegrid .v.new { color:var(--p-cyan); }
+.rulegrid .tg { color:#C4B5FD; font-size:.92em; }
+.change { margin-top:1.8vh; padding-top:1.6vh; border-top:1px dashed var(--p-border);
+  display:flex; align-items:center; gap:.8em; flex-wrap:wrap;
+  font-size:clamp(14px,1.2vw,18px); }
+.change .who { font-weight:800; }
+.change .arr { color:var(--p-muted); font-family:var(--font-mono); }
+.pnote { margin-top:1.4vh; color:var(--p-muted); font-size:clamp(12px,1.05vw,15px); line-height:1.55; }
+
+/* 研究报告卡 */
+.report { padding:clamp(14px,2.2vh,22px) clamp(18px,1.8vw,26px);
+  animation:fadeUp .8s .7s cubic-bezier(.2,.7,.2,1) both; }
+.report .r-head { display:flex; align-items:center; justify-content:space-between; gap:1em; flex-wrap:wrap; }
+.genbadge { display:inline-flex; align-items:center; gap:.35em;
+  background:rgba(52,211,153,.13); color:#6EE7B7; border:1px solid rgba(52,211,153,.32);
+  font-weight:700; font-size:clamp(12px,1vw,15px); padding:.32em .8em; border-radius:999px; white-space:nowrap; }
+.report .r { display:flex; justify-content:space-between; align-items:baseline;
+  padding:clamp(4px,.9vh,8px) 0; font-size:clamp(14px,1.2vw,18px); }
+.report .r span { color:var(--p-ink); font-weight:700; }
+.report .r b { font-weight:700; }
+.report .sep { border-top:1px dashed var(--p-border); margin:6px 0; }
+.report .sum { font-size:clamp(14px,1.2vw,18px); padding:clamp(4px,.9vh,8px) 0; }
+.report .sum b { color:#6EE7B7; }
+.report .limit { color:var(--p-muted); font-size:clamp(12px,1.02vw,15px); line-height:1.55; margin-top:6px; }
+
+/* 双栏与堆叠 */
+.cols { display:grid; grid-template-columns:1.04fr .96fr; gap:clamp(18px,2.2vw,36px);
+  margin-top:2.6vh; align-items:start; }
+.stack { display:grid; gap:clamp(12px,1.8vh,18px); }
+
+@keyframes fadeUp { from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@media (prefers-reduced-motion: reduce) { *{animation:none !important} }
+</style>
+</head>
+<body>
+
+<!-- ========== 01 · 任务简报：科研项目进入页 ========== -->
+<section class="slide" id="s1">
+  <div class="grat" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="stars2" aria-hidden="true"></div>
+  <span class="spark" style="left:11%;top:16%" aria-hidden="true"></span>
+  <span class="spark" style="left:57%;top:9%" aria-hidden="true"></span>
+  <div class="ghost" aria-hidden="true"><i></i></div>
+  <svg class="constel" viewBox="0 0 320 180" aria-hidden="true">
+    <path d="M40 130 L110 80 L180 100 L250 40" stroke="rgba(65,217,214,.35)" stroke-width="1" fill="none"/>
+    <circle cx="40" cy="130" r="3" fill="#EAEEFB"/>
+    <circle cx="110" cy="80" r="2.4" fill="#EAEEFB"/>
+    <circle cx="180" cy="100" r="2.8" fill="#EAEEFB"/>
+    <circle cx="250" cy="40" r="3.4" fill="#41D9D6"/>
+    <g fill="rgba(142,151,189,.95)" font-family="JetBrains Mono" font-size="11">
+      <text x="28" y="150">Aster-4b</text>
+      <text x="88" y="66">Nereid-7c</text>
+      <text x="158" y="122">Morrow-5e</text>
+      <text x="212" y="28">Lumen-2b</text>
+    </g>
+  </svg>
+  <div class="wrap">
+    <div class="mission">
+      <span class="patch"></span>
+      <span class="appname">群星彼岸<i>Beyond the Stars</i></span>
+      <span class="chip">观测批次 07</span>
+      <span class="count">候选 × 4</span>
+      <span class="field">RA 05h23m · DEC −12°04′</span>
+      <span class="modchip">科研项目 · M5–M8</span>
+    </div>
+    <h1>群星彼岸 · <span class="c">候选行星分析器</span></h1>
+    <p class="sub">你是研究助理：用一组教学化筛查规则分析候选行星的观测数据，给出结论、理由与限制。</p>
+    <div class="feat-grid">
+      <div class="feat"><span class="idx">01</span><div class="ic">✦</div><h3>看数据</h3><p>温度 · 重力 · 气压 · 水信号 · 辐射 · 观测</p></div>
+      <div class="feat"><span class="idx">02</span><div class="ic">⊙</div><h3>套规则</h3><p>四项硬指标区间 + 两项不确定证据</p></div>
+      <div class="feat"><span class="idx">03</span><div class="ic">◈</div><h3>下结论</h3><p>优先候选 / 需要更多观测 / 不建议继续</p></div>
+      <div class="feat"><span class="idx">04</span><div class="ic">⧉</div><h3>做预演</h3><p>在深拷贝副本中比较两套规则</p></div>
+    </div>
+    <div class="statusbar">
+      <span class="cap">系统状态</span>
+      <span class="led cy"><i></i>规则基线 <b>v1.0</b></span>
+      <span class="led cy"><i></i>候选目录 <b>× 4</b></span>
+      <span class="led g"><i></i>优先候选 <b>× 2</b></span>
+      <span class="led a"><i></i>待补观测 <b>× 1</b></span>
+    </div>
+    <div class="foot">
+      <span class="brand">星图青 · 科研项目主题</span>
+      <span class="pageno">01 / 03</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02 · 候选档案：观测数据与结论（M6 数据容器） ========== -->
+<section class="slide" id="s2">
+  <div class="grat" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="stars2" aria-hidden="true"></div>
+  <span class="spark" style="left:8%;top:74%" aria-hidden="true"></span>
+  <span class="spark" style="left:88%;top:14%" aria-hidden="true"></span>
+  <div class="ghost" aria-hidden="true"><i></i></div>
+  <div class="wrap">
+    <div class="mission">
+      <span class="patch"></span>
+      <span class="appname">群星彼岸<i>Beyond the Stars</i></span>
+      <span class="chip">观测批次 07</span>
+      <span class="count">候选 × 4</span>
+      <span class="field">RA 05h23m · DEC −12°04′</span>
+      <span class="modchip">科研项目 · M6 数据容器</span>
+    </div>
+    <h1>一颗候选的<span class="c">证据档案</span></h1>
+    <p class="sub">读数落在接受区间内才算通过 —— 结论由证据决定，不由一个万能分数决定。</p>
+    <div class="cols">
+      <div class="panel glow dossier">
+        <span class="cr tl"></span><span class="cr tr"></span><span class="cr bl"></span><span class="cr br"></span>
+        <div class="dossier-body">
+          <div class="d-head">
+            <span class="d-name">Aster-4b<i>档案 EXO-01</i></span>
+            <span class="cjs">
+              <span class="cj go on">优先候选</span>
+              <span class="cj wait">需要更多观测</span>
+              <span class="cj stop">不建议继续</span>
+            </span>
+          </div>
+          <div class="gauges">
+            <div class="gauge">
+              <div class="g-head"><span class="nm"><i></i>温度</span><b class="m">18.0 °C</b></div>
+              <div class="track"><div class="band" style="left:25%;width:50%"></div><div class="mark" style="left:58%"></div></div>
+              <div class="ticks"></div>
+              <div class="g-cap">接受区间 −20.0 ~ 40.0 °C</div>
+            </div>
+            <div class="gauge">
+              <div class="g-head"><span class="nm"><i></i>重力</span><b class="m">0.92 g</b></div>
+              <div class="track"><div class="band" style="left:20.8%;width:54.2%"></div><div class="mark" style="left:43.3%"></div></div>
+              <div class="ticks"></div>
+              <div class="g-cap">接受区间 0.65 ~ 1.30 g</div>
+            </div>
+            <div class="gauge">
+              <div class="g-head"><span class="nm"><i></i>大气压力</span><b class="m">1.10 atm</b></div>
+              <div class="track"><div class="band" style="left:13.3%;width:66.7%"></div><div class="mark" style="left:53.3%"></div></div>
+              <div class="ticks"></div>
+              <div class="g-cap">接受区间 0.50 ~ 1.50 atm</div>
+            </div>
+          </div>
+          <div class="signals">
+            <span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span>
+            <span class="pips-cap">辐射等级 2 · 上限 5</span>
+            <span class="spec">
+              <span class="bars"><i style="height:30%"></i><i style="height:45%"></i><i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i><i class="pk" style="height:72%"></i><i class="pk" style="height:100%"></i><i class="pk" style="height:80%"></i><i style="height:42%"></i><i style="height:58%"></i><i style="height:36%"></i><i style="height:48%"></i><i style="height:30%"></i></span>
+              <span class="lbl">H₂O 信号 · 已确认</span>
+            </span>
+            <span class="sig">✓ 观测完整</span>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="panel catlist">
+          <span class="ptitle">候选目录</span>
+          <div class="r" style="margin-top:6px;"><b class="n">1</b><span class="name">Aster-4b</span><span class="cl go">优先候选</span></div>
+          <div class="r"><b class="n">2</b><span class="name">Nereid-7c</span><span class="cl stop">不建议继续</span></div>
+          <div class="r"><b class="n">3</b><span class="name">Morrow-5e</span><span class="cl wait">需要更多观测</span></div>
+          <div class="r"><b class="n">4</b><span class="name">Lumen-2b</span><span class="cl go">优先候选</span></div>
+        </div>
+        <div class="panel hint">
+          <span class="ptitle">边界也算通过？</span>
+          <p>越界判定是 <span class="code">&lt; min</span> 或 <span class="code">&gt; max</span>。<b>Lumen-2b</b> 有三项读数正好压在边界上 —— 结论仍是「优先候选」。</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand">星图青 · 科研项目主题</span>
+      <span class="pageno">02 / 03</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 03 · 规则预演与研究报告（M7 对象与拷贝） ========== -->
+<section class="slide" id="s3">
+  <div class="grat" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="stars2" aria-hidden="true"></div>
+  <span class="spark" style="left:14%;top:10%" aria-hidden="true"></span>
+  <span class="spark" style="left:76%;top:80%" aria-hidden="true"></span>
+  <div class="ghost" aria-hidden="true"><i></i></div>
+  <div class="wrap">
+    <div class="mission">
+      <span class="patch"></span>
+      <span class="appname">群星彼岸<i>Beyond the Stars</i></span>
+      <span class="chip">观测批次 07</span>
+      <span class="keys"><b>P</b> 规则预演 · <b>Q</b> 生成报告</span>
+      <span class="field">RA 05h23m · DEC −12°04′</span>
+      <span class="modchip">科研项目 · M7 对象与拷贝</span>
+    </div>
+    <h1>换一套规则，<span class="c">结论</span>会变吗</h1>
+    <p class="sub">预演发生在 <span class="code">deepcopy</span> 副本里 —— 比较方案，却不污染基准研究。</p>
+    <div class="cols">
+      <div class="panel preview">
+        <div class="p-head">
+          <div><span class="ptitle">保守规则预演</span><div class="psub">SIM-01 · deepcopy 副本</div></div>
+          <span class="copybadge">⧉ 副本 · 基准不变</span>
+        </div>
+        <div class="rulegrid">
+          <span class="h">指标</span><span class="h">基准规则</span><span class="h">保守规则</span><span class="h">变化</span>
+          <span>温度</span><b class="v">−20.0 ~ 40.0</b><b class="v new">−15.0 ~ 35.0</b><span class="tg">区间收窄</span>
+          <span>重力</span><b class="v">0.65 ~ 1.30</b><b class="v new">0.70 ~ 1.20</b><span class="tg">区间收窄</span>
+          <span>大气压力</span><b class="v">0.50 ~ 1.50</b><b class="v new">0.60 ~ 1.40</b><span class="tg">区间收窄</span>
+          <span>辐射上限</span><b class="v">5</b><b class="v new">4</b><span class="tg">上限降低</span>
+        </div>
+        <div class="change">
+          <span class="who">Lumen-2b</span>
+          <span class="cj go">优先候选</span>
+          <span class="arr">→</span>
+          <span class="cj stop on">不建议继续</span>
+        </div>
+        <p class="pnote">温度 −20.0 °C 低于保守规则下限 −15.0 °C，边界候选在新规则下越界。</p>
+      </div>
+      <div class="panel report">
+        <div class="r-head">
+          <div><span class="ptitle">候选行星研究报告</span><div class="psub">RPT-07 · 基准规则</div></div>
+          <span class="genbadge">✓ 已生成</span>
+        </div>
+        <div class="r" style="margin-top:6px;"><span>Aster-4b</span><b class="cl go" style="margin-left:0;">优先候选</b></div>
+        <div class="r"><span>Nereid-7c</span><b class="cl stop" style="margin-left:0;">不建议继续</b></div>
+        <div class="r"><span>Morrow-5e</span><b class="cl wait" style="margin-left:0;">需要更多观测</b></div>
+        <div class="r"><span>Lumen-2b</span><b class="cl go" style="margin-left:0;">优先候选</b></div>
+        <div class="sep"></div>
+        <div class="sum">优先候选：<b>Aster-4b、Lumen-2b</b></div>
+        <p class="limit">限制声明：以上结果只依据本次教学化筛查规则，不能替代真实科研评估。</p>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand">星图青 · 科研项目主题</span>
+      <span class="pageno">03 / 03</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
