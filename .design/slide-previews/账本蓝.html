@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览 L · Ledger Blue 账本蓝 —— 生活项目平行主题</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* === 主题 L：Ledger Blue 账本蓝 —— 生活项目「我的一周预算助手」平行主题 ===
+   与瑞士纸白（课程结构）、终端绿（代码执行）并列的第三种完整主题。
+   场景用途：生活项目的问题情境、数据呈现与成果报告。
+   视觉语言：现代记账 App —— 浅灰底 + 白色圆角卡片 + 渐变余额卡 +
+   胶囊进度条 + 状态软胶囊 + ＋记一笔按钮。全无衬线排版。 */
+:root {
+  --a-bg: #F4F6FB;              /* App 浅灰底 */
+  --a-card: #FFFFFF;
+  --a-ink: #101828;             /* 近黑正文 */
+  --a-muted: #667085;
+  --a-line: #E4E9F2;            /* 卡片分隔细线 */
+  --a-blue: #2F6BFF;            /* 主色 · 现代 App 蓝 */
+  --a-deep: #1D4ED8;
+  --a-tint: #E8EFFF;            /* 浅蓝底 */
+  --a-ok: #12B76A;              /* 预算正常 · 仅胶囊/徽标/刻度 */
+  --a-warn: #F79009;            /* 接近上限 · 仅胶囊/刻度 */
+  --a-over: #F04438;            /* 已经超支 · 仅胶囊 */
+  --a-grad: linear-gradient(135deg, #2F6BFF 0%, #1D4ED8 100%);
+  --font-body: "Archivo","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  --font-mono: "JetBrains Mono","SFMono-Regular",Consolas,monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+.slide {
+  position:relative; height:100vh; overflow:hidden;
+  background:linear-gradient(180deg, #E9EFFD 0, var(--a-bg) 250px);
+  color:var(--a-ink); font-family:var(--font-body);
+  display:flex; align-items:center; justify-content:center;
+}
+/* 巨型幽灵 ¥（平行于纸白的幽灵页码） */
+.ghost { position:absolute; right:1.5vw; bottom:-7vh; pointer-events:none; user-select:none;
+  font-family:"Archivo",sans-serif; font-weight:800; font-size:clamp(300px,32vw,540px); line-height:1;
+  color:rgba(47,107,255,.05); -webkit-text-stroke:2px rgba(47,107,255,.07);
+  animation:fadeIn 1.4s .4s both; }
+
+.wrap { position:relative; width:min(76vw, 1040px); z-index:2; }
+
+/* 顶部应用栏：logo + 名称 + 账期胶囊 + ＋记一笔 + 模块标签 */
+.appbar { display:flex; align-items:center; gap:clamp(10px,1.1vw,16px);
+  animation:fadeUp .7s .1s cubic-bezier(.2,.7,.2,1) both; }
+.logo { width:36px; height:36px; border-radius:11px; background:var(--a-grad); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:"Archivo",sans-serif; font-weight:800; font-size:19px; flex:none;
+  box-shadow:0 6px 14px rgba(29,78,216,.30); }
+.appname { font-weight:800; font-size:clamp(16px,1.35vw,21px); white-space:nowrap; }
+.appname i { font-style:normal; color:var(--a-muted); font-weight:400; font-size:.76em; margin-left:.5em; }
+.chip { background:var(--a-tint); color:var(--a-deep); font-weight:700;
+  font-size:clamp(13px,1.05vw,16px); padding:.4em .9em; border-radius:999px; white-space:nowrap; }
+.addbtn { margin-left:auto; background:var(--a-blue); color:#fff; font-weight:700;
+  font-size:clamp(14px,1.15vw,18px); padding:.5em 1.15em; border-radius:999px; white-space:nowrap;
+  box-shadow:0 8px 18px rgba(47,107,255,.32); }
+.modchip { color:var(--a-muted); font-size:clamp(12px,1vw,15px); letter-spacing:.08em; white-space:nowrap; }
+
+h1 { margin-top:3vh; font-family:var(--font-body); font-weight:800;
+  font-size:clamp(42px,5vw,80px); line-height:1.18; letter-spacing:.01em;
+  animation:fadeUp .8s .3s cubic-bezier(.2,.7,.2,1) both; }
+h1 .b { color:var(--a-blue); }
+.sub { margin-top:1.8vh; color:var(--a-muted); font-size:clamp(18px,1.55vw,24px); line-height:1.55;
+  animation:fadeUp .8s .5s cubic-bezier(.2,.7,.2,1) both; }
+.code { font-family:var(--font-mono); font-variant-ligatures:none; font-size:.86em;
+  background:var(--a-tint); color:var(--a-deep);
+  padding:.08em .4em; border-radius:6px; white-space:nowrap; }
+
+.foot { margin-top:3.6vh; padding-top:1.8vh; border-top:1px solid var(--a-line);
+  display:flex; justify-content:space-between; align-items:baseline;
+  color:var(--a-muted); font-size:clamp(14px,1.15vw,18px); letter-spacing:.05em;
+  animation:fadeUp .8s 1s both; }
+.foot .brand { display:flex; align-items:center; gap:.7em; font-weight:700; color:var(--a-deep); }
+.foot .brand::before { content:""; width:.55em; height:.55em; border-radius:2px; background:var(--a-blue); flex:none; }
+.foot .pageno { font-family:var(--font-mono); font-variant-ligatures:none; }
+
+/* 金额：等宽、禁用连字 */
+.m { font-family:var(--font-mono); font-variant-ligatures:none; font-weight:700; }
+
+/* 功能小卡（封面 2×2 / 1×4） */
+.feat-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(12px,1.4vw,20px);
+  margin-top:4vh; animation:fadeUp .8s .65s cubic-bezier(.2,.7,.2,1) both; }
+.feat { background:var(--a-card); border-radius:16px; padding:clamp(14px,2.2vh,22px) clamp(14px,1.4vw,20px);
+  box-shadow:0 8px 24px rgba(16,24,40,.06); }
+.feat .ic { width:42px; height:42px; border-radius:12px; background:var(--a-tint); color:var(--a-blue);
+  display:flex; align-items:center; justify-content:center;
+  font-family:"Archivo",sans-serif; font-weight:800; font-size:21px; }
+.feat h3 { font-size:clamp(18px,1.5vw,23px); margin-top:12px; }
+.feat p { color:var(--a-muted); font-size:clamp(13px,1.1vw,16px); line-height:1.5; margin-top:6px; }
+
+/* 余额卡：渐变 + 大数字 + 内嵌胶囊进度条（签名组件） */
+.summary { margin-top:3.6vh; background:var(--a-grad); color:#fff; border-radius:20px;
+  padding:clamp(18px,3vh,28px) clamp(20px,2.4vw,34px) clamp(22px,3.4vh,32px);
+  box-shadow:0 18px 44px rgba(29,78,216,.30);
+  animation:fadeUp .8s .6s cubic-bezier(.2,.7,.2,1) both; }
+.summary .top { display:flex; align-items:flex-end; justify-content:space-between; gap:1em; }
+.summary .lbl { opacity:.85; font-size:clamp(15px,1.25vw,19px); }
+.summary .big { font-family:var(--font-mono); font-variant-ligatures:none; font-weight:700;
+  font-size:clamp(40px,4.2vw,64px); line-height:1.05; margin-top:2px; }
+.summary .meta { opacity:.92; font-size:clamp(14px,1.2vw,18px); white-space:nowrap; }
+.summary .meta b { font-family:var(--font-mono); font-variant-ligatures:none; }
+.prog { position:relative; margin-top:24px; margin-bottom:22px; height:12px; border-radius:999px; background:rgba(255,255,255,.30); }
+.prog .fill { position:absolute; left:0; top:0; bottom:0; width:68%; border-radius:999px; background:#fff; }
+.prog .tick { position:absolute; left:80%; top:-6px; bottom:-6px; width:3px; border-radius:2px; background:#FBBF24; }
+.prog .tick i { position:absolute; top:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  white-space:nowrap; font-style:normal; font-weight:700;
+  font-size:clamp(13px,1.1vw,16px); color:#FDE68A; }
+
+/* 状态软胶囊：当前状态实心，其余软底；语义色只出现在这里 */
+.pills { display:flex; align-items:center; gap:clamp(10px,1.1vw,16px); flex-wrap:wrap;
+  margin-top:3vh; animation:fadeUp .8s .8s cubic-bezier(.2,.7,.2,1) both; }
+.pills .cap { font-size:clamp(15px,1.25vw,19px); color:var(--a-muted); margin-right:4px; }
+.pill { display:inline-flex; align-items:center; gap:.5em; font-weight:700;
+  font-size:clamp(15px,1.3vw,20px); padding:.42em 1em; border-radius:999px; }
+.pill::before { content:""; width:.5em; height:.5em; border-radius:50%; background:currentColor; flex:none; }
+.pill.ok    { background:#E7F6EF; color:#067647; }
+.pill.warn  { background:#FEF3E2; color:#B54708; }
+.pill.exact { background:var(--a-tint); color:var(--a-deep); }
+.pill.over  { background:#FEECEA; color:#B42318; }
+.pill.on { color:#fff; }
+.pill.on.ok { background:var(--a-ok); box-shadow:0 6px 16px rgba(18,183,106,.35); }
+
+/* 白卡通用 */
+.card { background:var(--a-card); border-radius:18px; box-shadow:0 12px 32px rgba(16,24,40,.08); }
+.cardtitle { font-weight:800; font-size:clamp(16px,1.3vw,20px); }
+
+/* 电子账单卡：标签/值行 + 虚线分隔 + ✓ 徽标 */
+.bill { padding:clamp(14px,2.4vh,22px) clamp(18px,1.8vw,26px);
+  animation:fadeUp .8s .6s cubic-bezier(.2,.7,.2,1) both; }
+.bill .b-head { display:flex; align-items:center; justify-content:space-between; }
+.badge { display:inline-flex; align-items:center; gap:.35em; background:#E7F6EF; color:#067647;
+  font-weight:700; font-size:clamp(12px,1vw,15px); padding:.32em .8em; border-radius:999px; }
+.bill .r { display:flex; justify-content:space-between; align-items:baseline;
+  padding:clamp(4px,.9vh,8px) 0; font-size:clamp(15px,1.25vw,19px); }
+.bill .r span { color:var(--a-muted); }
+.bill .r b { color:var(--a-ink); }
+.bill .sep { border-top:1px dashed var(--a-line); margin:6px 0; }
+.bill .adv { color:var(--a-muted); font-size:clamp(13px,1.05vw,16px); line-height:1.5; margin-top:4px; }
+
+/* 类别图标行 */
+.cats { padding:clamp(12px,2vh,18px) clamp(18px,1.8vw,26px);
+  animation:fadeUp .8s .7s cubic-bezier(.2,.7,.2,1) both; }
+.cats .r { display:flex; align-items:center; gap:14px; padding:clamp(6px,1.2vh,10px) 0; }
+.cats .r + .r { border-top:1px solid var(--a-line); }
+.ci { width:34px; height:34px; border-radius:10px; background:var(--a-tint); color:var(--a-blue);
+  font-family:var(--font-mono); font-variant-ligatures:none; font-weight:700; font-size:16px;
+  display:flex; align-items:center; justify-content:center; flex:none; }
+.cats .name { font-size:clamp(16px,1.4vw,21px); }
+.cats .amt { margin-left:auto; font-size:clamp(16px,1.35vw,20px); color:var(--a-ink); }
+
+/* 每日支出迷你柱图 */
+.week { padding:clamp(12px,2vh,18px) clamp(18px,1.8vw,26px);
+  animation:fadeUp .8s .85s cubic-bezier(.2,.7,.2,1) both; }
+.bars { display:flex; align-items:flex-end; gap:10px; height:80px; margin-top:14px; }
+.bars i { flex:1; border-radius:6px 6px 3px 3px; background:#B9CCFF; }
+.bars i.max { background:var(--a-blue); }
+.bars-l { display:flex; gap:10px; margin-top:8px; }
+.bars-l span { flex:1; text-align:center; color:var(--a-muted); font-size:clamp(12px,1vw,14px); }
+
+/* 双栏与堆叠 */
+.cols { display:grid; grid-template-columns:1.04fr .96fr; gap:clamp(18px,2.2vw,36px);
+  margin-top:2.6vh; align-items:start; }
+.stack { display:grid; gap:clamp(12px,1.8vh,18px); }
+
+@keyframes fadeUp { from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@media (prefers-reduced-motion: reduce) { *{animation:none !important} }
+</style>
+</head>
+<body>
+
+<!-- ========== 01 · 封面：App 启动页 ========== -->
+<section class="slide" id="s1">
+  <div class="ghost" aria-hidden="true">¥</div>
+  <div class="wrap">
+    <div class="appbar">
+      <span class="logo">¥</span>
+      <span class="appname">预算助手<i>Budget Assistant</i></span>
+      <span class="chip">第一周</span>
+      <span class="addbtn">＋ 记一笔</span>
+      <span class="modchip">生活项目 · M1–M4</span>
+    </div>
+    <h1>我的一周<span class="b">预算助手</span></h1>
+    <p class="sub">控制台记账工具：设定预算，逐笔记账，随时查看状态，周末交出报告。</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="ic">¥</div><h3>设预算</h3><p>一个正整数，自己定的目标</p></div>
+      <div class="feat"><div class="ic">＋</div><h3>记支出</h3><p>金额 + F / T / S / O 四种类别</p></div>
+      <div class="feat"><div class="ic">%</div><h3>看状态</h3><p>正常 · 接近上限 · 用完 · 超支</p></div>
+      <div class="feat"><div class="ic">≡</div><h3>交报告</h3><p>分类小计、平均每笔与建议</p></div>
+    </div>
+    <div class="foot">
+      <span class="brand">账本蓝 · 生活项目主题</span>
+      <span class="pageno">01 / 03</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02 · 状态页：余额卡与状态胶囊（M3 条件判断） ========== -->
+<section class="slide" id="s2">
+  <div class="ghost" aria-hidden="true">¥</div>
+  <div class="wrap">
+    <div class="appbar">
+      <span class="logo">¥</span>
+      <span class="appname">预算助手<i>Budget Assistant</i></span>
+      <span class="chip">第一周</span>
+      <span class="addbtn">＋ 记一笔</span>
+      <span class="modchip">生活项目 · M3 条件判断</span>
+    </div>
+    <h1>每记一笔，<span class="b">状态</span>更新一次</h1>
+    <p class="sub">分支落在 <span class="code">spending_ratio &gt;= 0.80</span> 上 —— 页面只呈现学生需要观察的状态变化。</p>
+    <div class="summary">
+      <div class="top">
+        <div>
+          <div class="lbl">本周结余（元）</div>
+          <div class="big">160.00</div>
+        </div>
+        <div class="meta">预算 <b>500</b> · 已支出 <b>340</b> · 已用 <b>68%</b></div>
+      </div>
+      <div class="prog">
+        <div class="fill"></div>
+        <div class="tick"><i>80% 提醒线 · 400 元</i></div>
+      </div>
+    </div>
+    <div class="pills">
+      <span class="cap">状态胶囊 · 当前状态：</span>
+      <span class="pill ok on">预算正常</span>
+      <span class="pill warn">接近预算上限</span>
+      <span class="pill exact">预算恰好用完</span>
+      <span class="pill over">已经超支</span>
+    </div>
+    <div class="foot">
+      <span class="brand">账本蓝 · 生活项目主题</span>
+      <span class="pageno">02 / 03</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 03 · 报告页：电子账单与图表（M4 循环） ========== -->
+<section class="slide" id="s3">
+  <div class="ghost" aria-hidden="true">¥</div>
+  <div class="wrap">
+    <div class="appbar">
+      <span class="logo">¥</span>
+      <span class="appname">预算助手<i>Budget Assistant</i></span>
+      <span class="chip">第一周</span>
+      <span class="addbtn">＋ 记一笔</span>
+      <span class="modchip">生活项目 · M4 循环</span>
+    </div>
+    <h1>循环结束，交出<span class="b">一周报告</span></h1>
+    <p class="sub">输入 Q 结束记录：分类小计、平均每笔与最终建议来自同一组累计变量。</p>
+    <div class="cols">
+      <div class="card bill">
+        <div class="b-head"><span class="cardtitle">一周预算报告</span><span class="badge">✓ 已生成</span></div>
+        <div class="r"><span>一周预算</span><b class="m">500 元</b></div>
+        <div class="r"><span>总支出</span><b class="m">340 元</b></div>
+        <div class="r"><span>记录笔数</span><b class="m">9</b></div>
+        <div class="r"><span>平均每笔</span><b class="m">37.78 元</b></div>
+        <div class="sep"></div>
+        <div class="r"><span>餐饮</span><b class="m">180 元</b></div>
+        <div class="r"><span>交通</span><b class="m">40 元</b></div>
+        <div class="r"><span>学习</span><b class="m">90 元</b></div>
+        <div class="r"><span>其他</span><b class="m">30 元</b></div>
+        <div class="sep"></div>
+        <div class="r"><span>最终状态</span><span class="pill ok" style="font-size:.9em;padding:.25em .8em;">预算正常</span></div>
+        <div class="adv">建议：预算仍有余量，继续记录才能保持判断准确。</div>
+      </div>
+      <div class="stack">
+        <div class="card cats">
+          <span class="cardtitle">分类支出</span>
+          <div class="r" style="margin-top:6px;"><span class="ci">F</span><span class="name">餐饮</span><b class="amt m">180 元</b></div>
+          <div class="r"><span class="ci">T</span><span class="name">交通</span><b class="amt m">40 元</b></div>
+          <div class="r"><span class="ci">S</span><span class="name">学习</span><b class="amt m">90 元</b></div>
+          <div class="r"><span class="ci">O</span><span class="name">其他</span><b class="amt m">30 元</b></div>
+        </div>
+        <div class="card week">
+          <span class="cardtitle">每日支出</span>
+          <div class="bars">
+            <i style="height:40%"></i><i style="height:65%"></i><i style="height:30%"></i><i class="max" style="height:82%"></i><i style="height:56%"></i><i style="height:46%"></i><i style="height:24%"></i>
+          </div>
+          <div class="bars-l"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand">账本蓝 · 生活项目主题</span>
+      <span class="pageno">03 / 03</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
